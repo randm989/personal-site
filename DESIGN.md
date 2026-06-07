@@ -100,12 +100,12 @@ the single key CTA. Headlines stay ink. Never `#000`/`#fff`; every neutral tinte
 ### Light mode
 | Token | OKLCH | Role |
 |---|---|---|
-| `--paper` | `oklch(0.971 0.008 75)` | warm off-white background |
-| `--paper-2` | `oklch(0.94 0.012 75)` | raised surface |
-| `--ink` | `oklch(0.23 0.02 55)` | primary text |
-| `--ink-soft` | `oklch(0.46 0.02 55)` | body text |
-| `--ink-faint` | `oklch(0.63 0.016 60)` | metadata |
-| `--line` | `oklch(0.88 0.012 75)` | hairlines |
+| `--paper` | `oklch(0.972 0.004 80)` | near-neutral warm off-white |
+| `--paper-2` | `oklch(0.946 0.005 80)` | raised surface |
+| `--ink` | `oklch(0.23 0.016 55)` | primary text |
+| `--ink-soft` | `oklch(0.46 0.016 55)` | body text |
+| `--ink-faint` | `oklch(0.63 0.012 60)` | metadata |
+| `--line` | `oklch(0.89 0.006 80)` | hairlines |
 | `--accent` | `oklch(0.45 0.11 152)` | deep forest green |
 | `--accent-ink` | `oklch(0.98 0.01 150)` | text on green |
 | `--glow` | `oklch(0.55 0.13 152 / 0.35)` | hover/focus halo |
@@ -113,12 +113,12 @@ the single key CTA. Headlines stay ink. Never `#000`/`#fff`; every neutral tinte
 ### Dark mode
 | Token | OKLCH | Role |
 |---|---|---|
-| `--paper` | `oklch(0.205 0.012 55)` | warm near-black |
-| `--paper-2` | `oklch(0.255 0.014 55)` | raised surface |
-| `--ink` | `oklch(0.93 0.01 78)` | primary text |
-| `--ink-soft` | `oklch(0.75 0.015 72)` | body text |
-| `--ink-faint` | `oklch(0.56 0.015 65)` | metadata |
-| `--line` | `oklch(0.32 0.015 55)` | hairlines |
+| `--paper` | `oklch(0.205 0.006 60)` | near-neutral warm near-black |
+| `--paper-2` | `oklch(0.255 0.008 60)` | raised surface |
+| `--ink` | `oklch(0.93 0.008 78)` | primary text |
+| `--ink-soft` | `oklch(0.75 0.012 72)` | body text |
+| `--ink-faint` | `oklch(0.56 0.012 65)` | metadata |
+| `--line` | `oklch(0.32 0.01 60)` | hairlines |
 | `--accent` | `oklch(0.66 0.13 155)` | brightened green |
 | `--accent-ink` | `oklch(0.16 0.02 150)` | text on green |
 | `--glow` | `oklch(0.70 0.14 155 / 0.40)` | hover/focus halo |
