@@ -6,11 +6,18 @@
 
 ---
 
+> **Governing document:** [`../FOUNDER-PROFILE.md`](../FOUNDER-PROFILE.md) is the source of
+> truth for *who the site represents* (voice, positioning, hard rules, taste). This spec
+> defines *how it's built*. When they disagree about tone or message, the profile wins.
+
 ## 1. Purpose & positioning (the north star)
 
 A personal, deliberately non-business website whose **single overarching message** is
-Josh's trajectory: **a game maker and a team builder, building toward running his own game
-studio.** Every section is evidence for that arc.
+Josh's trajectory: **a director-track game-studio leader** — capable of building and leading
+a 15–20-person studio now, on the way to founding a fiercely independent one that makes games
+which move people to purpose. Every section is evidence for that arc. See FOUNDER-PROFILE §2
+for the two-layer positioning and §6 for the hard rules (notably: **the personal origin of
+the mission is private fuel and never appears on the site**).
 
 - **Game maker** — proven by the portfolio (Zipix front and center) and the presentations.
 - **Team builder** — surfaced through how Josh thinks about people, equity, and building a
