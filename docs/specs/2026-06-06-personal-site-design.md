@@ -6,29 +6,55 @@
 
 ---
 
-## 1. Purpose
+## 1. Purpose & positioning (the north star)
 
-A personal, deliberately non-business website that:
+A personal, deliberately non-business website whose **single overarching message** is
+Josh's trajectory: **a game maker and a team builder, building toward running his own game
+studio.** Every section is evidence for that arc.
 
-- Acts as a **polished front door** — a portfolio of the best work and an "interesting" interactive resume that lands with a recruiter, collaborator, or investor in ~30 seconds.
-- Hosts a **living garden** — frequent, low-friction posts: side projects, experiments, and things that interest Josh, for fun.
-- Serves existing **HTML presentations** as first-class artifacts.
+- **Game maker** — proven by the portfolio (Zipix front and center) and the presentations.
+- **Team builder** — surfaced through how Josh thinks about people, equity, and building a
+  studio, not just shipping code.
+- **Studio-bound** — the framing that ties projects, garden, and resume together: this is
+  someone assembling the craft, range, and judgment to lead a studio.
 
-Equal weight on both modes: a calm front door with an alive, exploratory garden behind it.
+It does this in two modes, equally weighted:
 
-## 2. Design thesis (first-class requirement, not decoration)
+- A **polished front door** — best work + an "interesting" interactive resume that lands
+  the *game-maker-becoming-studio-founder* story with a recruiter, collaborator, or
+  investor in ~30 seconds.
+- A **living garden** — frequent, low-friction posts (side projects, experiments,
+  interests) that demonstrate range and curiosity. For fun, and as proof of a restless maker.
 
-> An editorial, restrained base where the joy is **discovery**. Everything responds to
-> touch/hover in small, surprising ways — the way an exploration game rewards you for
-> poking at the scenery. The delight is not loud; it is that *more is alive than you
-> expected.*
+It also serves existing **HTML presentations** as first-class artifacts.
 
-Consequences this thesis forces on the architecture:
+## 2. Design motif (supporting texture, NOT the message)
+
+The site *feels alive* as a craft signal, not as its subject. The interactivity is the
+subtext — "this person sweats the small stuff" — and must never upstage the studio-builder
+story.
+
+> An editorial, restrained base where small things quietly respond to touch/hover, the way
+> an exploration game rewards you for poking at the scenery. The point is *more is alive
+> than you expected*, felt in passing — never announced.
+
+Consequences this motif forces on the architecture:
 
 - The base must be **quiet and fast** — interactivity is opt-in, never the default load.
-- Micro-interactions must be **systematic, not hand-rolled per page** — a shared
-  primitives layer so the "surprising that it's alive" quality is consistent.
-- A few **hidden easter eggs** reward exploration without being required to use the site.
+- Micro-interactions are **systematic, not hand-rolled per page** — a shared primitives
+  layer so the quality is consistent (cursor companion, magnetic elements, card tilt,
+  hover lifts, a few hidden easter eggs).
+- The motif **recedes**: copy and layout lead with the narrative; the page never
+  instructs the visitor to "go poke things." Discovery is incidental, not the call to
+  action.
+
+## 2a. System-aware theming (requirement)
+
+The site **follows the visitor's system dark/light preference** (`prefers-color-scheme`),
+with a matched editorial palette in each mode. Both palettes are defined as the same
+semantic token set (one source of truth), so the motif and every component render
+correctly in either mode without per-component overrides. A manual toggle is optional and
+deferred; automatic system-following is the day-one requirement.
 
 ## 3. Autonomy goal (the reason this project exists in this form)
 
@@ -64,11 +90,15 @@ Rejected:
 
 | Route | Purpose | Content model |
 |-------|---------|---------------|
-| `/` (Home) | Editorial front door: short confident intro, curated best work, quiet-but-pokeable | Single page |
-| `/projects` + `/projects/[slug]` | Portfolio. Zipix front and center; others as supplied | One file per project (Content Collection) |
+| `/` (Home) | Editorial front door leading with the **studio-builder narrative**: who Josh is (game maker + team builder), where he's headed (his own studio), then curated proof | Single page |
+| `/projects` + `/projects/[slug]` | Portfolio — the **maker** evidence. Zipix front and center; others as supplied | One file per project (Content Collection) |
 | `/resume` | The "interesting" interactive resume, built from Josh's real resume; clean printable/PDF fallback for recruiters | Single page + downloadable PDF |
-| `/garden` + `/garden/[slug]` | The living feed: side projects, experiments, interests. Chronological + tag-browsable | One `.mdx` file per entry (Content Collection) |
+| `/garden` + `/garden/[slug]` | The living feed: side projects, experiments, interests. Range + curiosity. Chronological + tag-browsable | One `.mdx` file per entry (Content Collection) |
 | `/presentations` | Gallery indexing the raw HTML decks | Index page + decks in `public/presentations/` |
+| `/about` *(optional, phase 2)* | The **team-builder** thread — how Josh thinks about people, equity, and what kind of studio he's building. Can start as a home-page section and graduate to its own page | Single page |
+
+The home page carries a short **"the studio I'm building"** narrative beat that names the
+destination explicitly and frames everything below it as evidence.
 
 ## 6. The delight layer
 
@@ -142,6 +172,25 @@ path.
 
 
 - Final domain choice + registration.
-- Exact delight-primitive set and intensity (decided against the clickable mockup).
-- Typography and color tokens for the editorial base.
+- Exact delight-primitive set and intensity/spring values (tuned against the clickable mockup).
+- **Locked aesthetic direction + token system** (typography, light *and* dark palettes as
+  one semantic token set) — see Design process below.
+- The **studio-builder narrative copy** for the home page (the hero + "the studio I'm
+  building" beat) — to be developed with the `impeccable` skill.
 - Whether the resume PDF is hand-exported or generated from the page.
+
+## 12. Design process (how we get from spec to a coherent site)
+
+The site must stay visually and narratively in sync as it grows. The sequence:
+
+1. **`impeccable`** — sharpen the studio-builder narrative and the strategic framing of
+   each section (what story each page tells, in what order). The message work.
+2. **Aesthetic direction lock** — decide and freeze the editorial token system:
+   type scale, spacing, light + dark palettes (one semantic set), and the motif's
+   intensity/spring values from the mockup. This becomes the single source of truth every
+   component reads from, so nothing drifts.
+3. **`emil-design-eng`** — polish the motion: the cursor companion, magnetic elements,
+   card tilt, page/section transitions. Make the motif feel *right*, not just present.
+
+These run after spec sign-off and feed the implementation plan; they are not blockers to
+scaffolding the Astro project and standing up a preview deploy.

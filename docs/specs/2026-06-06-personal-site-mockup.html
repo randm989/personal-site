@@ -26,6 +26,17 @@
   }
   ::selection{background:var(--accent);color:var(--paper)}
 
+  /* system dark mode: same semantic tokens, editorial dark palette */
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#ece5db; --ink-soft:#b3a99c; --ink-faint:#7d7468;
+      --paper:#17130d; --paper-2:#221c14; --line:#33291d;
+      --accent:#db6c41; --accent-2:#52a08c;
+    }
+    #cursor{mix-blend-mode:screen}
+    .card:hover{box-shadow:0 18px 44px -20px rgba(0,0,0,.7)}
+  }
+
   .wrap{max-width:780px;margin:0 auto;padding:0 28px}
 
   /* ---------- top nav ---------- */
@@ -53,7 +64,12 @@
      margin:0 0 24px;letter-spacing:-.01em}
   .lede{font-size:20px;color:var(--ink-soft);max-width:62ch;margin:0 0 14px}
 
-  /* words that quietly lift on hover — the "everything is alive" tell */
+  section.narrative{padding:8px 0 18px;border-top:1px solid var(--line)}
+  section.narrative .eyebrow{margin-top:34px}
+  .big{font-family:var(--serif);font-size:clamp(22px,3.6vw,29px);line-height:1.35;
+       color:var(--ink);max-width:30ch;margin:0 0 8px;font-weight:500}
+
+  /* words that quietly lift on hover (motif: incidental, never announced) */
   .live{display:inline-block;transition:transform calc(.18s*var(--intensity)) cubic-bezier(.2,1.5,.3,1),
          color .2s}
   .live:hover{transform:translateY(calc(-3px*var(--intensity))) rotate(calc(-1.5deg*var(--intensity)));
@@ -116,7 +132,7 @@
   #egg.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   /* ---------- tuning panel (mockup-only, not part of the site) ---------- */
-  #panel{position:fixed;right:18px;bottom:18px;z-index:80;background:#fff;border:1px solid var(--line);
+  #panel{position:fixed;right:18px;bottom:18px;z-index:80;background:var(--paper);border:1px solid var(--line);
          border-radius:14px;box-shadow:0 20px 50px -20px rgba(0,0,0,.4);width:248px;
          font-family:var(--sans);font-size:13px;overflow:hidden}
   #panel .head{background:var(--ink);color:var(--paper);padding:9px 14px;font-family:var(--mono);
@@ -142,18 +158,22 @@
 </div></nav>
 
 <header class="hero"><div class="wrap">
-  <div class="eyebrow">Builder · Founder · Tinkerer</div>
-  <h1>I make small things that<br><span class="live">surprise</span> you, on purpose.</h1>
-  <p class="lede">Founder of <span class="live">Zipix</span>. I build <span class="live">games</span>,
-     <span class="live">tools</span>, and the occasional <span class="live">strange experiment</span> —
-     and I care a lot about the <span class="live">tiny moments</span> where software feels alive.</p>
-  <p class="lede" style="font-size:16px;color:var(--ink-faint)">Try it: hover the words above. Poke my
-     name. Drag your cursor near a button. Almost everything here notices you.</p>
+  <div class="eyebrow">Game maker · Team builder</div>
+  <h1>I make <span class="live">games</span>. I'm building the<br><span class="live">studio</span> to make more of them.</h1>
+  <p class="lede">Founder of <span class="live">Zipix</span>, a mobile micro-game platform. I build the
+     games, and just as deliberately, I build the <span class="live">teams</span>. The long game is a
+     studio of my own.</p>
   <div class="cta-row">
     <a class="btn" id="b1" href="#work">See the work</a>
     <a class="btn ghost" id="b2" href="#garden">Wander the garden</a>
   </div>
 </div></header>
+
+<section class="narrative"><div class="wrap">
+  <div class="eyebrow">The plan, stated plainly</div>
+  <p class="big">A studio that makes small, surprising games, and treats the people who
+     make them like owners. Everything below is how I'm getting there.</p>
+</div></section>
 
 <section class="feed"><div class="wrap">
   <div class="seclabel" id="work">Selected work</div>
@@ -190,7 +210,7 @@
 
 <footer><div class="wrap">
   <span>© Josh Rutz · made for fun</span>
-  <span class="hint">psst — type <kbd>j</kbd><kbd>o</kbd><kbd>s</kbd><kbd>h</kbd> anywhere</span>
+  <span class="hint">psst... type <kbd>j</kbd><kbd>o</kbd><kbd>s</kbd><kbd>h</kbd> anywhere</span>
 </div></footer>
 
 <div id="egg">✦ you found one. the whole site is like this.</div>
@@ -263,7 +283,7 @@ let pokes=0;
 brand.onclick=()=>{pokes++;dot.style.transform=`scale(${1+ .6*Math.sin(pokes)}) translateY(${-4-pokes%3*2}px)`;
   brand.style.transform=`rotate(${(pokes%2?1:-1)*2.5}deg)`;
   setTimeout(()=>{brand.style.transform='';},220);
-  if(pokes===5)showEgg('okay, okay — five pokes. you get it. ✦');};
+  if(pokes===5)showEgg('okay, okay. five pokes. you get it. ✦');};
 
 // easter egg: type "josh"
 let buf='';const egg=document.getElementById('egg');
