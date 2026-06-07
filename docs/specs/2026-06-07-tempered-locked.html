@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tempered — locked aesthetic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:"Bricolage Grotesque"; --body:"Hanken Grotesk";
+    --paper:oklch(0.971 0.008 75); --paper-2:oklch(0.94 0.012 75);
+    --ink:oklch(0.23 0.02 55); --ink-soft:oklch(0.46 0.02 55); --ink-faint:oklch(0.63 0.016 60);
+    --line:oklch(0.88 0.012 75);
+    --accent:oklch(0.45 0.11 152); --accent-ink:oklch(0.98 0.01 150);
+    --glow:oklch(0.55 0.13 152 / 0.35);
+    --sh-dark:oklch(0.90 0.012 75 / .8); --sh-light:oklch(0.995 0.006 80 / .95);
+    --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  [data-theme="dark"]{
+    --paper:oklch(0.205 0.012 55); --paper-2:oklch(0.255 0.014 55);
+    --ink:oklch(0.93 0.01 78); --ink-soft:oklch(0.75 0.015 72); --ink-faint:oklch(0.56 0.015 65);
+    --line:oklch(0.32 0.015 55);
+    --accent:oklch(0.66 0.13 155); --accent-ink:oklch(0.16 0.02 150);
+    --glow:oklch(0.70 0.14 155 / 0.40);
+    --sh-dark:oklch(0.14 0.01 55 / .75); --sh-light:oklch(0.28 0.014 55 / .55);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+    line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .5s var(--ease),color .5s var(--ease)}
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px}
+
+  nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 86%,transparent);
+      backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+  .brand{font-family:var(--display);font-weight:700;font-size:19px;display:flex;align-items:center;gap:10px}
+  /* clean geometric mark — three bars, a nod to the spinner reference */
+  .mark{display:inline-flex;gap:3px;height:18px;align-items:flex-end}
+  .mark i{width:4px;background:var(--accent);border-radius:2px;animation:rise 1.4s var(--ease) infinite alternate}
+  .mark i:nth-child(1){height:9px;animation-delay:0s}
+  .mark i:nth-child(2){height:16px;animation-delay:.18s}
+  .mark i:nth-child(3){height:12px;animation-delay:.36s}
+  @keyframes rise{from{transform:scaleY(.55);opacity:.6}to{transform:scaleY(1);opacity:1}}
+  .navlinks{display:flex;gap:22px;font-size:14px;align-items:center}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .2s var(--ease)}
+  .navlinks a:hover{color:var(--accent)}
+
+  /* theme switch */
+  .switch{border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);
+    width:54px;height:30px;border-radius:999px;cursor:pointer;position:relative;transition:.3s var(--ease)}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);transition:transform .35s var(--ease)}
+  [data-theme="dark"] .switch::after{transform:translateX(24px)}
+
+  .eyebrow{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);
+    font-weight:600;margin-bottom:18px}
+  header{padding:78px 0 46px}
+  h1{font-family:var(--display);font-weight:700;letter-spacing:-.015em;
+     font-size:clamp(37px,6.6vw,60px);line-height:1.04;margin:0 0 22px}
+  .lede{font-size:20px;line-height:1.55;color:var(--ink-soft);max-width:60ch;margin:0}
+  .live{display:inline-block;transition:color .25s var(--ease),transform .25s var(--ease)}
+  .live:hover{color:var(--accent);transform:translateY(-3px)}
+
+  .cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{font-family:var(--body);font-size:15px;font-weight:600;border:1px solid var(--ink);
+    background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:999px;cursor:pointer;
+    text-decoration:none;transition:transform .25s var(--ease),box-shadow .3s var(--ease)}
+  .btn:hover{transform:translateY(-3px)}
+  .btn.accent{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .btn.accent:hover{box-shadow:0 10px 34px -8px var(--glow),0 0 0 6px var(--glow)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{box-shadow:0 8px 26px -10px var(--glow)}
+
+  section{padding:14px 0}
+  .label{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);
+    font-weight:600;margin:46px 0 16px;display:flex;align-items:center;gap:12px}
+  .label::after{content:"";flex:1;height:1px;background:var(--line)}
+  .big{font-family:var(--display);font-weight:600;letter-spacing:-.01em;
+    font-size:clamp(23px,3.5vw,31px);line-height:1.28;max-width:28ch;margin:0 0 12px}
+  p.body{font-size:17px;line-height:1.62;color:var(--ink-soft);max-width:64ch;margin:0}
+
+  /* soft panel — neumorphic-influenced, warm, clean, light-follows-cursor */
+  .panel{position:relative;border-radius:24px;background:var(--paper);padding:26px;margin-top:8px;
+    box-shadow:16px 16px 44px var(--sh-dark), -13px -13px 36px var(--sh-light);
+    transition:transform .3s var(--ease),box-shadow .4s var(--ease);cursor:pointer;overflow:hidden}
+  .panel::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
+    transition:opacity .4s var(--ease);pointer-events:none;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 60%)}
+  .panel:hover{transform:translateY(-4px);
+    box-shadow:20px 20px 56px var(--sh-dark), -15px -15px 42px var(--sh-light), 0 0 0 1px var(--glow)}
+  .panel:hover::before{opacity:1}
+  .panel .kind{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .panel h3{font-family:var(--display);font-weight:700;font-size:22px;margin:8px 0 7px}
+  .panel p{margin:0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:54px;padding:36px 0 80px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:14px}
+  .note{position:fixed;left:0;right:0;bottom:0;background:var(--paper-2);border-top:1px solid var(--line);
+    font-size:12px;color:var(--ink-faint);text-align:center;padding:8px}
+  body{padding-bottom:42px}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <span class="brand"><span class="mark"><i></i><i></i><i></i></span> Josh Rutz</span>
+  <div class="navlinks">
+    <a>Work</a><a>How I lead</a><a>Garden</a>
+    <button class="switch" id="sw" aria-label="Toggle theme"></button>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <div class="eyebrow">Game maker · Team builder</div>
+  <h1>I make <span class="live">games</span> that move people.<br>I build <span class="live">teams</span> that own their work.</h1>
+  <p class="lede">I'm a game director building toward a <span class="live">studio</span> of my own.
+     Everything here is how I'm getting there.</p>
+  <div class="cta">
+    <a class="btn">See the work</a>
+    <a class="btn ghost">Wander the garden</a>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <div class="label">Where this goes</div>
+  <p class="big">The studio I'm building is an elite, autonomous cell.</p>
+  <p class="body">A small group that operates at a high level on its own, which is what makes it
+     valuable inside a bigger organization or standing alone. I want to lead 15 to 20 people who
+     carry real ownership and grow into it.</p>
+
+  <div class="label">The work</div>
+  <div class="panel" data-light><div class="kind">Platform</div><h3>Zipix</h3>
+    <p>A mobile-first micro-game platform. One minute, no filler, nothing wasted.</p></div>
+
+  <div class="label">How I lead</div>
+  <p class="body">People do their best work when the company's goals and their own line up. My job
+     as a leader is to find those two directions and align them as tightly as possible. The leader
+     grants the autonomy. The work supplies the purpose. The worker loves mastering their craft.</p>
+
+  <div class="label">Find me</div>
+  <p class="body" style="margin-bottom:22px">I'm always glad to talk with people building ambitious
+     things in games. If that's you, reach out.</p>
+  <a class="btn accent">Reach out</a>
+</div></section>
+
+<footer><div class="wrap">Tempered · Bricolage Grotesque + Hanken Grotesk · deep-green accent · clean, lit, in motion</div></footer>
+<div class="note">Locked aesthetic preview. Toggle the switch (top right) for light/dark. Hover the panel to see light follow your cursor.</div>
+
+<script>
+  const root=document.documentElement;
+  // default to system theme
+  root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.getElementById('sw').onclick=()=>{
+    root.dataset.theme = root.dataset.theme==='dark' ? 'light' : 'dark';
+  };
+  // light follows cursor on panels
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.addEventListener('mousemove',e=>{
+      const r=p.getBoundingClientRect();
+      p.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      p.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+  });
+</script>
+</body>
+</html>
