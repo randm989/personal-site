@@ -8,42 +8,42 @@ truth: [`FOUNDER-PROFILE.md`](FOUNDER-PROFILE.md). Strategy: [`../PRODUCT.md`](.
 
 ## The spine (one throughline)
 
-**Josh is a game maker and a team builder, and they're the same person.** The site proves it
-by showing that his games, his leadership, and his ambition all run on one worldview: *carry
-responsibility, grow people, tell the emotional truth, waste nobody's time.* A visitor should
-leave thinking two things at once: *I'd want this person running my studio,* and *I believe
-where he's going.*
+**Josh is a game maker first, and a team builder because of it.** He loves making and playing
+games more than anything. He leads because leading is how great games get made with great
+people, so leadership serves the making, never the other way around. The site proves his
+making, his leadership, and his ambition all run on one worldview: *carry responsibility, grow
+people, tell the emotional truth, waste nobody's time.* A visitor should leave with two things:
+*I'd want this person making and leading games for me,* and *I believe where he's going.*
 
-The coherence is the argument. A director with a unified worldview is more convincing than a
+The coherence is the argument. A maker with a unified worldview is more convincing than a
 portfolio. So every section is the same person from a different angle, never a new pitch.
 
 ---
 
 ## Home — the 30-second arc
 
-Six beats, in this order. The order is the story: **who I am → where I'm going → that I make →
-that I lead → that I'm alive and curious → find me.** Each beat is one dominant idea.
+Six beats, in this order: **what I make → why I love it → the work itself → where it goes →
+that I'm alive and curious → find me.** Making leads. Leading is how the making scales, so it
+comes later and never takes the headline. Each beat is one dominant idea.
 
-### Beat 1 — Hero (identity + direction)
+### Beat 1 — Hero (the maker)
 
-> # I make games that move people. I build teams that own their work.
-> I'm a game director aiming to build a studio around a vision. Everything here is how I'm getting
-> there.
+> # I make games that move people.
+> Making games is the thing I love most, and the thing I'm best at. I'm a game director aiming
+> to build a studio around a vision, because leading is how you make great games with great people.
 
-*Job:* in one fold, the dual identity (maker + builder) and the direction. Two clean
-declaratives carry the two halves of him. "Everything here is how I'm getting there" frames the
-whole site as evidence, which sets up belief in the vision.
+*Job:* making leads the headline. The subhead names the love (primary) and frames the director
+ambition as *in service of* the making (secondary). The whole hierarchy, set in one fold.
 
-### Beat 2 — The studio I'm aiming to build (the ambition, stated plainly)
+### Beat 2 — Why games (the love)
 
-> **Kicker: Where this goes**
-> The studio I'm aiming to build will be an elite, autonomous cell. A small group that operates at a high
-> level entirely on its own, which is what makes it valuable inside a bigger organization or
-> standing alone. I want to lead 15 to 20 people who carry real ownership and grow into it.
-> That's what I'm aiming for, and everything below is how I'm earning it.
+> **Kicker: Why games**
+> I've loved games my whole life, playing them and making them. They're the one medium that makes
+> you feel something by doing it yourself. That's what I chase when I make them, and it's why I
+> won't waste a second of your time with filler.
 
-*Job:* name the destination so the proof beats below have a target. Forward conviction, no
-tragedy, no contrast. The autonomous-cell framing signals he integrates, not separates.
+*Job:* the heart of the site. The love of making and playing is the engine, not the leadership.
+Carries the emotional-truth and respect-the-player's-time beliefs. Present tense: this is true now.
 
 ### Beat 3 — Selected work (proof he makes)
 
@@ -52,17 +52,23 @@ tragedy, no contrast. The autonomous-cell framing signals he integrates, not sep
 
 *Job:* the maker evidence. Zipix leads; other projects follow. Links into `/projects`.
 
-### Beat 4 — How I lead (proof he builds people — the differentiator)
+### Beat 4 — Where this goes (the studio + how I lead, in service of the making)
 
-> **Kicker: How I lead**
-> People do their best work when the company's goals and their own line up. My job as a leader
-> is to find those two directions and align them as tightly as possible. I hand people real
-> responsibility early, more than they
-> think they can hold, then I clear the path so they can carry it. The leader grants the
-> autonomy. The work supplies the purpose. The worker loves mastering their craft.
+> **Kicker: Where this goes**
+> I'm a game director, and the studio I'm aiming to build will be an elite, autonomous cell. A
+> small group that operates at a high level on its own, which makes it valuable inside a bigger
+> organization or standing alone. Leading a great team is how great games get made, and that's
+> why I want to build one.
+>
+> People do their best work when the company's goals and their own line up. My job as a leader is
+> to find those two directions and align them as tightly as possible. I hand people real
+> responsibility early, more than they think they can hold, then I clear the path so they can
+> carry it. The leader grants the autonomy. The work supplies the purpose. The worker loves
+> mastering their craft.
 
-*Job:* this is what separates him from every other "game maker." Most portfolios can't speak to
-leadership at all. This beat is the one a hiring founder remembers.
+*Job:* the ambition and the leadership theory, consolidated into one beat so leadership stays
+secondary to the making. Framed as *how great games get made*, never the goal itself. Still the
+differentiator a hiring founder remembers, just no longer the lead.
 
 ### Beat 5 — From the garden (he's alive and curious)
 
@@ -78,8 +84,7 @@ leadership at all. This beat is the one a hiring founder remembers.
 > I'm always glad to talk with people building ambitious things in games. If that's you, reach
 > out.
 
-*Job:* the call without the begging. Assertive, open, not a hire-me plea. This is "be known and
-found" as a sentence.
+*Job:* the call without the begging. Assertive, open, not a hire-me plea.
 
 ---
 
@@ -124,11 +129,11 @@ home beat and graduates to its own page when there's a reason.
 
 | Surface | Copy |
 |---|---|
-| Hero headline | I make games that move people. I build teams that own their work. |
-| Hero subhead | I'm a game director aiming to build a studio around a vision. Everything here is how I'm getting there. |
-| Studio kicker / body | *Where this goes* / The studio I'm aiming to build will be an elite, autonomous cell… (Beat 2) |
+| Hero headline | I make games that move people. |
+| Hero subhead | Making games is the thing I love most, and the thing I'm best at. I'm a game director aiming to build a studio around a vision, because leading is how you make great games with great people. |
+| Why-games kicker / body | *Why games* / I've loved games my whole life, playing them and making them. They're the one medium that makes you feel something by doing it yourself. That's what I chase when I make them, and it's why I won't waste a second of your time with filler. |
 | Work kicker / intro | *The work* / Everything I believe about games, I've built into the ones I make. Start with Zipix. |
-| Leadership kicker / body | *How I lead* / People do their best work when the company's goals and their own line up… (Beat 4) |
+| Studio + leadership | *Where this goes* / I'm a game director, and the studio I'm aiming to build will be an elite, autonomous cell… Leading a great team is how great games get made… (Beat 4) |
 | Garden kicker / intro | *From the garden* / The garden is where I think out loud… |
 | Find-me kicker / body | *Find me* / I'm always glad to talk with people building ambitious things in games. If that's you, reach out. |
 | Projects page intro | The work is the proof. Each of these is a belief I hold, built into something real. |

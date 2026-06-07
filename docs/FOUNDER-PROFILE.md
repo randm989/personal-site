@@ -32,6 +32,12 @@ that nothing here is arbitrary.
 4. **Waste nobody's time.** Density over padding; every decision earns its place; respect
    the player's hours. (Exactly what Zipix is: one minute, no filler.)
 
+**Making is the constant beneath all of it.** Josh loves the craft of making and playing games
+for its own sake, not as a means to an end. He would still be making games as a solo dev in
+retirement, long after he's done working for anyone. Leadership and the studio are how he
+*scales* that love; they never replace it. When the narrative weighs making against leading,
+making wins.
+
 ---
 
 ## 2. Positioning — two layers, handled differently
