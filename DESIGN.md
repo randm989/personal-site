@@ -94,7 +94,7 @@ either. Light text on dark: add 0.05 to line-height.
 ## Color — Restrained accent (locked strategy)
 
 Near-neutral surfaces carry the site (tint is a whisper, never pure gray). The **deep-green
-accent (Josh's favorite, doubles as the garden green) appears sparingly**: section kickers,
+accent (Josh's favorite color) appears sparingly**: section kickers,
 links, focus rings, the lighting glow, and the single key CTA. Headlines stay ink, and green is
 the only real color on the page. Never `#000`/`#fff`; chroma stays ~0.002 to 0.006. OKLCH.
 

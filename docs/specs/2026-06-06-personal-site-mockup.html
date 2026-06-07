@@ -9,7 +9,7 @@
     --ink:#1a1714; --ink-soft:#5c554d; --ink-faint:#9a9189;
     --paper:#f7f4ef; --paper-2:#efe9e0; --line:#e2dacd;
     --accent:#b4502a;            /* warm editorial rust */
-    --accent-2:#2f6b5e;          /* garden green */
+    --accent-2:#2f6b5e;          /* workshop green */
     --intensity:1;               /* delight intensity, tuned live */
     --spring:.55;                /* spring feel 0..1 */
     --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
@@ -99,12 +99,12 @@
   .card:hover{box-shadow:0 18px 40px -22px rgba(40,30,20,.4);border-color:var(--ink-faint)}
   .card .kind{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
         color:var(--accent)}
-  .card.garden .kind{color:var(--accent-2)}
+  .card.workshop .kind{color:var(--accent-2)}
   .card h3{font-family:var(--serif);font-weight:600;font-size:21px;margin:8px 0 6px}
   .card p{margin:0;font-size:14.5px;color:var(--ink-soft)}
   .card .go{margin-top:14px;font-size:13px;color:var(--ink-faint);transition:transform .3s,color .3s}
   .card:hover .go{transform:translateX(5px);color:var(--accent)}
-  .card.garden:hover .go{color:var(--accent-2)}
+  .card.workshop:hover .go{color:var(--accent-2)}
 
   /* presentations row */
   .decks{display:flex;gap:12px;flex-wrap:wrap}
@@ -153,7 +153,7 @@
 <nav id="nav"><div class="wrap">
   <span class="brand" id="brand">Josh Rutz<span class="dot"></span></span>
   <div class="navlinks">
-    <a href="#work">Work</a><a href="#garden">Garden</a><a href="#decks">Talks</a><a href="#resume">Resume</a>
+    <a href="#work">Work</a><a href="#workshop">Workshop</a><a href="#decks">Talks</a><a href="#resume">Resume</a>
   </div>
 </div></nav>
 
@@ -164,7 +164,7 @@
      Everything here is how I'm getting there.</p>
   <div class="cta-row">
     <a class="btn" id="b1" href="#work">See the work</a>
-    <a class="btn ghost" id="b2" href="#garden">Wander the garden</a>
+    <a class="btn ghost" id="b2" href="#workshop">Wander the workshop</a>
   </div>
 </div></header>
 
@@ -186,12 +186,12 @@
       <div class="go">Open project →</div></div>
   </div>
 
-  <div class="seclabel" id="garden">From the garden</div>
+  <div class="seclabel" id="workshop">From the workshop</div>
   <div class="cards">
-    <div class="card garden"><div class="kind">Experiment</div><h3>A thing I made last week</h3>
-      <p>Half-baked on purpose. The garden is where the fun, unfinished stuff lives.</p>
+    <div class="card workshop"><div class="kind">Experiment</div><h3>A thing I made last week</h3>
+      <p>Half-baked on purpose. The workshop is where the fun, unfinished stuff lives.</p>
       <div class="go">Read →</div></div>
-    <div class="card garden"><div class="kind">Note</div><h3>Something that interested me</h3>
+    <div class="card workshop"><div class="kind">Note</div><h3>Something that interested me</h3>
       <p>Short, frequent, low-stakes. Drop me a note and it's live in a minute.</p>
       <div class="go">Read →</div></div>
   </div>

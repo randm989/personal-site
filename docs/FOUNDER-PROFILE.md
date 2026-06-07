@@ -130,7 +130,7 @@ substitute for him.
 
 ---
 
-## 8. Creative taste & north stars (for the work framing & garden voice)
+## 8. Creative taste & north stars (for the work framing & workshop voice)
 
 | North star | What it reveals about Josh |
 |------------|----------------------------|
@@ -152,6 +152,6 @@ motif**, NOT his game design — keep them separate.
 - Before writing any site copy, re-read §4 (voice) and §6 (hard rules).
 - Before structuring a page, check §2 (positioning) and §3 (takeaway).
 - For the team/about thread, draw from §7.
-- For project framing and the garden's sensibility, draw from §1 and §8.
+- For project framing and the workshop's sensibility, draw from §1 and §8.
 - The `impeccable` pass develops narrative from §1–§3; the aesthetic lock serves §4–§5; the
   `emil` motion pass serves §6.3 (craft, not comedy).

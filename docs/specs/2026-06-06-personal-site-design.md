@@ -23,7 +23,7 @@ the mission is private fuel and never appears on the site**).
 - **Game maker** — proven by the portfolio (Zipix front and center) and the presentations.
 - **Team builder** — surfaced through how Josh thinks about people, equity, and building a
   studio, not just shipping code.
-- **Studio-bound** — the framing that ties projects, garden, and resume together: this is
+- **Studio-bound** — the framing that ties projects, workshop, and resume together: this is
   someone assembling the craft, range, and judgment to lead a studio.
 
 It does this in two modes, equally weighted:
@@ -31,7 +31,7 @@ It does this in two modes, equally weighted:
 - A **polished front door** — best work + an "interesting" interactive resume that lands
   the *game-maker-becoming-studio-founder* story with a recruiter, collaborator, or
   investor in ~30 seconds.
-- A **living garden** — frequent, low-friction posts (side projects, experiments,
+- A **living workshop** — frequent, low-friction posts (side projects, experiments,
   interests) that demonstrate range and curiosity. For fun, and as proof of a restless maker.
 
 It also serves existing **HTML presentations** as first-class artifacts.
@@ -67,7 +67,7 @@ deferred; automatic system-following is the day-one requirement.
 ## 3. Autonomy goal (the reason this project exists in this form)
 
 The site must be **maximally drivable by an LLM in a normal Claude Code session.** When
-Josh says "add my new project X" or "post this to the garden," the agent edits one or two
+Josh says "add my new project X" or "post this to the workshop," the agent edits one or two
 files, commits, and pushes — and the site is live. This biases every choice toward:
 
 - **File-based content** (no CMS, no database, no admin UI).
@@ -89,7 +89,7 @@ and the *design thesis* point the same direction:
 | Known deploy muscle | First-class **Cloudflare Pages** target, one-command deploy |
 
 Rejected:
-- **Hand-rolled** — garden authoring becomes manual toil; the delight layer must be
+- **Hand-rolled** — workshop authoring becomes manual toil; the delight layer must be
   hand-maintained everywhere; scales badly for the exact thing we care about.
 - **Next.js/React SPA** — heavier JS on every page (fights editorial calm), more
   maintenance surface, slower first paint; the SSG sweet spot is better served by Astro.
@@ -101,7 +101,7 @@ Rejected:
 | `/` (Home) | Editorial front door leading with the **studio-builder narrative**: who Josh is (game maker + team builder), where he's headed (his own studio), then curated proof | Single page |
 | `/projects` + `/projects/[slug]` | Portfolio — the **maker** evidence. Zipix front and center; others as supplied | One file per project (Content Collection) |
 | `/resume` | The "interesting" interactive resume, built from Josh's real resume; clean printable/PDF fallback for recruiters | Single page + downloadable PDF |
-| `/garden` + `/garden/[slug]` | The living feed: side projects, experiments, interests. Range + curiosity. Chronological + tag-browsable | One `.mdx` file per entry (Content Collection) |
+| `/workshop` + `/workshop/[slug]` | The living feed: side projects, experiments, interests. Range + curiosity. Chronological + tag-browsable | One `.mdx` file per entry (Content Collection) |
 | `/presentations` | Gallery indexing the raw HTML decks | Index page + decks in `public/presentations/` |
 | `/about` *(optional, phase 2)* | The **team-builder** thread — how Josh thinks about people, equity, and what kind of studio he's building. Can start as a home-page section and graduate to its own page | Single page |
 
@@ -177,7 +177,7 @@ path.
 - The delight layer, working, on at least the home page.
 
 **Strong placeholders:**
-- Garden seeded with one example post + the full structure, ready for Josh to feed entries.
+- Workshop seeded with one example post + the full structure, ready for Josh to feed entries.
 
 ## 10. Out of scope (YAGNI)
 
