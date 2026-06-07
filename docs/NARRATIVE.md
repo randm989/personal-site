@@ -39,8 +39,8 @@ ambition as *in service of* the making (secondary). The whole hierarchy, set in 
 
 > **Kicker: Why games**
 > I've loved games my whole life, playing them and making them. They're the one medium that makes
-> you feel something by doing it yourself. That's what I chase when I make them, and it's why I
-> won't waste a second of your time with filler.
+> you feel something by doing it yourself. When I make one, I'm chasing that: a small, complete
+> experience you can finish in a sitting and still carry something out of.
 
 *Job:* the heart of the site. The love of making and playing is the engine, not the leadership.
 Carries the emotional-truth and respect-the-player's-time beliefs. Present tense: this is true now.
@@ -74,17 +74,18 @@ differentiator a hiring founder remembers, just no longer the lead.
 
 > **Kicker: From the garden**
 > The garden is where I think out loud. Side projects, experiments, and the things that pull at
-> me. Smaller and more frequent, and still worth your time.
+> me, posted as I go.
 
 *Job:* range and restlessness. Proof he's a maker who can't stop making. Links into `/garden`.
 
 ### Beat 6 — Find me (the magnet close)
 
 > **Kicker: Find me**
-> I'm always glad to talk with people building ambitious things in games. If that's you, reach
-> out.
+> I'm always glad to talk with people building ambitious things in games. And I'll talk about
+> playing them, and the theory underneath, for as long as you'll let me. Reach out.
 
-*Job:* the call without the begging. Assertive, open, not a hire-me plea.
+*Job:* the call without the begging. Assertive, open, not a hire-me plea. The second sentence
+shows the genuine love of playing and game theory, not just a builder's networking ask.
 
 ---
 
@@ -109,7 +110,7 @@ the fast version.
 
 *Job:* the living feed. Frequent, low-friction, still dense. Even here, no filler.
 
-> **Intro:** Where I think out loud. Half-formed is welcome. Boring is not.
+> **Intro:** Where I think out loud. Half-formed ideas, posted before they're ready.
 
 ### /presentations — talks and decks
 
@@ -131,14 +132,14 @@ home beat and graduates to its own page when there's a reason.
 |---|---|
 | Hero headline | I make games that move people. |
 | Hero subhead | Making games is the thing I love most, and the thing I'm best at. I'm a game director aiming to build a studio around a vision, because leading is how you make great games with great people. |
-| Why-games kicker / body | *Why games* / I've loved games my whole life, playing them and making them. They're the one medium that makes you feel something by doing it yourself. That's what I chase when I make them, and it's why I won't waste a second of your time with filler. |
+| Why-games kicker / body | *Why games* / I've loved games my whole life, playing them and making them. They're the one medium that makes you feel something by doing it yourself. When I make one, I'm chasing that: a small, complete experience you can finish in a sitting and still carry something out of. |
 | Work kicker / intro | *The work* / Everything I believe about games, I've built into the ones I make. Start with Zipix. |
 | Studio + leadership | *Where this goes* / I'm a game director, and the studio I'm aiming to build will be an elite, autonomous cell… Leading a great team is how great games get made… (Beat 4) |
 | Garden kicker / intro | *From the garden* / The garden is where I think out loud… |
-| Find-me kicker / body | *Find me* / I'm always glad to talk with people building ambitious things in games. If that's you, reach out. |
+| Find-me kicker / body | *Find me* / I'm always glad to talk with people building ambitious things in games. And I'll talk about playing them, and the theory underneath, for as long as you'll let me. Reach out. |
 | Projects page intro | The work is the proof. Each of these is a belief I hold, built into something real. |
 | Resume page intro | My resume, the way I'd actually tell it. The short version is on paper if you need it. |
-| Garden page intro | Where I think out loud. Half-formed is welcome. Boring is not. |
+| Garden page intro | Where I think out loud. Half-formed ideas, posted before they're ready. |
 | Presentations intro | Talks and decks I've made. Each one stands on its own. |
 
 ---
