@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Personal Site — feel mockup</title>
+<style>
+  :root{
+    --ink:#1a1714; --ink-soft:#5c554d; --ink-faint:#9a9189;
+    --paper:#f7f4ef; --paper-2:#efe9e0; --line:#e2dacd;
+    --accent:#b4502a;            /* warm editorial rust */
+    --accent-2:#2f6b5e;          /* garden green */
+    --intensity:1;               /* delight intensity, tuned live */
+    --spring:.55;                /* spring feel 0..1 */
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    cursor:default;overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
+
+  .wrap{max-width:780px;margin:0 auto;padding:0 28px}
+
+  /* ---------- top nav ---------- */
+  nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--paper) 86%,transparent);
+      backdrop-filter:blur(8px);border-bottom:1px solid transparent;transition:border-color .3s}
+  nav.scrolled{border-color:var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:.2px;
+         cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:.5ch}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);
+         display:inline-block;transition:transform .4s cubic-bezier(.2,1.4,.3,1)}
+  .navlinks{display:flex;gap:22px;font-size:14px}
+  .navlinks a{position:relative;color:var(--ink-soft);text-decoration:none;padding:4px 0}
+  .navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+         background:var(--accent);transform:scaleX(0);transform-origin:left;
+         transition:transform calc(.28s + var(--spring)*.18s) cubic-bezier(.2,1.2,.3,1)}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a:hover::after{transform:scaleX(1)}
+
+  /* ---------- hero ---------- */
+  header.hero{padding:84px 0 56px}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--ink-faint);margin-bottom:22px}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(38px,7vw,60px);line-height:1.05;
+     margin:0 0 24px;letter-spacing:-.01em}
+  .lede{font-size:20px;color:var(--ink-soft);max-width:62ch;margin:0 0 14px}
+
+  /* words that quietly lift on hover — the "everything is alive" tell */
+  .live{display:inline-block;transition:transform calc(.18s*var(--intensity)) cubic-bezier(.2,1.5,.3,1),
+         color .2s}
+  .live:hover{transform:translateY(calc(-3px*var(--intensity))) rotate(calc(-1.5deg*var(--intensity)));
+         color:var(--accent)}
+
+  /* ---------- magnetic buttons ---------- */
+  .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{--mx:0;--my:0;font-size:15px;font-family:var(--sans);border:1px solid var(--ink);
+       background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:999px;
+       cursor:pointer;text-decoration:none;display:inline-block;
+       transform:translate(calc(var(--mx)*1px),calc(var(--my)*1px));
+       transition:transform .25s cubic-bezier(.2,1.3,.3,1),background .2s}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--paper-2)}
+
+  /* ---------- section grid: cards that tilt toward the cursor ---------- */
+  section.feed{padding:30px 0 90px}
+  .seclabel{font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;
+            color:var(--ink-faint);margin:48px 0 18px;display:flex;align-items:center;gap:12px}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:620px){.cards{grid-template-columns:1fr}}
+  .card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;
+        padding:22px;cursor:pointer;transform-style:preserve-3d;
+        transition:transform .18s ease, box-shadow .3s, border-color .3s;
+        will-change:transform}
+  .card:hover{box-shadow:0 18px 40px -22px rgba(40,30,20,.4);border-color:var(--ink-faint)}
+  .card .kind{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+        color:var(--accent)}
+  .card.garden .kind{color:var(--accent-2)}
+  .card h3{font-family:var(--serif);font-weight:600;font-size:21px;margin:8px 0 6px}
+  .card p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+  .card .go{margin-top:14px;font-size:13px;color:var(--ink-faint);transition:transform .3s,color .3s}
+  .card:hover .go{transform:translateX(5px);color:var(--accent)}
+  .card.garden:hover .go{color:var(--accent-2)}
+
+  /* presentations row */
+  .decks{display:flex;gap:12px;flex-wrap:wrap}
+  .deck{font-family:var(--mono);font-size:13px;border:1px dashed var(--line);border-radius:10px;
+        padding:10px 14px;color:var(--ink-soft);cursor:pointer;transition:.25s;background:var(--paper)}
+  .deck:hover{border-style:solid;border-color:var(--accent);color:var(--ink);transform:translateY(-2px)}
+
+  footer{border-top:1px solid var(--line);padding:40px 0 80px;color:var(--ink-faint);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .hint{font-family:var(--mono);font-size:11.5px}
+  kbd{font-family:var(--mono);background:var(--paper-2);border:1px solid var(--line);
+      border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-size:11px}
+
+  /* cursor companion: a tiny dot that trails, proof the page "notices" you */
+  #cursor{position:fixed;top:0;left:0;width:7px;height:7px;border-radius:50%;
+          background:var(--accent);pointer-events:none;z-index:60;mix-blend-mode:multiply;
+          transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;opacity:.0}
+  body.has-cursor #cursor{opacity:.85}
+
+  /* easter-egg toast */
+  #egg{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);
+       background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:13px;
+       padding:12px 18px;border-radius:10px;opacity:0;pointer-events:none;z-index:70;
+       transition:opacity .4s, transform .4s}
+  #egg.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ---------- tuning panel (mockup-only, not part of the site) ---------- */
+  #panel{position:fixed;right:18px;bottom:18px;z-index:80;background:#fff;border:1px solid var(--line);
+         border-radius:14px;box-shadow:0 20px 50px -20px rgba(0,0,0,.4);width:248px;
+         font-family:var(--sans);font-size:13px;overflow:hidden}
+  #panel .head{background:var(--ink);color:var(--paper);padding:9px 14px;font-family:var(--mono);
+         font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between;cursor:pointer}
+  #panel .body{padding:14px;display:grid;gap:13px}
+  #panel.collapsed .body{display:none}
+  .ctl label{display:flex;justify-content:space-between;color:var(--ink-soft);margin-bottom:5px;font-size:12px}
+  .ctl input[type=range]{width:100%;accent-color:var(--accent)}
+  .ctl .v{font-family:var(--mono);color:var(--ink)}
+  .toggle{display:flex;align-items:center;gap:8px;color:var(--ink-soft);cursor:pointer}
+  .note{font-size:11px;color:var(--ink-faint);line-height:1.4}
+  @media(max-width:520px){#panel{display:none}}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+
+<nav id="nav"><div class="wrap">
+  <span class="brand" id="brand">Josh Rutz<span class="dot"></span></span>
+  <div class="navlinks">
+    <a href="#work">Work</a><a href="#garden">Garden</a><a href="#decks">Talks</a><a href="#resume">Resume</a>
+  </div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">Builder · Founder · Tinkerer</div>
+  <h1>I make small things that<br><span class="live">surprise</span> you, on purpose.</h1>
+  <p class="lede">Founder of <span class="live">Zipix</span>. I build <span class="live">games</span>,
+     <span class="live">tools</span>, and the occasional <span class="live">strange experiment</span> —
+     and I care a lot about the <span class="live">tiny moments</span> where software feels alive.</p>
+  <p class="lede" style="font-size:16px;color:var(--ink-faint)">Try it: hover the words above. Poke my
+     name. Drag your cursor near a button. Almost everything here notices you.</p>
+  <div class="cta-row">
+    <a class="btn" id="b1" href="#work">See the work</a>
+    <a class="btn ghost" id="b2" href="#garden">Wander the garden</a>
+  </div>
+</div></header>
+
+<section class="feed"><div class="wrap">
+  <div class="seclabel" id="work">Selected work</div>
+  <div class="cards">
+    <div class="card"><div class="kind">Platform</div><h3>Zipix</h3>
+      <p>A mobile-first micro-game platform. One puzzle, one minute, infinite replay.</p>
+      <div class="go">Open project →</div></div>
+    <div class="card"><div class="kind">Tool</div><h3>(your project)</h3>
+      <p>A blurb you hand me; I turn it into a page. One file per project.</p>
+      <div class="go">Open project →</div></div>
+  </div>
+
+  <div class="seclabel" id="garden">From the garden</div>
+  <div class="cards">
+    <div class="card garden"><div class="kind">Experiment</div><h3>A thing I made last week</h3>
+      <p>Half-baked on purpose. The garden is where the fun, unfinished stuff lives.</p>
+      <div class="go">Read →</div></div>
+    <div class="card garden"><div class="kind">Note</div><h3>Something that interested me</h3>
+      <p>Short, frequent, low-stakes. Drop me a note and it's live in a minute.</p>
+      <div class="go">Read →</div></div>
+  </div>
+
+  <div class="seclabel" id="decks">Talks &amp; presentations</div>
+  <div class="decks">
+    <span class="deck">deck-one.html</span><span class="deck">deck-two.html</span>
+    <span class="deck">a-strange-idea.html</span><span class="deck">+ your decks, served as-is</span>
+  </div>
+
+  <div class="seclabel" id="resume">Resume</div>
+  <div class="cards"><div class="card"><div class="kind">Interactive</div><h3>The interesting version →</h3>
+    <p>Your real resume, made explorable. Recruiters get a clean PDF; the curious get more.</p>
+    <div class="go">View resume →</div></div></div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© Josh Rutz · made for fun</span>
+  <span class="hint">psst — type <kbd>j</kbd><kbd>o</kbd><kbd>s</kbd><kbd>h</kbd> anywhere</span>
+</div></footer>
+
+<div id="egg">✦ you found one. the whole site is like this.</div>
+
+<!-- tuning panel: mockup-only -->
+<div id="panel"><div class="head" id="phead"><span>Tune the feel</span><span id="pcol">▾</span></div>
+  <div class="body">
+    <div class="ctl"><label>Interaction intensity <span class="v" id="vint">1.0</span></label>
+      <input type="range" id="int" min="0" max="2" step="0.05" value="1"></div>
+    <div class="ctl"><label>Spring / bounce <span class="v" id="vspr">0.55</span></label>
+      <input type="range" id="spr" min="0" max="1" step="0.05" value="0.55"></div>
+    <label class="toggle"><input type="checkbox" id="mag" checked> Magnetic buttons</label>
+    <label class="toggle"><input type="checkbox" id="cur" checked> Cursor companion</label>
+    <div class="note">This panel ships only in the mockup. The real site reads these as design
+      tokens. Tune until it feels right, then tell me the numbers.</div>
+  </div>
+</div>
+
+<script>
+const root=document.documentElement, body=document.body;
+// live tokens
+const int=document.getElementById('int'), spr=document.getElementById('spr');
+const vint=document.getElementById('vint'), vspr=document.getElementById('vspr');
+int.oninput=()=>{root.style.setProperty('--intensity',int.value);vint.textContent=(+int.value).toFixed(2);};
+spr.oninput=()=>{root.style.setProperty('--spring',spr.value);vspr.textContent=(+spr.value).toFixed(2);};
+
+// panel collapse
+document.getElementById('phead').onclick=()=>{
+  const p=document.getElementById('panel');p.classList.toggle('collapsed');
+  document.getElementById('pcol').textContent=p.classList.contains('collapsed')?'▴':'▾';
+};
+
+// nav border on scroll
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10));
+
+// cursor companion
+const cur=document.getElementById('cursor');let cx=0,cy=0,tx=0,ty=0;
+addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;body.classList.add('has-cursor');});
+(function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
+document.getElementById('cur').onchange=e=>cur.style.display=e.target.checked?'block':'none';
+
+// cursor grows over interactive things
+document.querySelectorAll('a,.card,.deck,.btn,.brand,.live').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='26px';cur.style.height='26px';cur.style.background='var(--accent-2)';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';cur.style.background='var(--accent)';});
+});
+
+// magnetic buttons
+let magOn=true; document.getElementById('mag').onchange=e=>magOn=e.target.checked;
+[document.getElementById('b1'),document.getElementById('b2')].forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{if(!magOn)return;const r=btn.getBoundingClientRect();
+    const mx=(e.clientX-(r.left+r.width/2))*.4, my=(e.clientY-(r.top+r.height/2))*.5;
+    btn.style.setProperty('--mx',mx);btn.style.setProperty('--my',my);});
+  btn.addEventListener('mouseleave',()=>{btn.style.setProperty('--mx',0);btn.style.setProperty('--my',0);});
+});
+
+// cards tilt toward cursor (parallax)
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+    const I=+getComputedStyle(root).getPropertyValue('--intensity');
+    card.style.transform=`perspective(700px) rotateY(${px*7*I}deg) rotateX(${-py*7*I}deg) translateY(-3px)`;});
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+// pokeable brand
+const brand=document.getElementById('brand'), dot=brand.querySelector('.dot');
+let pokes=0;
+brand.onclick=()=>{pokes++;dot.style.transform=`scale(${1+ .6*Math.sin(pokes)}) translateY(${-4-pokes%3*2}px)`;
+  brand.style.transform=`rotate(${(pokes%2?1:-1)*2.5}deg)`;
+  setTimeout(()=>{brand.style.transform='';},220);
+  if(pokes===5)showEgg('okay, okay — five pokes. you get it. ✦');};
+
+// easter egg: type "josh"
+let buf='';const egg=document.getElementById('egg');
+function showEgg(t){egg.textContent=t||'✦ you found one. the whole site is like this.';
+  egg.classList.add('show');clearTimeout(showEgg._t);showEgg._t=setTimeout(()=>egg.classList.remove('show'),2600);}
+addEventListener('keydown',e=>{buf=(buf+e.key.toLowerCase()).slice(-4);if(buf==='josh')showEgg();});
+
+// brand transition for tokens already handled via CSS vars
+</script>
+</body>
+</html>
