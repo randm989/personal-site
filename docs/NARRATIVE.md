@@ -56,7 +56,8 @@ tragedy, no contrast. The autonomous-cell framing signals he integrates, not sep
 
 > **Kicker: How I lead**
 > People do their best work when the company's goals and their own line up. My job as a leader
-> is to find that overlap and widen it. I hand people real responsibility early, more than they
+> is to find those two directions and align them as tightly as possible. I hand people real
+> responsibility early, more than they
 > think they can hold, then I clear the path so they can carry it. The leader grants the
 > autonomy. The work supplies the purpose. The worker loves mastering their craft.
 
