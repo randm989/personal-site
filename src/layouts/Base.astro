@@ -61,6 +61,18 @@ const isActive = (href) => path === href || (href !== '/' && path.startsWith(hre
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('header .reveal').forEach((el, i) => { el.style.transitionDelay = (i * 70) + 'ms'; });
     document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // panel glow follows the cursor (sets --mx/--my the radial-gradient reads)
+    const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+    if (fine) {
+      document.querySelectorAll('.panel').forEach((panel) => {
+        panel.addEventListener('pointermove', (e) => {
+          const r = panel.getBoundingClientRect();
+          panel.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          panel.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+      });
+    }
   </script>
 </body>
 </html>
