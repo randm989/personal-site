@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tempered — locked aesthetic</title>
+<title>Tempered — locked aesthetic + motion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,7 +16,9 @@
     --accent:oklch(0.45 0.11 152); --accent-ink:oklch(0.98 0.01 150);
     --glow:oklch(0.55 0.13 152 / 0.35);
     --sh-dark:oklch(0.90 0.002 80 / .8); --sh-light:oklch(0.997 0.0015 85 / .95);
-    --ease:cubic-bezier(.2,.8,.2,1);
+    /* Emil's strong curves */
+    --ease-out:cubic-bezier(0.23,1,0.32,1);
+    --ease-in-out:cubic-bezier(0.77,0,0.175,1);
   }
   [data-theme="dark"]{
     --paper:oklch(0.205 0.003 60); --paper-2:oklch(0.255 0.004 60);
@@ -29,30 +31,33 @@
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
-    line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .5s var(--ease),color .5s var(--ease)}
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    transition:background .4s ease,color .4s ease}
   ::selection{background:var(--accent);color:var(--accent-ink)}
   .wrap{max-width:760px;margin:0 auto;padding:0 28px}
 
   nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 86%,transparent);
       backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
-  .brand{font-family:var(--display);font-weight:700;font-size:19px;display:flex;align-items:center;gap:10px}
-  /* clean geometric mark — three bars, a nod to the spinner reference */
+  .brand{font-family:var(--display);font-weight:700;font-size:19px;display:flex;align-items:center;gap:10px;cursor:pointer}
+  /* clean geometric mark — three bars, a nod to the spinner reference. Static; reacts to hover. */
   .mark{display:inline-flex;gap:3px;height:18px;align-items:flex-end}
-  .mark i{width:4px;background:var(--accent);border-radius:2px;animation:rise 1.4s var(--ease) infinite alternate}
-  .mark i:nth-child(1){height:9px;animation-delay:0s}
-  .mark i:nth-child(2){height:16px;animation-delay:.18s}
-  .mark i:nth-child(3){height:12px;animation-delay:.36s}
-  @keyframes rise{from{transform:scaleY(.55);opacity:.6}to{transform:scaleY(1);opacity:1}}
+  .mark i{width:4px;background:var(--accent);border-radius:2px;transform-origin:bottom;
+    transition:transform .3s var(--ease-out)}
+  .mark i:nth-child(1){height:9px}
+  .mark i:nth-child(2){height:16px}
+  .mark i:nth-child(3){height:12px}
   .navlinks{display:flex;gap:22px;font-size:14px;align-items:center}
-  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .2s var(--ease)}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .2s ease;cursor:pointer}
   .navlinks a:hover{color:var(--accent)}
 
   /* theme switch */
   .switch{border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);
-    width:54px;height:30px;border-radius:999px;cursor:pointer;position:relative;transition:.3s var(--ease)}
+    width:54px;height:30px;border-radius:999px;cursor:pointer;position:relative;
+    transition:border-color .3s ease,background .3s ease}
   .switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
-    background:var(--accent);transition:transform .35s var(--ease)}
+    background:var(--accent);transition:transform .35s var(--ease-out)}
+  .switch:active{transform:scale(0.95)}
   [data-theme="dark"] .switch::after{transform:translateX(24px)}
 
   .eyebrow{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);
@@ -61,18 +66,16 @@
   h1{font-family:var(--display);font-weight:700;letter-spacing:-.015em;
      font-size:clamp(37px,6.6vw,60px);line-height:1.04;margin:0 0 22px}
   .lede{font-size:20px;line-height:1.55;color:var(--ink-soft);max-width:60ch;margin:0}
-  .live{display:inline-block;transition:color .25s var(--ease),transform .25s var(--ease)}
-  .live:hover{color:var(--accent);transform:translateY(-3px)}
+  .live{display:inline-block;transition:color .25s var(--ease-out),transform .25s var(--ease-out)}
 
   .cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
   .btn{font-family:var(--body);font-size:15px;font-weight:600;border:1px solid var(--ink);
     background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:999px;cursor:pointer;
-    text-decoration:none;transition:transform .25s var(--ease),box-shadow .3s var(--ease)}
-  /* unified interaction: every button lifts and lights green the same way */
-  .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px -8px var(--glow)}
-  /* baselines differ by role; the hover language stays identical */
+    text-decoration:none;transition:transform .18s var(--ease-out),box-shadow .3s var(--ease-out)}
   .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
   .btn.accent{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  /* press feedback is global (works on touch too); the lift is hover-gated below */
+  .btn:active{transform:translateY(-1px) scale(0.97)}
 
   section{padding:14px 0}
   .label{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);
@@ -82,25 +85,49 @@
     font-size:clamp(23px,3.5vw,31px);line-height:1.28;max-width:28ch;margin:0 0 12px}
   p.body{font-size:17px;line-height:1.62;color:var(--ink-soft);max-width:64ch;margin:0}
 
-  /* soft panel — neumorphic-influenced, warm, clean, light-follows-cursor */
+  /* soft panel — neumorphic-influenced, clean, light-follows-cursor */
   .panel{position:relative;border-radius:24px;background:var(--paper);padding:26px;margin-top:8px;
     box-shadow:16px 16px 44px var(--sh-dark), -13px -13px 36px var(--sh-light);
-    transition:transform .3s var(--ease),box-shadow .4s var(--ease);cursor:pointer;overflow:hidden}
+    transition:transform .3s var(--ease-out),box-shadow .4s var(--ease-out);cursor:pointer;overflow:hidden}
   .panel::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
-    transition:opacity .4s var(--ease);pointer-events:none;
+    transition:opacity .4s var(--ease-out);pointer-events:none;
     background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 60%)}
-  .panel:hover{transform:translateY(-4px);
-    box-shadow:20px 20px 56px var(--sh-dark), -15px -15px 42px var(--sh-light), 0 0 0 1px var(--glow)}
-  .panel:hover::before{opacity:1}
   .panel .kind{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600}
   .panel h3{font-family:var(--display);font-weight:700;font-size:22px;margin:8px 0 7px}
   .panel p{margin:0;font-size:15px;color:var(--ink-soft)}
 
+  /* entrance choreography */
+  .reveal{opacity:0;transform:translateY(12px);
+    transition:opacity .55s var(--ease-out),transform .55s var(--ease-out)}
+  .reveal.in{opacity:1;transform:none}
+
   footer{margin-top:54px;padding:36px 0 80px;border-top:1px solid var(--line);
     color:var(--ink-faint);font-size:14px}
   .note{position:fixed;left:0;right:0;bottom:0;background:var(--paper-2);border-top:1px solid var(--line);
-    font-size:12px;color:var(--ink-faint);text-align:center;padding:8px}
+    font-size:12px;color:var(--ink-faint);text-align:center;padding:8px;z-index:20}
   body{padding-bottom:42px}
+
+  /* movement hovers only where a real pointer exists */
+  @media (hover:hover) and (pointer:fine){
+    .live:hover{color:var(--accent);transform:translateY(-3px)}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px -8px var(--glow)}
+    .btn:active{transform:translateY(-1px) scale(0.97)}
+    .panel:hover{transform:translateY(-4px);
+      box-shadow:20px 20px 56px var(--sh-dark), -15px -15px 42px var(--sh-light), 0 0 0 1px var(--glow)}
+    .panel:hover::before{opacity:1}
+    .brand:hover .mark i{transform:scaleY(1.18)}
+    .brand:hover .mark i:nth-child(2){transition-delay:.04s}
+    .brand:hover .mark i:nth-child(3){transition-delay:.08s}
+  }
+
+  /* respect reduced motion: keep fades, drop movement */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .reveal{transform:none}
+    .live:hover,.btn:hover,.panel:hover{transform:none}
+    .panel::before{display:none}
+    *{transition-duration:.01ms !important}
+  }
 </style>
 </head>
 <body>
@@ -113,63 +140,84 @@
 </div></nav>
 
 <header><div class="wrap">
-  <div class="eyebrow">Game maker · Team builder</div>
-  <h1>I make <span class="live">games</span> that move people.</h1>
-  <p class="lede">Making games is the thing I love most, and the thing I'm best at. I'm a game
+  <div class="eyebrow reveal">Game maker · Team builder</div>
+  <h1 class="reveal">I make <span class="live">games</span> that move people.</h1>
+  <p class="lede reveal">Making games is the thing I love most, and the thing I'm best at. I'm a game
      director aiming to build a <span class="live">studio</span> around a vision, because leading is
      how you make great games with great people.</p>
-  <div class="cta">
+  <div class="cta reveal">
     <a class="btn">See the work</a>
     <a class="btn ghost">Wander the workshop</a>
   </div>
 </div></header>
 
 <section><div class="wrap">
-  <div class="label">Why games</div>
-  <p class="body">I've loved games my whole life, playing them and making them. They're the one
+  <div class="label reveal">Why games</div>
+  <p class="body reveal">I've loved games my whole life, playing them and making them. They're the one
      medium that makes you feel something by doing it yourself. When I make one, I'm chasing that:
      a small, complete experience you can finish in a sitting and still carry something out of.</p>
 
-  <div class="label">The work</div>
-  <div class="panel"><div class="kind">Platform</div><h3>Zipix</h3>
+  <div class="label reveal">The work</div>
+  <div class="panel reveal"><div class="kind">Platform</div><h3>Zipix</h3>
     <p>A mobile-first micro-game platform. Every game is one complete experience in about a minute. You pick it up, you finish something, you put it down.</p></div>
 
-  <div class="label">Where this goes</div>
-  <p class="big">The studio I'm aiming to build will be an elite, autonomous cell.</p>
-  <p class="body">A small group that operates at a high level on its own, which makes it valuable
+  <div class="label reveal">Where this goes</div>
+  <p class="big reveal">The studio I'm aiming to build will be an elite, autonomous cell.</p>
+  <p class="body reveal">A small group that operates at a high level on its own, which makes it valuable
      inside a bigger organization or standing alone. Leading a great team is how great games get
      made, and that's why I want to build one.</p>
-  <p class="body" style="margin-top:14px">People do their best work when the company's goals and
+  <p class="body reveal" style="margin-top:14px">People do their best work when the company's goals and
      their own line up. My job as a leader is to find those two directions and align them as tightly
      as possible. I hand people real responsibility early, more than they think they can hold, then
      I clear the path so they can carry it. The leader grants the autonomy. The work supplies the
      purpose. The worker loves mastering their craft.</p>
 
-  <div class="label">Find me</div>
-  <p class="body" style="margin-bottom:22px">I'm always glad to talk with people building ambitious
+  <div class="label reveal">Find me</div>
+  <p class="body reveal" style="margin-bottom:22px">I'm always glad to talk with people building ambitious
      things in games. And I'll talk about playing them, and the theory underneath, for as long as
      you'll let me.</p>
-  <a class="btn accent">Reach out</a>
+  <a class="btn accent reveal">Reach out</a>
 </div></section>
 
 <footer><div class="wrap">Tempered · Bricolage Grotesque + Hanken Grotesk · deep-green accent · clean, lit, in motion</div></footer>
-<div class="note">Locked aesthetic preview. Toggle the switch (top right) for light/dark. Hover the panel to see light follow your cursor.</div>
+<div class="note">Locked aesthetic + Emil motion pass. Toggle the switch (top right). Hover the panel; the light has momentum now. Scroll to see sections rise in.</div>
 
 <script>
   const root=document.documentElement;
-  // default to system theme
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // default to system theme, allow override
   root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   document.getElementById('sw').onclick=()=>{
     root.dataset.theme = root.dataset.theme==='dark' ? 'light' : 'dark';
   };
-  // light follows cursor on panels
-  document.querySelectorAll('.panel').forEach(p=>{
-    p.addEventListener('mousemove',e=>{
-      const r=p.getBoundingClientRect();
-      p.style.setProperty('--mx',(e.clientX-r.left)+'px');
-      p.style.setProperty('--my',(e.clientY-r.top)+'px');
+
+  // entrance: stagger hero on load, reveal sections on scroll
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('header .reveal').forEach((el,i)=>{ el.style.transitionDelay=(i*70)+'ms'; });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // cursor-light with momentum (lerp), pointer-only, hover-gated
+  if(!RM && matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.panel').forEach(p=>{
+      let tx=0,ty=0,cx=0,cy=0,raf=null,alive=false;
+      const set=()=>{ p.style.setProperty('--mx',cx+'px'); p.style.setProperty('--my',cy+'px'); };
+      const loop=()=>{
+        cx+=(tx-cx)*.16; cy+=(ty-cy)*.16; set();
+        if(alive || Math.abs(tx-cx)>.4 || Math.abs(ty-cy)>.4){ raf=requestAnimationFrame(loop); }
+      };
+      p.addEventListener('pointerenter',e=>{
+        const r=p.getBoundingClientRect();
+        if(!alive){ cx=r.width/2; cy=r.height/2; } // spring in from center, no corner jump
+        tx=e.clientX-r.left; ty=e.clientY-r.top; alive=true;
+        if(!raf) loop();
+      });
+      p.addEventListener('pointermove',e=>{ const r=p.getBoundingClientRect(); tx=e.clientX-r.left; ty=e.clientY-r.top; if(!raf) loop(); });
+      p.addEventListener('pointerleave',()=>{ alive=false; });
     });
-  });
+  }
 </script>
 </body>
 </html>

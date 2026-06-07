@@ -126,6 +126,7 @@ the only real color on the page. Never `#000`/`#fff`; chroma stays ~0.002 to 0.0
 
 ## Reference artifacts
 
+- Motion system (Emil pass): [`docs/MOTION.md`](docs/MOTION.md)
 - Locked look + lighting/motion demo: [`docs/specs/2026-06-07-tempered-locked.html`](docs/specs/2026-06-07-tempered-locked.html)
 - Three-direction comparison (history): [`docs/specs/2026-06-07-aesthetic-lock.html`](docs/specs/2026-06-07-aesthetic-lock.html)
 - Original motion motif: [`docs/specs/2026-06-06-personal-site-mockup.html`](docs/specs/2026-06-06-personal-site-mockup.html)
