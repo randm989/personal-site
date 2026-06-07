@@ -43,9 +43,10 @@ the connections, skills, and capital for what's next. The site should make the r
 think *"I want this person running a team here"* without ever reading as a hard "hire me."
 
 **The trajectory (public, wants belief in it):** heading toward leading — and eventually
-founding — a fiercely independent studio that makes games which move people to purpose and
-emotion. Stated as **forward conviction and ambition.** Visitors should *believe where this is
-going.*
+founding — an **elite, autonomous studio: a cell that operates at a high level entirely on its
+own, and is therefore valuable inside a larger organization or standalone.** Self-sufficient,
+not separatist — it plays well with others *because* it doesn't need carrying. Stated as
+**forward conviction and ambition.** Visitors should *believe where this is going.*
 
 **The source (PRIVATE — never on the site):** the emotional root of the mission is personal,
 including profound loss. **This is fuel, not content.** See §6 hard rules.
@@ -67,10 +68,13 @@ job-application.
 
 - **Bold and declarative. First person. Zero hedging.** No "I think," "I try to," "hopefully,"
   or defensive qualifiers. State facts about identity and intent.
-- **Assertive, never aggressive, never defensive.** The confidence comes from having nothing to
-  prove. Decades of self-knowledge showing as calm certainty.
-- **"It's fine to not like it."** The copy does not reach for the reader's agreement. It states
-  who Josh is and what he's going to do, and lets the right people resonate.
+- **Assertive through pure statement.** Confidence shows by what is *absent*: the copy never
+  references how a reader might receive it. No "it's fine if you don't like it," no "I have
+  nothing to prove," no like-it-or-not. Announcing indifference to opinion is *itself*
+  defensive — it's still talking about the audience's judgment. Just state who Josh is and what
+  he'll do. The right people resonate; that is left entirely unspoken.
+- **Never aggressive, never defensive.** Calm certainty from decades of self-knowledge. Force
+  comes from clarity, not volume.
 - **Earnest, not ironic; composed, not jokey.** Warmth and conviction, not wit. (See texture.)
 - **Antislop, always:** no em-dashes, American spelling. Sincere and plain over clever.
 
@@ -93,8 +97,10 @@ substitute for him.
 1. **No personal tragedy on the site, ever.** The brother, grief, and loss are private fuel.
    Using tragedy as marketing is beneath Josh's bar; he wins on merit, never pity. The mission
    may be public; its painful origin may not.
-2. **Never read as try-hard or as having something to prove.** Assertive statement, not
-   argument. No over-explaining, no credential-stacking for reassurance.
+2. **Never reference the audience's reception.** No "it's fine if you don't like it," no "I
+   have nothing to prove," no defending or pre-empting judgment — even stating indifference is
+   defensive, because it still addresses the reader's opinion. Pure statement of identity and
+   intent: no argument, no over-explaining, no credential-stacking for reassurance.
 3. **The alive-interaction motif is craft, not comedy.** Subtle, considered, "more is alive
    than you expected" — a signal that he sweats the details. Not winking gags. (Reconsider the
    mockup's "type josh" easter egg through this lens.)

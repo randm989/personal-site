@@ -14,8 +14,9 @@
 
 A personal, deliberately non-business website whose **single overarching message** is
 Josh's trajectory: **a director-track game-studio leader** — capable of building and leading
-a 15–20-person studio now, on the way to founding a fiercely independent one that makes games
-which move people to purpose. Every section is evidence for that arc. See FOUNDER-PROFILE §2
+a 15–20-person studio now, on the way to founding an elite, autonomous one (a cell that
+operates at a high level on its own, inside a larger org or standalone) that makes games which
+move people to purpose. Every section is evidence for that arc. See FOUNDER-PROFILE §2
 for the two-layer positioning and §6 for the hard rules (notably: **the personal origin of
 the mission is private fuel and never appears on the site**).
 
