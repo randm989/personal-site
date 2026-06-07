@@ -150,11 +150,10 @@ function frame(now){
   const beat=Math.floor(phase/Math.PI);
   if(!RM && beat!==lastBeat && run>0.5){ lastBeat=beat; dustPuff(); } else if(beat!==lastBeat){ lastBeat=beat; }
 
-  let thighA=Math.sin(phase)*P.stride*run, thighB=-Math.sin(phase)*P.stride*run;
-  // knee tucks during recovery (thigh swinging BACK), straightens to plant forward
-  let kneeA=Math.max(0,-Math.sin(phase))*P.knee*run, kneeB=Math.max(0,Math.sin(phase))*P.knee*run;
-  // arms pump opposite the legs; forearms bend FORWARD (+) in the run direction
-  let upA=0.2+Math.sin(phase)*P.arm*run, upB=0.2-Math.sin(phase)*P.arm*run, elA=P.elbow*run+0.1, elB=P.elbow*run+0.1;
+  // v2 cycle, mirrored across the vertical axis (every limb angle negated); lean untouched
+  let thighA=-Math.sin(phase)*P.stride*run, thighB=Math.sin(phase)*P.stride*run;
+  let kneeA=-Math.max(0,Math.sin(phase))*P.knee*run, kneeB=-Math.max(0,-Math.sin(phase))*P.knee*run;
+  let upA=-0.2+Math.sin(phase)*P.arm*run, upB=-0.2-Math.sin(phase)*P.arm*run, elA=P.elbow*run+0.1, elB=P.elbow*run+0.1;
   let bob=-Math.abs(Math.sin(phase))*P.bob*run - Math.sin(t*1.6)*0.4;
   let lean=run*P.lean;
 
