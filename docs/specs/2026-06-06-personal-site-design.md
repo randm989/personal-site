@@ -105,7 +105,7 @@ Rejected:
 | `/presentations` | Gallery indexing the raw HTML decks | Index page + decks in `public/presentations/` |
 | `/about` *(optional, phase 2)* | The **team-builder** thread — how Josh thinks about people, equity, and what kind of studio he's building. Can start as a home-page section and graduate to its own page | Single page |
 
-The home page carries a short **"the studio I'm building"** narrative beat that names the
+The home page carries a short **"the studio I'm aiming to build"** narrative beat that names the
 destination explicitly and frames everything below it as evidence.
 
 ## 6. The delight layer

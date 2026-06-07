@@ -27,20 +27,20 @@ that I lead → that I'm alive and curious → find me.** Each beat is one domin
 ### Beat 1 — Hero (identity + direction)
 
 > # I make games that move people. I build teams that own their work.
-> I'm a game director building toward a studio of my own. Everything here is how I'm getting
+> I'm a game director aiming to build a studio around a vision. Everything here is how I'm getting
 > there.
 
 *Job:* in one fold, the dual identity (maker + builder) and the direction. Two clean
 declaratives carry the two halves of him. "Everything here is how I'm getting there" frames the
 whole site as evidence, which sets up belief in the vision.
 
-### Beat 2 — The studio I'm building (the ambition, stated plainly)
+### Beat 2 — The studio I'm aiming to build (the ambition, stated plainly)
 
 > **Kicker: Where this goes**
-> The studio I'm building is an elite, autonomous cell. A small group that operates at a high
+> The studio I'm aiming to build will be an elite, autonomous cell. A small group that operates at a high
 > level entirely on its own, which is what makes it valuable inside a bigger organization or
 > standing alone. I want to lead 15 to 20 people who carry real ownership and grow into it.
-> That's the work I'm building toward, and everything below is how I'm earning it.
+> That's what I'm aiming for, and everything below is how I'm earning it.
 
 *Job:* name the destination so the proof beats below have a target. Forward conviction, no
 tragedy, no contrast. The autonomous-cell framing signals he integrates, not separates.
@@ -125,8 +125,8 @@ home beat and graduates to its own page when there's a reason.
 | Surface | Copy |
 |---|---|
 | Hero headline | I make games that move people. I build teams that own their work. |
-| Hero subhead | I'm a game director building toward a studio of my own. Everything here is how I'm getting there. |
-| Studio kicker / body | *Where this goes* / The studio I'm building is an elite, autonomous cell… (Beat 2) |
+| Hero subhead | I'm a game director aiming to build a studio around a vision. Everything here is how I'm getting there. |
+| Studio kicker / body | *Where this goes* / The studio I'm aiming to build will be an elite, autonomous cell… (Beat 2) |
 | Work kicker / intro | *The work* / Everything I believe about games, I've built into the ones I make. Start with Zipix. |
 | Leadership kicker / body | *How I lead* / People do their best work when the company's goals and their own line up… (Beat 4) |
 | Garden kicker / intro | *From the garden* / The garden is where I think out loud… |

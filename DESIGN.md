@@ -93,19 +93,20 @@ either. Light text on dark: add 0.05 to line-height.
 
 ## Color — Restrained accent (locked strategy)
 
-Tinted warm neutrals carry the site. The **deep-green accent (Josh's favorite, doubles as the
-garden green) appears sparingly**: section kickers, links, focus rings, the lighting glow, and
-the single key CTA. Headlines stay ink. Never `#000`/`#fff`; every neutral tinted warm. OKLCH.
+Near-neutral surfaces carry the site (tint is a whisper, never pure gray). The **deep-green
+accent (Josh's favorite, doubles as the garden green) appears sparingly**: section kickers,
+links, focus rings, the lighting glow, and the single key CTA. Headlines stay ink, and green is
+the only real color on the page. Never `#000`/`#fff`; chroma stays ~0.002 to 0.006. OKLCH.
 
 ### Light mode
 | Token | OKLCH | Role |
 |---|---|---|
-| `--paper` | `oklch(0.972 0.004 80)` | near-neutral warm off-white |
-| `--paper-2` | `oklch(0.946 0.005 80)` | raised surface |
-| `--ink` | `oklch(0.23 0.016 55)` | primary text |
-| `--ink-soft` | `oklch(0.46 0.016 55)` | body text |
-| `--ink-faint` | `oklch(0.63 0.012 60)` | metadata |
-| `--line` | `oklch(0.89 0.006 80)` | hairlines |
+| `--paper` | `oklch(0.973 0.0015 80)` | near-neutral off-white |
+| `--paper-2` | `oklch(0.945 0.002 80)` | raised surface |
+| `--ink` | `oklch(0.22 0.005 60)` | primary text |
+| `--ink-soft` | `oklch(0.46 0.005 60)` | body text |
+| `--ink-faint` | `oklch(0.63 0.004 70)` | metadata |
+| `--line` | `oklch(0.89 0.0025 80)` | hairlines |
 | `--accent` | `oklch(0.45 0.11 152)` | deep forest green |
 | `--accent-ink` | `oklch(0.98 0.01 150)` | text on green |
 | `--glow` | `oklch(0.55 0.13 152 / 0.35)` | hover/focus halo |
@@ -113,12 +114,12 @@ the single key CTA. Headlines stay ink. Never `#000`/`#fff`; every neutral tinte
 ### Dark mode
 | Token | OKLCH | Role |
 |---|---|---|
-| `--paper` | `oklch(0.205 0.006 60)` | near-neutral warm near-black |
-| `--paper-2` | `oklch(0.255 0.008 60)` | raised surface |
-| `--ink` | `oklch(0.93 0.008 78)` | primary text |
-| `--ink-soft` | `oklch(0.75 0.012 72)` | body text |
-| `--ink-faint` | `oklch(0.56 0.012 65)` | metadata |
-| `--line` | `oklch(0.32 0.01 60)` | hairlines |
+| `--paper` | `oklch(0.205 0.003 60)` | near-neutral near-black |
+| `--paper-2` | `oklch(0.255 0.004 60)` | raised surface |
+| `--ink` | `oklch(0.93 0.004 80)` | primary text |
+| `--ink-soft` | `oklch(0.75 0.006 72)` | body text |
+| `--ink-faint` | `oklch(0.56 0.005 65)` | metadata |
+| `--line` | `oklch(0.32 0.005 60)` | hairlines |
 | `--accent` | `oklch(0.66 0.13 155)` | brightened green |
 | `--accent-ink` | `oklch(0.16 0.02 150)` | text on green |
 | `--glow` | `oklch(0.70 0.14 155 / 0.40)` | hover/focus halo |
