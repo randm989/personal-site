@@ -1,0 +1,20 @@
+{
+  "_comment": "Josh's tuned stick-figure config (config of record). Mirrored as CONFIG in stickman.js. Renderer-agnostic; consumable by the website and by Zipix (Phaser). See docs/STICKMAN.md.",
+  "size": 1.29,
+  "stride": 1.25,
+  "lift": 1.6,
+  "knee": 1.25,
+  "kneeF": 1.09,
+  "arm": 1.15,
+  "armBack": 1.6,
+  "elbow": 0.95,
+  "lean": 5.7,
+  "headTilt": 1.73,
+  "bob": 1.75,
+  "speed": 77,
+  "tempo": 10.6,
+  "rnd": 0.06,
+  "waveArm": 4.28,
+  "waveAmp": 0.45,
+  "waveSpd": 10
+}

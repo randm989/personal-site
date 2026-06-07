@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Stick figure — runs the line, waves on click</title>
+<title>Stick figure — tuning playground (consumes lib/stickman.js)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
@@ -28,14 +28,6 @@
   .rule{flex:1;height:1px;background:var(--line)}
   p.body{font-size:17px;color:var(--ink-soft);max-width:64ch;margin:0}
 
-  .runner{position:absolute;top:50%;left:0;pointer-events:none;will-change:transform;transform-origin:0 47px}
-  .runner svg{display:block;overflow:visible;pointer-events:none}
-  .runner line{stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;fill:none}
-  .runner circle.head{stroke:var(--ink);stroke-width:2.2;fill:none}
-  .runner rect.hit{fill:transparent;pointer-events:all;cursor:pointer}
-  .dust{position:absolute;top:50%;width:4px;height:4px;border-radius:50%;background:var(--ink-faint);
-    pointer-events:none;opacity:.55;transition:transform .55s ease-out,opacity .55s ease-out}
-
   .switch{position:fixed;top:18px;right:18px;border:1px solid var(--line);background:var(--paper);
     width:54px;height:30px;border-radius:999px;cursor:pointer}
   .switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
@@ -46,7 +38,7 @@
     border-radius:14px;box-shadow:0 20px 50px -20px rgba(0,0,0,.4);font-size:12px;z-index:9}
   #panel .h{background:var(--ink);color:var(--paper);padding:8px 13px;font-family:var(--display);font-weight:600;
     border-radius:13px 13px 0 0;cursor:pointer;display:flex;justify-content:space-between}
-  #panel .b{padding:11px 13px;display:grid;gap:8px;max-height:64vh;overflow:auto}
+  #panel .b{padding:11px 13px;display:grid;gap:8px;max-height:66vh;overflow:auto}
   #panel.min .b{display:none}
   .ctl label{display:flex;justify-content:space-between;color:var(--ink-soft);margin-bottom:2px}
   .ctl .v{font-family:var(--display);color:var(--ink)}
@@ -58,38 +50,29 @@
 <button class="switch" id="sw" aria-label="toggle theme"></button>
 <div class="wrap">
   <h1>Move your mouse. Then click him.</h1>
-  <p class="sub">Constant-tempo run, slow linear chase (no spring), dust off the back foot. Tune him with
-     the panel, then click the JSON at the bottom to copy and send it back to me.</p>
-
-  <div class="label">Why games<span class="rule" id="rule"></span>
-    <div class="runner" id="runner">
-      <svg width="46" height="54" viewBox="0 0 46 54">
-        <g id="fig">
-          <circle class="head" id="head" cx="23" cy="11" r="5"/>
-          <line id="spine"/>
-          <line id="auL"/><line id="afL"/><line id="auR"/><line id="afR"/>
-          <line id="luL"/><line id="lfL"/><line id="luR"/><line id="lfR"/>
-        </g>
-        <rect class="hit" id="hit" x="4" y="0" width="38" height="54"/>
-      </svg>
-    </div>
-  </div>
+  <p class="sub">Tuning playground. The figure is rendered by <code>lib/stickman.js</code> (the
+     shipped module), so what you tune here is exactly what runs everywhere. Click the JSON to copy.</p>
+  <div class="label">Why games<span class="rule" id="rule"></span></div>
   <p class="body">I've loved games my whole life, playing them and making them.</p>
-
   <div class="label">The work<span class="rule"></span></div>
   <p class="body">(He runs the "Why games" line only, for now.)</p>
 </div>
 
 <div id="panel"><div class="h" id="ph"><span>Tune the runner</span><span id="pm">–</span></div><div class="b" id="pb"></div></div>
 
+<!-- the single source of truth -->
+<script src="../../lib/stickman.js"></script>
 <script>
-const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const r0=document.documentElement;
 document.getElementById('sw').onclick=()=>{ r0.dataset.theme=r0.dataset.theme==='dark'?'light':'dark'; };
 r0.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
 
-const P={ size:1.25, stride:1.05, lift:1.05, knee:1.25, kneeF:0.25, arm:0.9, armBack:0.9, elbow:1.3, lean:6.5,
-  headTilt:1.15, bob:2.4, speed:46, tempo:8.5, rnd:0.12, waveArm:2.9, waveAmp:0.55, waveSpd:9 };
+// mount the shipped runner + pointer-follow
+const label=document.querySelector('.label');
+const runner=Stickman.createRunner({ mount: label, color:'var(--ink)', dustColor:'var(--ink-faint)' });
+Stickman.attachLineFollow(runner, { line: document.getElementById('rule') });
+
+// live tuning panel — mutates runner.config (read every frame by the module)
 const SPEC=[
   ['size','Size',0.7,2,0.01],['stride','Leg backswing',0.3,1.5,0.01],['lift','Fwd leg raise',0.3,2,0.01],
   ['knee','Back knee bend',0,1.8,0.01],['kneeF','Fwd knee bend',0,1.6,0.01],
@@ -101,98 +84,15 @@ const SPEC=[
 const pb=document.getElementById('pb');
 SPEC.forEach(([k,lab,mn,mx,st])=>{
   const d=document.createElement('div'); d.className='ctl';
-  d.innerHTML=`<label>${lab} <span class="v" id="v_${k}">${P[k]}</span></label><input type="range" id="r_${k}" min="${mn}" max="${mx}" step="${st}" value="${P[k]}">`;
+  d.innerHTML=`<label>${lab} <span class="v" id="v_${k}">${runner.config[k]}</span></label><input type="range" id="r_${k}" min="${mn}" max="${mx}" step="${st}" value="${runner.config[k]}">`;
   pb.appendChild(d);
-  d.querySelector('input').addEventListener('input',e=>{ P[k]=+e.target.value; document.getElementById('v_'+k).textContent=(+e.target.value); });
+  d.querySelector('input').addEventListener('input',e=>{ runner.config[k]=+e.target.value; document.getElementById('v_'+k).textContent=(+e.target.value); dumpNow(); });
 });
-const dump=document.createElement('div'); dump.className='dump'; dump.id='dump'; dump.title='click to copy'; pb.appendChild(dump);
-dump.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(dump.textContent);
+const dumpEl=document.createElement('div'); dumpEl.className='dump'; dumpEl.title='click to copy'; pb.appendChild(dumpEl);
+function dumpNow(){ dumpEl.textContent=JSON.stringify(runner.config); }
+dumpEl.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(dumpEl.textContent);
+dumpNow();
 document.getElementById('ph').onclick=()=>{ const p=document.getElementById('panel'); p.classList.toggle('min'); document.getElementById('pm').textContent=p.classList.contains('min')?'+':'–'; };
-
-const runner=document.getElementById('runner'), rule=document.getElementById('rule'), label=runner.parentElement;
-const E=id=>document.getElementById(id), head=E('head'), fig=E('fig');
-const seg={spine:E('spine'),auL:E('auL'),afL:E('afL'),auR:E('auR'),afR:E('afR'),luL:E('luL'),lfL:E('lfL'),luR:E('luR'),lfR:E('lfR')};
-const L=(el,a,b,c,d)=>{el.setAttribute('x1',a);el.setAttribute('y1',b);el.setAttribute('x2',c);el.setAttribute('y2',d);};
-const CX=23, HIP_Y=30, SH_Y=18, HEAD_Y=11, TH=8, SH=9, UA=7, FA=7;
-const limb=(rx,ry,l1,l2,a1,a2)=>{const mx=rx+l1*Math.sin(a1),my=ry+l1*Math.cos(a1);return [mx,my,mx+l2*Math.sin(a1+a2),my+l2*Math.cos(a1+a2)];};
-
-let curX=60,tgtX=60,dir=1,phase=0,run=0,waving=false,waveStart=0,lastBeat=0,rA=0,rB=0;
-addEventListener('pointermove',e=>{
-  const lab=label.getBoundingClientRect(), rl=rule.getBoundingClientRect();
-  tgtX=Math.max(rl.left-lab.left, Math.min(rl.right-lab.left-24, (e.clientX-lab.left)-23));
-});
-E('hit').addEventListener('click',()=>{ if(!waving){waving=true;waveStart=performance.now();} });
-
-function dustPuff(){
-  const x = curX + (dir>0 ? 6 : 34)*P.size;
-  const el=document.createElement('div'); el.className='dust';
-  el.style.left=x+'px'; el.style.transform='translate(0,-1px)';
-  label.appendChild(el);
-  requestAnimationFrame(()=>{ el.style.transform=`translate(${-dir*12}px,-9px) scale(0.25)`; el.style.opacity='0'; });
-  setTimeout(()=>el.remove(),560);
-}
-
-let last=performance.now();
-function frame(now){
-  const dt=Math.min(40,now-last); last=now;
-
-  // SLOW LINEAR chase (no spring): move at constant px/s toward target
-  const d=tgtX-curX, moving=Math.abs(d)>0.6 && !waving;
-  const step=P.speed*dt/1000;
-  if(Math.abs(d)<=step) curX=tgtX; else curX+=Math.sign(d)*step;
-  if(moving) dir=Math.sign(d);
-
-  if(waving && now-waveStart>2400) waving=false;
-  run += ((moving?1:0)-run)*0.15;
-
-  // CONSTANT run tempo while running (not tied to translation speed)
-  if(!RM) phase += P.tempo*(dt/1000)*Math.max(run,0);
-  const t=now/1000;
-
-  // each stride beat: kick dust + refresh that leg's random so L/R steps differ
-  const beat=Math.floor(phase/Math.PI);
-  if(beat!==lastBeat){
-    if(!RM && run>0.5) dustPuff();
-    if(beat%2===0) rA=Math.random()*2-1; else rB=Math.random()*2-1;
-    lastBeat=beat;
-  }
-
-  // v2 cycle, mirrored across the vertical axis (every limb angle negated); lean untouched
-  const s=Math.sin(phase);
-  const mA=1+rA*P.rnd, mB=1+rB*P.rnd; // slight per-step left/right variation
-  // forward swing uses 'lift' (front leg raises higher), backswing uses 'stride'
-  let thighA=(s<0 ? -s*P.lift : -s*P.stride)*run*mA, thighB=(s>0 ? s*P.lift : s*P.stride)*run*mB;
-  // knee = back-bend (recovery leg) + forward-bend (planting leg), separately tunable
-  let kneeA=-(Math.max(0,s)*P.knee + Math.max(0,-s)*P.kneeF)*run*mA;
-  let kneeB=-(Math.max(0,-s)*P.knee + Math.max(0,s)*P.kneeF)*run*mB;
-  // arm swing is asymmetric: forward amp (arm) vs backward amp (armBack)
-  let upA=-0.2 + (s>0 ? s*P.arm : s*P.armBack)*run;
-  let upB=-0.2 - (s>0 ? s*P.armBack : s*P.arm)*run;
-  let elA=P.elbow*run+0.1, elB=P.elbow*run+0.1;
-  let bob=-Math.abs(s)*P.bob*run - Math.sin(t*1.6)*0.4;
-  let lean=run*P.lean;
-
-  if(waving){
-    thighA=0.18;thighB=-0.18;kneeA=0.14;kneeB=0.14;
-    upA=0.25; upB=P.waveArm; elA=0.3; elB=-0.5+Math.sin(t*P.waveSpd)*P.waveAmp;
-    bob=Math.sin(t*2)*0.4; dir=1; lean=0;
-  }
-
-  const shX=CX+lean;
-  head.setAttribute('cx',CX+lean*P.headTilt); head.setAttribute('cy',HEAD_Y);
-  L(seg.spine,CX,HIP_Y,shX,SH_Y);
-  let p;
-  p=limb(CX,HIP_Y,TH,SH,thighA,kneeA); L(seg.luL,CX,HIP_Y,p[0],p[1]); L(seg.lfL,p[0],p[1],p[2],p[3]);
-  p=limb(CX,HIP_Y,TH,SH,thighB,kneeB); L(seg.luR,CX,HIP_Y,p[0],p[1]); L(seg.lfR,p[0],p[1],p[2],p[3]);
-  p=limb(shX,SH_Y,UA,FA,upA,elA); L(seg.auL,shX,SH_Y,p[0],p[1]); L(seg.afL,p[0],p[1],p[2],p[3]);
-  p=limb(shX,SH_Y,UA,FA,upB,elB); L(seg.auR,shX,SH_Y,p[0],p[1]); L(seg.afR,p[0],p[1],p[2],p[3]);
-
-  fig.setAttribute('transform',`translate(0 ${bob}) translate(${CX} 0) scale(${dir} 1) translate(${-CX} 0)`);
-  runner.style.transform=`translate(${curX}px,-47px) scale(${P.size})`;
-  document.getElementById('dump').textContent=JSON.stringify(P);
-  requestAnimationFrame(frame);
-}
-requestAnimationFrame(frame);
 </script>
 </body>
 </html>
