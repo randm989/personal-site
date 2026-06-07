@@ -1,0 +1,135 @@
+/*
+ * global.css — the locked Tempered design system.
+ * Tokens from docs/DESIGN.md (LOCKED). Motion from docs/MOTION.md (Emil pass).
+ * Near-neutral canvas, deep-green restrained accent, clean surfaces, depth from light.
+ */
+
+:root{
+  --display:"Bricolage Grotesque", system-ui, sans-serif;
+  --body:"Hanken Grotesk", system-ui, sans-serif;
+
+  --paper:oklch(0.973 0.0015 80); --paper-2:oklch(0.945 0.002 80);
+  --ink:oklch(0.22 0.005 60); --ink-soft:oklch(0.46 0.005 60); --ink-faint:oklch(0.63 0.004 70);
+  --line:oklch(0.89 0.0025 80);
+  --accent:oklch(0.45 0.11 152); --accent-ink:oklch(0.98 0.01 150);
+  --glow:oklch(0.55 0.13 152 / 0.35);
+  --sh-dark:oklch(0.90 0.002 80 / .8); --sh-light:oklch(0.997 0.0015 85 / .95);
+
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out:cubic-bezier(0.77, 0, 0.175, 1);
+}
+[data-theme="dark"]{
+  --paper:oklch(0.205 0.003 60); --paper-2:oklch(0.255 0.004 60);
+  --ink:oklch(0.93 0.004 80); --ink-soft:oklch(0.75 0.006 72); --ink-faint:oklch(0.56 0.005 65);
+  --line:oklch(0.32 0.005 60);
+  --accent:oklch(0.66 0.13 155); --accent-ink:oklch(0.16 0.02 150);
+  --glow:oklch(0.70 0.14 155 / 0.40);
+  --sh-dark:oklch(0.14 0.003 60 / .75); --sh-light:oklch(0.28 0.005 60 / .55);
+}
+
+*{ box-sizing:border-box }
+html{ scroll-behavior:smooth }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); line-height:1.6; -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+}
+::selection{ background:var(--accent); color:var(--accent-ink) }
+.wrap{ max-width:760px; margin:0 auto; padding:0 28px }
+
+/* ---- nav ---- */
+nav{ position:sticky; top:0; z-index:10;
+  background:color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line) }
+nav .wrap{ display:flex; justify-content:space-between; align-items:center; height:64px }
+.brand{ font-family:var(--display); font-weight:700; font-size:19px; text-decoration:none;
+  color:var(--ink); display:flex; align-items:center; gap:10px; cursor:pointer }
+.mark{ display:inline-flex; gap:3px; height:18px; align-items:flex-end }
+.mark i{ width:4px; background:var(--accent); border-radius:2px; transform-origin:bottom;
+  transition:transform .3s var(--ease-out) }
+.mark i:nth-child(1){ height:9px } .mark i:nth-child(2){ height:16px } .mark i:nth-child(3){ height:12px }
+.navlinks{ display:flex; gap:22px; font-size:14px; align-items:center }
+.navlinks a{ color:var(--ink-soft); text-decoration:none; transition:color .2s ease }
+.navlinks a:hover, .navlinks a[aria-current="page"]{ color:var(--accent) }
+
+.switch{ border:1px solid var(--line); background:var(--paper-2); width:54px; height:30px;
+  border-radius:999px; cursor:pointer; position:relative; flex:0 0 auto;
+  transition:border-color .3s ease, background .3s ease }
+.switch::after{ content:""; position:absolute; top:3px; left:3px; width:22px; height:22px;
+  border-radius:50%; background:var(--accent); transition:transform .35s var(--ease-out) }
+.switch:active{ transform:scale(0.95) }
+[data-theme="dark"] .switch::after{ transform:translateX(24px) }
+
+/* ---- typography ---- */
+.eyebrow{ font-size:12.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--accent);
+  font-weight:600; margin-bottom:18px }
+header.hero{ padding:78px 0 46px }
+h1{ font-family:var(--display); font-weight:700; letter-spacing:-.015em;
+  font-size:clamp(37px, 6.6vw, 60px); line-height:1.04; margin:0 0 22px }
+h2{ font-family:var(--display); font-weight:700; letter-spacing:-.01em;
+  font-size:clamp(26px, 4vw, 38px); line-height:1.1; margin:0 0 16px }
+.lede{ font-size:20px; line-height:1.55; color:var(--ink-soft); max-width:60ch; margin:0 }
+.live{ display:inline-block; transition:color .25s var(--ease-out), transform .25s var(--ease-out) }
+
+.cta{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap }
+.btn{ font-family:var(--body); font-size:15px; font-weight:600; border:1px solid var(--ink);
+  background:var(--ink); color:var(--paper); padding:12px 22px; border-radius:999px; cursor:pointer;
+  text-decoration:none; display:inline-block;
+  transition:transform .18s var(--ease-out), box-shadow .3s var(--ease-out) }
+.btn.ghost{ background:transparent; color:var(--ink); border-color:var(--line) }
+.btn.accent{ background:var(--accent); color:var(--accent-ink); border-color:transparent }
+.btn:active{ transform:translateY(-1px) scale(0.97) }
+
+section{ padding:14px 0 }
+.label{ position:relative; font-size:12.5px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--accent); font-weight:600; margin:52px 0 16px; display:flex; align-items:center; gap:12px }
+.rule{ flex:1; height:1px; background:var(--line) }
+.big{ font-family:var(--display); font-weight:600; letter-spacing:-.01em;
+  font-size:clamp(23px, 3.5vw, 31px); line-height:1.28; max-width:30ch; margin:0 0 12px }
+p.body, .body{ font-size:17px; line-height:1.62; color:var(--ink-soft); max-width:64ch; margin:0 }
+.body + .body{ margin-top:14px }
+
+/* ---- soft panel: depth from light, cursor-lit ---- */
+.panel{ position:relative; border-radius:24px; background:var(--paper); padding:26px; margin-top:8px;
+  box-shadow:16px 16px 44px var(--sh-dark), -13px -13px 36px var(--sh-light); overflow:hidden;
+  text-decoration:none; color:inherit; display:block;
+  transition:transform .3s var(--ease-out), box-shadow .4s var(--ease-out) }
+.panel::before{ content:""; position:absolute; inset:0; border-radius:inherit; opacity:0;
+  transition:opacity .4s var(--ease-out); pointer-events:none;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), var(--glow), transparent 60%) }
+.panel .kind{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--accent); font-weight:600 }
+.panel h3{ font-family:var(--display); font-weight:700; font-size:22px; margin:8px 0 7px }
+.panel p{ margin:0; font-size:15px; color:var(--ink-soft) }
+.panel-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)) }
+
+/* ---- entrance choreography (progressive enhancement: only hides when JS is on) ---- */
+.reveal{ transition:opacity .55s var(--ease-out), transform .55s var(--ease-out) }
+html.js .reveal:not(.in){ opacity:0; transform:translateY(12px) }
+
+footer{ margin-top:60px; padding:36px 0 80px; border-top:1px solid var(--line);
+  color:var(--ink-faint); font-size:14px }
+footer .wrap{ display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap }
+footer a{ color:var(--ink-faint); text-decoration:none }
+footer a:hover{ color:var(--accent) }
+
+/* ---- movement hovers only where a real pointer exists ---- */
+@media (hover:hover) and (pointer:fine){
+  .live:hover{ color:var(--accent); transform:translateY(-3px) }
+  .btn:hover{ transform:translateY(-3px); box-shadow:0 10px 30px -8px var(--glow) }
+  .btn:active{ transform:translateY(-1px) scale(0.97) }
+  .panel:hover{ transform:translateY(-4px);
+    box-shadow:20px 20px 56px var(--sh-dark), -15px -15px 42px var(--sh-light), 0 0 0 1px var(--glow) }
+  .panel:hover::before{ opacity:1 }
+  .brand:hover .mark i{ transform:scaleY(1.18) }
+  .brand:hover .mark i:nth-child(2){ transition-delay:.04s }
+  .brand:hover .mark i:nth-child(3){ transition-delay:.08s }
+}
+
+/* ---- reduced motion: keep fades, drop movement ---- */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto }
+  .reveal{ transform:none }
+  .live:hover, .btn:hover, .panel:hover{ transform:none }
+  .panel::before{ display:none }
+  *{ transition-duration:.01ms !important }
+}

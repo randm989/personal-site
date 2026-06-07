@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+const { title = 'Josh Rutz', description = 'Game maker and team builder.' } = Astro.props;
+const path = Astro.url.pathname;
+const isActive = (href) => path === href || (href !== '/' && path.startsWith(href));
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- set theme before paint to avoid a flash -->
+  <script is:inline>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        document.documentElement.classList.add('js'); // reveal-hiding only applies with JS
+      } catch (e) { document.documentElement.dataset.theme = 'light'; }
+    })();
+  </script>
+</head>
+<body>
+  <nav><div class="wrap">
+    <a class="brand" href="/"><span class="mark"><i></i><i></i><i></i></span> Josh Rutz</a>
+    <div class="navlinks">
+      <a href="/projects" aria-current={isActive('/projects') ? 'page' : undefined}>Work</a>
+      <a href="/workshop" aria-current={isActive('/workshop') ? 'page' : undefined}>Workshop</a>
+      <a href="/presentations" aria-current={isActive('/presentations') ? 'page' : undefined}>Talks</a>
+      <a href="/resume" aria-current={isActive('/resume') ? 'page' : undefined}>Resume</a>
+      <button class="switch" id="theme-toggle" aria-label="Toggle light or dark theme"></button>
+    </div>
+  </div></nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer><div class="wrap">
+    <span>© Josh Rutz · made for fun</span>
+    <a href="mailto:hello@example.com">Reach out</a>
+  </div></footer>
+
+  <script>
+    // theme toggle (persisted)
+    const root = document.documentElement;
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+
+    // entrance: hero staggers on load, sections rise on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('header .reveal').forEach((el, i) => { el.style.transitionDelay = (i * 70) + 'ms'; });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Josh Rutz — game maker & team builder" description="I make games that move people. I build teams that own their work.">
+  <header class="hero"><div class="wrap">
+    <div class="eyebrow reveal">Game maker · Team builder</div>
+    <h1 class="reveal">I make <span class="live">games</span> that move people.</h1>
+    <p class="lede reveal">Making games is the thing I love most, and the thing I'm best at. I'm a game
+      director aiming to build a <span class="live">studio</span> around a vision, because leading is
+      how you make great games with great people.</p>
+    <div class="cta reveal">
+      <a class="btn" href="/projects">See the work</a>
+      <a class="btn ghost" href="/workshop">Wander the workshop</a>
+    </div>
+  </div></header>
+
+  <section><div class="wrap">
+    <div class="label reveal" id="why-line">Why games<span class="rule"></span></div>
+    <p class="body reveal">I've loved games my whole life, playing them and making them. They're the one
+      medium that makes you feel something by doing it yourself. When I make one, I'm chasing that:
+      a small, complete experience you can finish in a sitting and still carry something out of.</p>
+
+    <div class="label reveal">The work<span class="rule"></span></div>
+    <a class="panel reveal" href="/projects">
+      <div class="kind">Platform</div><h3>Zipix</h3>
+      <p>A mobile-first micro-game platform. Every game is one complete experience in about a minute. You pick it up, you finish something, you put it down.</p>
+    </a>
+
+    <div class="label reveal">Where this goes<span class="rule"></span></div>
+    <p class="big reveal">The studio I'm aiming to build will be an elite, autonomous cell.</p>
+    <p class="body reveal">A small group that operates at a high level on its own, which makes it valuable
+      inside a bigger organization or standing alone. Leading a great team is how great games get
+      made, and that's why I want to build one.</p>
+    <p class="body reveal">People do their best work when the company's goals and their own line up. My job
+      as a leader is to find those two directions and align them as tightly as possible. I hand people
+      real responsibility early, more than they think they can hold, then I clear the path so they can
+      carry it. The leader grants the autonomy. The work supplies the purpose. The worker loves
+      mastering their craft.</p>
+
+    <div class="label reveal">Find me<span class="rule"></span></div>
+    <p class="body reveal" style="margin-bottom:22px">I'm always glad to talk with people building
+      ambitious things in games. And I'll talk about playing them, and the theory underneath, for as
+      long as you'll let me.</p>
+    <a class="btn accent reveal" href="mailto:hello@example.com">Reach out</a>
+  </div></section>
+</Base>
+
+<script>
+  // the stick figure runs the "Why games" separator (single source: /lib/stickman.js)
+  import '../../lib/stickman.js';
+  const line = document.getElementById('why-line');
+  const S = window.Stickman;
+  if (line && S) {
+    const runner = S.createRunner({ mount: line, color: 'var(--ink)', dustColor: 'var(--ink-faint)' });
+    S.attachLineFollow(runner, { line: line.querySelector('.rule') });
+  }
+</script>
