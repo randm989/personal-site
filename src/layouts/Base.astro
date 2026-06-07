@@ -31,7 +31,6 @@ const isActive = (href) => path === href || (href !== '/' && path.startsWith(hre
     <a class="brand" href="/"><span class="mark"><i></i><i></i><i></i></span> Josh Rutz</a>
     <div class="navlinks">
       <a href="/projects" aria-current={isActive('/projects') ? 'page' : undefined}>Work</a>
-      <a href="/workshop" aria-current={isActive('/workshop') ? 'page' : undefined}>Workshop</a>
       <a href="/presentations" aria-current={isActive('/presentations') ? 'page' : undefined}>Talks</a>
       <a href="/resume" aria-current={isActive('/resume') ? 'page' : undefined}>Resume</a>
       <button class="switch" id="theme-toggle" aria-label="Toggle light or dark theme"></button>

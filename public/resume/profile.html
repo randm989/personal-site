@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joshua Rutz | Leadership Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4efe4;
+    --paper-2: #efe7d8;
+    --card: #faf6ec;
+    --ink: #1f1b16;
+    --ink-soft: #5b5247;
+    --ink-faint: #968b79;
+    --line: #ddd3c0;
+    --line-strong: #c8bca4;
+    --accent: #0f5a4e;
+    --accent-deep: #0a463c;
+    --brass: #a8772f;
+    --wash: rgba(15,90,78,0.06);
+    --display: "Fraunces", Georgia, serif;
+    --body: "Schibsted Grotesk", system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  /* paper grain */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    opacity: 0.5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 30px; }
+
+  /* labels */
+  .label { font-family: var(--body); text-transform: uppercase; letter-spacing: 0.26em; font-size: 11px; font-weight: 600; color: var(--brass); }
+  .accent { color: var(--accent); }
+  em.f { font-family: var(--display); font-style: italic; }
+
+  /* masthead */
+  .masthead {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 13px 30px;
+    background: rgba(244,239,228,0.82); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .masthead .nm { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: 0.01em; }
+  .masthead .rt { font-family: var(--body); text-transform: uppercase; letter-spacing: 0.2em; font-size: 10px; color: var(--ink-faint); font-weight: 600; }
+
+  /* hero */
+  .hero { padding: 150px 0 80px; }
+  .hero .kicker { margin-bottom: 26px; display: flex; align-items: center; gap: 15px; }
+  .hero .kicker .rule { width: 46px; height: 2px; background: var(--brass); }
+  .hero .name { font-family: var(--display); font-weight: 600; font-size: clamp(40px, 6vw, 74px); line-height: 1; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .hero .thesis { font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(24px, 3.6vw, 40px); line-height: 1.12; color: var(--accent); max-width: 760px; margin-bottom: 28px; }
+  .hero .lede { font-size: clamp(17px, 1.9vw, 20px); line-height: 1.55; max-width: 680px; color: var(--ink-soft); }
+  .hero .lede b { color: var(--ink); font-weight: 600; }
+
+  /* stat band */
+  .band { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .tile { background: var(--card); padding: 28px 26px; }
+  .tile .n { font-family: var(--display); font-weight: 500; font-size: 50px; line-height: 0.95; color: var(--accent); letter-spacing: -0.01em; }
+  .tile .c { margin-top: 10px; font-size: 13.5px; line-height: 1.4; color: var(--ink-soft); }
+  .tile .c b { color: var(--ink); font-weight: 600; }
+
+  /* sections */
+  section { padding: 66px 0; border-top: 1px solid var(--line); }
+  .sechead { display: flex; align-items: baseline; gap: 18px; margin-bottom: 16px; }
+  .sechead .no { font-family: var(--body); font-weight: 600; font-size: 13px; color: var(--brass); letter-spacing: 0.08em; }
+  .sechead h2 { font-family: var(--display); font-weight: 600; font-size: clamp(27px, 4vw, 42px); line-height: 1.05; letter-spacing: -0.015em; }
+  .sechead h2 em { font-style: italic; color: var(--accent); }
+  .seclede { max-width: 720px; color: var(--ink-soft); font-size: 17.5px; margin-bottom: 40px; padding-left: 50px; }
+  @media (max-width: 620px){ .seclede { padding-left: 0; } }
+
+  /* leadership cards */
+  .lead-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 34px 32px; margin-bottom: 20px; position: relative;
+    border-left: 3px solid var(--accent);
+  }
+  .lead-card .role { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .lead-card .role .co { font-family: var(--display); font-weight: 600; font-size: 23px; letter-spacing: -0.01em; }
+  .lead-card .role .co span { color: var(--accent); }
+  .lead-card .role .when { font-family: var(--body); font-size: 13px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; font-weight: 600; }
+  .lead-card p { color: var(--ink-soft); font-size: 16px; line-height: 1.6; margin-bottom: 14px; }
+  .lead-card p:last-child { margin-bottom: 0; }
+  .lead-card p b { color: var(--ink); font-weight: 600; }
+  .lead-card .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .lead-card .pill { font-family: var(--body); font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--accent-deep); background: var(--wash); border: 1px solid rgba(15,90,78,0.18); border-radius: 100px; padding: 5px 13px; }
+
+  /* technical grid */
+  .tgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tcard { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 24px 24px; transition: transform .3s ease, border-color .3s ease; }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+  .tcard .h { font-family: var(--display); font-weight: 600; font-size: 18px; margin-bottom: 4px; }
+  .tcard .h span { color: var(--ink-faint); font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; display: block; margin-bottom: 7px; }
+  .tcard p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.55; }
+  @media (max-width: 620px){ .tgrid { grid-template-columns: 1fr; } }
+
+  /* founder block */
+  .founder { background: linear-gradient(135deg, var(--accent-deep), var(--accent)); color: #f4efe4; border-radius: 8px; padding: 40px 36px; }
+  .founder .label { color: #cfe7df; }
+  .founder h3 { font-family: var(--display); font-weight: 600; font-size: clamp(24px,3.4vw,34px); line-height: 1.08; margin: 14px 0 16px; letter-spacing: -0.01em; }
+  .founder p { color: #d9ece6; font-size: 16.5px; line-height: 1.6; max-width: 760px; }
+  .founder .nums { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px; padding-top: 24px; border-top: 1px solid rgba(244,239,228,0.22); }
+  .founder .nums div { font-size: 13px; color: #bfded5; }
+  .founder .nums div b { display: block; font-family: var(--display); font-size: 30px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 5px; }
+  .founder a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* timeline */
+  .timeline { position: relative; margin-top: 8px; }
+  .tl-row { display: grid; grid-template-columns: 120px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-row .yr { font-family: var(--display); font-weight: 500; font-size: 17px; color: var(--brass); }
+  .tl-row .co { font-weight: 600; font-size: 17px; }
+  .tl-row .co span { color: var(--ink-faint); font-weight: 500; }
+  .tl-row .ro { color: var(--ink-soft); font-size: 14.5px; margin-top: 2px; }
+  .tl-row.now .co span.live { color: var(--accent); font-weight: 600; }
+  @media (max-width: 620px){ .tl-row { grid-template-columns: 80px 1fr; gap: 14px; } }
+
+  /* philosophy */
+  .phil { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 36px; }
+  .phil .item { padding-top: 18px; border-top: 2px solid var(--accent); }
+  .phil .item h4 { font-family: var(--display); font-weight: 600; font-size: 19px; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .phil .item p { color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
+  @media (max-width: 620px){ .phil { grid-template-columns: 1fr; } }
+
+  /* footer */
+  footer { padding: 60px 0 80px; border-top: 1px solid var(--line); }
+  footer .close { font-family: var(--display); font-style: italic; font-size: clamp(22px,3vw,32px); line-height: 1.15; max-width: 720px; margin-bottom: 36px; }
+  footer .contact { display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 14px; color: var(--ink-soft); }
+  footer .contact a { color: var(--accent); text-decoration: none; }
+  footer .contact b { color: var(--ink); font-weight: 600; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 720px){
+    .band { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="nm">Joshua Rutz</div>
+  <div class="rt">Leadership Profile · 2026</div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker"><span class="rule"></span><span class="label">Technical Director · 15+ years in games</span></div>
+    <div class="name reveal">Joshua Rutz</div>
+    <p class="thesis reveal">A team builder at heart. Technical to the core.</p>
+    <p class="lede reveal">Across six studios and fifteen years, the constant has been the same work: building and leading the people who ship games, and the technical backbone they rely on. Twice I led without the title and the team shipped anyway. Most recently I founded a studio and built its entire production system <b>solo</b>, the substrate a team plugs into.</p>
+
+    <div class="band reveal">
+      <div class="tile"><div class="n" data-static="6-7">6-7</div><div class="c"><b>Engineers led</b> at peak (Manticore), grown through layoffs and onboarding</div></div>
+      <div class="tile"><div class="n" data-to="8">0</div><div class="c"><b>Contractors directed</b> at Epic with no assigned lead above me</div></div>
+      <div class="tile"><div class="n" data-to="3">0</div><div class="c"><b>Engineers promoted</b>, plus a performance plan taken to a turnaround</div></div>
+      <div class="tile"><div class="n" data-static="15+">15+</div><div class="c"><b>Years</b> shipping games, from FarmVille to Fortnite</div></div>
+      <div class="tile"><div class="n" data-to="6">0</div><div class="c"><b>Studios</b>, individual contributor to founder</div></div>
+      <div class="tile"><div class="n" data-static="1">1</div><div class="c"><b>Studio founded</b> and built end to end, by myself</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- 01 LEADERSHIP -->
+<section>
+  <div class="wrap reveal">
+    <div class="sechead"><span class="no">01</span><h2>Leadership <em>at scale</em></h2></div>
+    <p class="seclede">The clearest pattern in my career: I get handed a team, or a gap where a lead should be, and I turn it into something that ships. Here are the two clearest cases.</p>
+
+    <div class="lead-card">
+      <div class="role"><div class="co">Manticore Games <span>· Lead Engineer / Engineering Manager</span></div><div class="when">2021 to 2024</div></div>
+      <p>Promoted to lead engineer in my first year, a peer to the Director of Engineering with both of us reporting to the CTO. I built and led a gameplay team that grew from <b>4 to 6 or 7 at its peak</b>, and steered it through a round of layoffs and the onboarding that followed without losing delivery.</p>
+      <p>I promoted three engineers, mentored more than five on their technical growth, and turned a struggling engineer around through a performance plan rather than out the door. I held a <b>50/50 split</b> between managing and writing Unreal Engine C++, so the team was led by someone still in the code with them.</p>
+      <p>Beyond the team, I owned client tech strategy up to the C-suite and pushed for generic gameplay systems that later absorbed <b>two full design pivots</b> without a rewrite.</p>
+      <div class="pills"><span class="pill">Player-coach, 50/50</span><span class="pill">Promoted 3</span><span class="pill">PIP to turnaround</span><span class="pill">Held team through layoffs</span><span class="pill">Tech strategy to C-suite</span></div>
+    </div>
+
+    <div class="lead-card">
+      <div class="role"><div class="co">Epic Games <span>· Senior UI Engineer, Fortnite</span></div><div class="when">2025 to 2026</div></div>
+      <p>The competitive team had no assigned lead, so I became its <b>de facto technical lead and directed 8 contractors</b>: setting direction, reviewing the work, and keeping delivery unblocked through an informal reporting structure I held together myself.</p>
+      <p>I also created the framework for AI use across Fortnite's UI engineering org and rolled it out department-wide through presentations and documentation. That was leadership by influence rather than headcount, moving a whole department by building the playbook and teaching it.</p>
+      <div class="pills"><span class="pill">Led 8 contractors</span><span class="pill">Filled a lead vacuum</span><span class="pill">Dept-wide AI rollout</span><span class="pill">Leadership by influence</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 TECHNICAL -->
+<section>
+  <div class="wrap reveal">
+    <div class="sechead"><span class="no">02</span><h2>The technical <em>credibility</em></h2></div>
+    <p class="seclede">Leadership lands better when the team knows you can do the work. Fifteen years of doing it, across proprietary engines, Unreal, and Unity.</p>
+    <div class="tgrid">
+      <div class="tcard"><div class="h"><span>Epic · Fortnite</span>Hundreds of millions of players</div><p>Sole UI engineer on Fortnite's in-game HUD refresh. Implemented a rasterization technique for spline-based storm visualization in low-level C++ and custom rendering code, and architected a ViewModel data debugger with the tools team for real-time UI state inspection.</p></div>
+      <div class="tcard"><div class="h"><span>Super Evil Megacorp · Vainglory</span>Front-end rewrite, proprietary engine</div><p>Architected and led a complete front-end rewrite of Vainglory mobile on the proprietary NUO engine, moving a legacy codebase to a modern component system and setting the patterns for widget composition.</p></div>
+      <div class="tcard"><div class="h"><span>KIXEYE · War Commander</span>Matchmaking, Unity / C#</div><p>Owned full-stack feature work and rebuilt the matchmaking system for War Commander: Rogue Assault using asymmetric ELO scores, client in Unity and C#, server in C#.</p></div>
+      <div class="tcard"><div class="h"><span>Zynga · FarmVille</span>Monetization at social-game scale</div><p>Shipped features into FarmVille's monetization pipeline and supported content management system development during the peak of social gaming.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 FOUNDER -->
+<section>
+  <div class="wrap reveal">
+    <div class="sechead"><span class="no">03</span><h2>Proof I can build <em>the whole thing</em></h2></div>
+    <div class="founder">
+      <span class="label">Zipix · Founder &amp; Technical Director · 2026 to present</span>
+      <h3>I built the studio before the team.</h3>
+      <p>I founded a mobile micro-game studio and built its entire production system myself: the games, and the machine that makes them. A single CLI control plane for every operation, a design-token system shared across the web UI and the game canvas, a codified library of AI agent playbooks, automated test gates, and release engineering with kill switches and runbooks. It is the surface a multidisciplinary team onboards into, built before hiring anyone. The full operations breakdown lives in a companion brief.</p>
+      <div class="nums">
+        <div><b>20</b>games, one engine contract</div>
+        <div><b>10 wks</b>seed to live in production</div>
+        <div><b>437</b>automated test files</div>
+        <div><b>19</b>reusable agent playbooks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 TIMELINE -->
+<section>
+  <div class="wrap reveal">
+    <div class="sechead"><span class="no">04</span><h2>The <em>arc</em></h2></div>
+    <div class="timeline">
+      <div class="tl-row"><div class="yr">2010 to 2012</div><div><div class="co">Zynga <span>· San Francisco</span></div><div class="ro">Software Engineer · FarmVille monetization</div></div></div>
+      <div class="tl-row"><div class="yr">2012 to 2015</div><div><div class="co">KIXEYE <span>· San Francisco</span></div><div class="ro">Senior Gameplay Engineer · War Commander</div></div></div>
+      <div class="tl-row"><div class="yr">2017 to 2021</div><div><div class="co">Super Evil Megacorp <span>· San Mateo</span></div><div class="ro">Senior Client Engineer · Vainglory front-end rewrite</div></div></div>
+      <div class="tl-row"><div class="yr">2021 to 2024</div><div><div class="co">Manticore Games</div><div class="ro">Lead Engineer / Engineering Manager · team of up to 7</div></div></div>
+      <div class="tl-row"><div class="yr">2025 to 2026</div><div><div class="co">Epic Games</div><div class="ro">Senior UI Engineer · Fortnite · led 8 contractors</div></div></div>
+      <div class="tl-row now"><div class="yr">Since 2026</div><div><div class="co">Zipix <span class="live">· Live</span></div><div class="ro">Founder &amp; Technical Director · solo-built platform</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 PHILOSOPHY -->
+<section>
+  <div class="wrap reveal">
+    <div class="sechead"><span class="no">05</span><h2>How I build <em>teams</em></h2></div>
+    <p class="seclede">The figures above come from a few habits I hold to, in good quarters and bad ones.</p>
+    <div class="phil">
+      <div class="item"><h4>Grow people in place</h4><p>I would rather promote and mentor an engineer than backfill from outside. Three promotions and more than five mentees came from treating growth as part of the job, not a perk.</p></div>
+      <div class="item"><h4>Protect the team through change</h4><p>Layoffs and reorgs are when leadership actually shows. I kept a team shipping through both, and I take a struggling engineer as a problem to solve, not a person to remove.</p></div>
+      <div class="item"><h4>Lead from inside the code</h4><p>I keep a hands-on split so the team is led by someone who still ships with them. Credibility is earned in review and at the keyboard, not on an org chart.</p></div>
+      <div class="item"><h4>Build systems, not bottlenecks</h4><p>The best thing I can give a team is tooling and standards that let each specialist move without waiting on me. Zipix is that idea taken to its limit.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap reveal">
+    <p class="close">Hand me a team or a gap where a lead should be. I will build it into something that ships, and grow the people while it does.</p>
+    <div class="contact">
+      <span><b>Joshua Rutz</b></span>
+      <span>(415) 509-6260</span>
+      <span><a href="mailto:joshrutz989@gmail.com">joshrutz989@gmail.com</a></span>
+      <span>LinkedIn · GitHub</span>
+      <span>B.S., DigiPen Institute of Technology</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  function countUp(el) {
+    const to = parseInt(el.dataset.to, 10), dur = 1200, start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * to);
+      if (p < 1) requestAnimationFrame(tick); else el.textContent = to;
+    }
+    requestAnimationFrame(tick);
+  }
+  const bandObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.n[data-to]').forEach((n, i) => setTimeout(() => countUp(n), i * 90));
+        bandObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.35 });
+  const band = document.querySelector('.band');
+  if (band) bandObs.observe(band);
+</script>
+
+</body>
+</html>

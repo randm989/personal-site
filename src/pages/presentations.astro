@@ -1,15 +1,40 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const talks = [
+  {
+    href: '/talks/leadership-keynote.html',
+    kind: 'Keynote',
+    title: 'Leadership Keynote',
+    blurb: 'How I build and lead engineering teams, drawn from fifteen years across six studios. The full talk, as a self-contained deck.',
+  },
+  {
+    href: '/talks/zipix-lean-ops-case-study.html',
+    kind: 'Case study',
+    title: 'Zipix · Lean Ops',
+    blurb: 'A walk through the production system behind Zipix, from one fix to the runbooks and gates that make a solo studio ship like a team.',
+  },
+];
 ---
 <Base title="Talks — Josh Rutz" description="Talks and decks I've made.">
   <header class="hero"><div class="wrap">
     <div class="eyebrow reveal">Talks &amp; presentations</div>
     <h1 class="reveal">Talks and decks I've made.</h1>
-    <p class="lede reveal">Each one stands on its own.</p>
+    <p class="lede reveal">Each one stands on its own. Open it and it's the whole thing.</p>
   </div></header>
 
   <section><div class="wrap">
-    <div class="label reveal">The decks<span class="rule"></span></div>
-    <p class="body reveal">Nothing up yet. Each deck goes in as one file and serves itself, indexed here.</p>
+    <div class="talks">
+      {talks.map((t) => (
+        <a class="talk reveal" href={t.href} target="_blank" rel="noopener">
+          <div>
+            <div class="tk-kind">{t.kind}</div>
+            <h3>{t.title}</h3>
+            <p>{t.blurb}</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      ))}
+    </div>
   </div></section>
 </Base>

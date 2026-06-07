@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zipix · Lean Ops Case Study · State Tap v1.2.3</title>
+<style>
+  :root{
+    --bg:#0a0b14; --surface:#12131a; --surface2:#1d2030; --line:#262a3d;
+    --text:#f5f6fa; --muted:#7e8597; --accent:#3ecf8e; --accent-dk:#1a7a52;
+    --accent-lt:#8ee2b5; --violet:#c7aaff; --red:#e88a8a; --red-dk:#cc3333;
+    --amber:#f0c46a;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--sans);
+    overflow:hidden; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(900px 600px at 82% -10%, rgba(62,207,142,.10), transparent 60%),
+      radial-gradient(700px 500px at -5% 110%, rgba(199,170,255,.07), transparent 55%);
+  }
+  /* ---- deck ---- */
+  .deck{position:fixed;inset:0}
+  .slide{
+    position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:clamp(28px,5.2vw,84px);opacity:0;transform:translateY(14px);
+    transition:opacity .42s ease,transform .42s ease;
+  }
+  .slide.active{display:flex;opacity:1;transform:none}
+  .slide.active .stagger>*{animation:rise .55s cubic-bezier(.2,.7,.2,1) backwards}
+  .slide.active .stagger>*:nth-child(1){animation-delay:.05s}
+  .slide.active .stagger>*:nth-child(2){animation-delay:.13s}
+  .slide.active .stagger>*:nth-child(3){animation-delay:.21s}
+  .slide.active .stagger>*:nth-child(4){animation-delay:.29s}
+  .slide.active .stagger>*:nth-child(5){animation-delay:.37s}
+  .slide.active .stagger>*:nth-child(6){animation-delay:.45s}
+  .slide.active .stagger>*:nth-child(7){animation-delay:.53s}
+  .slide.active .stagger>*:nth-child(8){animation-delay:.61s}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .wrap{width:100%;max-width:1180px;margin:0 auto}
+
+  .eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:30px;height:2px;background:var(--accent);display:inline-block;border-radius:2px}
+  h1{font-size:clamp(38px,6.4vw,82px);line-height:1.02;letter-spacing:-.02em;font-weight:800}
+  h2{font-size:clamp(28px,4.2vw,52px);line-height:1.06;letter-spacing:-.015em;font-weight:800;margin-bottom:10px}
+  .lead{font-size:clamp(17px,2.1vw,24px);color:#cfd3e0;line-height:1.5;font-weight:400;max-width:60ch}
+  .muted{color:var(--muted)}
+  .accent{color:var(--accent)}
+  .violet{color:var(--violet)}
+  .red{color:var(--red)}
+  b,strong{font-weight:700}
+  .mono{font-family:var(--mono)}
+
+  /* ---- title ---- */
+  .brandrow{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+  .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(150deg,var(--accent),var(--accent-dk));
+    display:grid;place-items:center;font-weight:900;color:#04140c;font-size:22px;
+    box-shadow:0 8px 30px rgba(62,207,142,.35)}
+  .brandname{font-weight:800;letter-spacing:.02em;font-size:20px}
+  .titlemeta{margin-top:38px;font-family:var(--mono);font-size:14px;color:var(--muted);
+    display:flex;gap:10px;flex-wrap:wrap}
+  .titlemeta span{background:var(--surface);border:1px solid var(--line);padding:7px 13px;border-radius:999px}
+
+  /* ---- stat strips ---- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:34px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 20px}
+  .stat .n{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.02em;line-height:1}
+  .stat .l{margin-top:10px;font-size:13.5px;color:var(--muted);line-height:1.35}
+  .stat.hl{border-color:rgba(62,207,142,.5);background:linear-gradient(160deg,rgba(62,207,142,.10),var(--surface))}
+
+  /* ---- quote cards ---- */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
+  .qcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 28px;position:relative}
+  .qcard::before{content:"“";position:absolute;top:6px;left:18px;font-size:60px;color:var(--accent);opacity:.25;font-family:Georgia,serif}
+  .qcard .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .qcard p{font-size:16.5px;line-height:1.55;color:#dfe2ec}
+  .qcard.dec .tag{color:var(--violet)}
+  .qcard.dec::before{color:var(--violet)}
+
+  /* ---- pipeline ---- */
+  .pipe{display:flex;align-items:stretch;gap:10px;margin-top:36px;flex-wrap:wrap}
+  .step{flex:1 1 0;min-width:140px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:18px 16px;position:relative}
+  .step .k{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .step .t{font-weight:700;font-size:17px;margin-top:8px}
+  .step .d{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.4}
+  .step.human{border-color:rgba(199,170,255,.55);background:linear-gradient(160deg,rgba(199,170,255,.10),var(--surface))}
+  .step.human .k{color:var(--violet)}
+  .step.auto{}
+  .step .badge{position:absolute;top:-10px;right:12px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;padding:4px 9px;border-radius:999px}
+  .badge.h{background:rgba(199,170,255,.16);color:var(--violet);border:1px solid rgba(199,170,255,.4)}
+  .badge.a{background:rgba(62,207,142,.14);color:var(--accent);border:1px solid rgba(62,207,142,.35)}
+  .pipelegend{margin-top:20px;display:flex;gap:24px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:middle}
+
+  /* ---- two-column compare ---- */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
+  .col{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+  .col h3{font-size:15px;font-family:var(--mono);letter-spacing:.06em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .col.raw{border-color:rgba(204,51,51,.35)}
+  .col.raw h3{color:var(--red)}
+  .col.zpx{border-color:rgba(62,207,142,.4)}
+  .col.zpx h3{color:var(--accent)}
+  .col ul{list-style:none}
+  .col li{padding:9px 0 9px 26px;position:relative;font-size:15px;line-height:1.45;border-top:1px solid var(--line)}
+  .col li:first-child{border-top:none}
+  .col.raw li::before{content:"✕";position:absolute;left:0;color:var(--red);font-weight:700}
+  .col.zpx li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700}
+
+  /* ---- amplification funnel ---- */
+  .funnel{display:flex;align-items:center;gap:30px;margin-top:34px;flex-wrap:wrap}
+  .fbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 30px;text-align:center;min-width:200px}
+  .fbox .big{font-size:clamp(46px,8vw,92px);font-weight:800;line-height:1;letter-spacing:-.03em}
+  .fbox .cap{margin-top:10px;color:var(--muted);font-size:14px}
+  .fbox.in .big{color:var(--violet)}
+  .fbox.out{border-color:rgba(62,207,142,.5);background:linear-gradient(160deg,rgba(62,207,142,.12),var(--surface))}
+  .fbox.out .big{color:var(--accent)}
+  .farrow{font-size:34px;color:var(--muted);font-family:var(--mono)}
+  .bars{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+  .bar{display:grid;grid-template-columns:170px 1fr 56px;align-items:center;gap:16px}
+  .bar .name{font-size:14.5px;color:#dfe2ec}
+  .bar .track{height:16px;background:var(--surface2);border-radius:999px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent-dk),var(--accent));
+    transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+  .slide.active .bar .fill{transform:scaleX(var(--w))}
+  .bar .v{font-family:var(--mono);font-size:14px;color:var(--accent);text-align:right}
+  .bar.h .fill{background:linear-gradient(90deg,#5a4a7a,var(--violet))}
+  .bar.h .v{color:var(--violet)}
+
+  /* ---- toolchain grid ---- */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  .tool{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:20px 22px}
+  .tool .ic{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  .tool .nm{font-weight:700;font-size:17px}
+  .tool .ds{font-size:13.5px;color:var(--muted);margin-top:7px;line-height:1.42}
+
+  /* ---- generic list rows ---- */
+  .rows{margin-top:26px;display:flex;flex-direction:column;gap:14px}
+  .row{display:flex;gap:18px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;padding:18px 22px}
+  .row .idx{font-family:var(--mono);color:var(--accent);font-weight:700;font-size:15px;min-width:30px}
+  .row .body h4{font-size:18px;font-weight:700;margin-bottom:5px}
+  .row .body p{font-size:14.5px;color:var(--muted);line-height:1.5}
+  .row .body p .accent{color:var(--accent-lt)}
+
+  .kicker{font-size:clamp(20px,2.6vw,28px);line-height:1.45;font-weight:500;color:#e7e9f1;max-width:48ch}
+  .kicker .accent{font-weight:700}
+  .sign{margin-top:34px;font-family:var(--mono);font-size:14px;color:var(--muted);
+    border-left:2px solid var(--accent);padding-left:16px;line-height:1.6}
+
+  /* ---- chrome ---- */
+  .chrome{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 26px;font-family:var(--mono);font-size:12.5px;color:var(--muted);z-index:20;pointer-events:none}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:30;transition:width .42s ease;
+    box-shadow:0 0 14px rgba(62,207,142,.6)}
+  .nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:25}
+  .nav button{width:9px;height:9px;border-radius:50%;border:none;background:var(--surface2);cursor:pointer;padding:0;
+    transition:all .25s}
+  .nav button.on{background:var(--accent);width:26px;border-radius:999px}
+  .foot-brand{display:flex;align-items:center;gap:9px;pointer-events:none}
+  .foot-brand .d{width:9px;height:9px;border-radius:3px;background:var(--accent)}
+  .hint{position:fixed;bottom:42px;right:24px;font-family:var(--mono);font-size:11px;color:var(--muted);
+    opacity:.7;z-index:20;pointer-events:none}
+  @media (max-width:780px){
+    .stats,.cards,.vs,.grid3{grid-template-columns:1fr 1fr}
+    .pipe .step{flex-basis:45%}
+    .bar{grid-template-columns:120px 1fr 48px}
+  }
+  @media print{
+    body{overflow:visible}
+    .slide{display:flex!important;opacity:1!important;transform:none!important;position:relative;
+      page-break-after:always;height:100vh;inset:auto}
+    .chrome,.nav,.progress,.hint{display:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="deck" id="deck">
+
+  <!-- 1 — TITLE -->
+  <section class="slide active">
+    <div class="wrap stagger">
+      <div class="brandrow"><div class="logo">Z</div><div class="brandname">ZIPIX</div>
+        <div class="muted mono" style="font-size:13px;letter-spacing:.2em">OPERATIONS CASE STUDY</div></div>
+      <h1>One observation.<br>A shipped <span class="accent">hotfix.</span></h1>
+      <p class="lead" style="margin-top:24px">How a three-sentence bug report became a tested, documented,
+        deployed release. The human was in the loop for one report and two decisions. The studio did the rest.</p>
+      <div class="titlemeta">
+        <span>Game · State Tap</span><span>v1.2.2 → v1.2.3</span><span>commit 3cd3302f</span>
+        <span>2026-06-06</span><span>live on prod</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 — THESIS -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The amplification</div>
+      <h2>Two human touches in, a whole release out.</h2>
+      <p class="lead">The person did the irreplaceable part: noticing something was off, and making two taste calls.
+        Encoded workflows turned that judgment into a correct, shipped fix.</p>
+      <div class="stats">
+        <div class="stat hl"><div class="n accent">28</div><div class="l">bugs surfaced, from the <b>2</b> the human spotted</div></div>
+        <div class="stat"><div class="n">81,375</div><div class="l">rows of ground-truth Census data audited</div></div>
+        <div class="stat"><div class="n">3,643</div><div class="l">tests green before anything shipped</div></div>
+        <div class="stat hl"><div class="n accent">~90s</div><div class="l">of human decisions, start to prod</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 — THE HUMAN INPUT -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The entire human contribution</div>
+      <h2>Everything the person actually did.</h2>
+      <div class="cards">
+        <div class="qcard">
+          <div class="tag">Touch 1 · The report</div>
+          <p>"Augusta is also in Georgia (pop &gt;200k), and Charleston is in South Carolina (&gt;100k). Given these
+             two gigantic misses, we need a thorough check, because I doubt the completeness of our list."</p>
+        </div>
+        <div class="qcard dec">
+          <div class="tag">Touch 2 · The decision</div>
+          <p>"Keep capitals strict, so relabel it 'Augusta (Capital City).' Good find on the city adds. Make the
+             change, land it on main, bump the version, get it on prod. It is a game fix, not a full release."</p>
+        </div>
+      </div>
+      <p class="lead muted" style="margin-top:26px;font-size:17px">That is the whole input. No file paths, no commands,
+        no test runs, no release steps. The eleven steps below ran on encoded studio knowledge.</p>
+    </div>
+  </section>
+
+  <!-- 4 — PIPELINE -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The anatomy</div>
+      <h2>From a sentence to a deploy, in six phases.</h2>
+      <div class="pipe">
+        <div class="step human"><span class="badge h">human seed</span><div class="k">01</div><div class="t">Diagnose</div><div class="d">Read the data model, find the real root cause.</div></div>
+        <div class="step auto"><span class="badge a">auto</span><div class="k">02</div><div class="t">Audit</div><div class="d">Fetch Census ground truth, diff every clue.</div></div>
+        <div class="step human"><span class="badge h">decision gate</span><div class="k">03</div><div class="t">Decide</div><div class="d">Present findings, take two taste calls.</div></div>
+        <div class="step auto"><span class="badge a">auto</span><div class="k">04</div><div class="t">Implement</div><div class="d">Worktree, edits, copy pass, version bump.</div></div>
+        <div class="step auto"><span class="badge a">auto</span><div class="k">05</div><div class="t">Verify</div><div class="d">Typecheck, 3,643 tests, prepublish gates.</div></div>
+        <div class="step auto"><span class="badge a">auto</span><div class="k">06</div><div class="t">Ship</div><div class="d">Lock, land, gated prod publish, smoke check.</div></div>
+      </div>
+      <div class="pipelegend">
+        <span><span class="dot" style="background:var(--violet)"></span>Human in the loop (2 points)</span>
+        <span><span class="dot" style="background:var(--accent)"></span>Autonomous, skill and tool driven</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 — DIAGNOSIS -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">Phase 1 · Structural diagnosis</div>
+      <h2>It read the architecture, not the symptom.</h2>
+      <div class="vs">
+        <div class="col raw">
+          <h3>The shallow patch</h3>
+          <ul>
+            <li>Add Georgia to "Augusta."</li>
+            <li>Add South Carolina to "Charleston."</li>
+            <li>Call it done. Ship two array edits.</li>
+            <li>The other 26 collisions stay broken.</li>
+          </ul>
+        </div>
+        <div class="col zpx">
+          <h3>What actually happened</h3>
+          <ul>
+            <li>Found two answer regimes: <span class="mono">city</span> and <span class="mono">capital</span>.</li>
+            <li>The capital regime hardcodes <span class="mono">acceptSet:[state]</span>.</li>
+            <li>Augusta and Charleston are <b>capitals</b> (ME, WV); their famous twins live elsewhere.</li>
+            <li>Unlabeled prompt + the "≥10k city" promise made it systemic, not a one-off.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 — GROUND TRUTH -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">Phase 2 · Ground truth, not memory</div>
+      <h2>It refused to trust its own recall.</h2>
+      <p class="lead">City populations are exactly where a raw model hallucinates. So instead of guessing, it pulled the
+        authoritative source and computed the answer.</p>
+      <div class="rows">
+        <div class="row"><div class="idx">A</div><div class="body"><h4>Fetched the US Census SUB-EST2023 file</h4>
+          <p>The same source the dataset already cited. <span class="accent">81,375 incorporated-place rows</span>, real populations, zero guesswork.</p></div></div>
+        <div class="row"><div class="idx">B</div><div class="body"><h4>Processed it inside a sandbox (think-in-code)</h4>
+          <p>All 81k rows stayed in the <span class="accent">context-mode</span> plugin. Only the 28-row diff entered the model's window. The audit cost almost no context.</p></div></div>
+        <div class="row"><div class="idx">C</div><div class="body"><h4>Handled the messy real world</h4>
+          <p>Normalized consolidated city-counties (Augusta-Richmond, Macon-Bibb) and caught the <span class="accent">New England SUMLEV-061</span> town quirk the original audit had missed.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 — FUNNEL -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The payoff</div>
+      <h2>Two reported bugs became twenty-eight found.</h2>
+      <div class="funnel">
+        <div class="fbox in"><div class="big">2</div><div class="cap">spotted by the human<br>(Augusta, Charleston)</div></div>
+        <div class="farrow">⟶</div>
+        <div class="fbox out"><div class="big">28</div><div class="cap">surfaced by the audit<br>23 capital + 5 city</div></div>
+      </div>
+      <div class="bars">
+        <div class="bar h"><div class="name">Human-reported</div><div class="track"><div class="fill" style="--w:.07"></div></div><div class="v">2</div></div>
+        <div class="bar"><div class="name">Capital collisions</div><div class="track"><div class="fill" style="--w:.82"></div></div><div class="v">23</div></div>
+        <div class="bar"><div class="name">City-list misses</div><div class="track"><div class="fill" style="--w:.18"></div></div><div class="v">5</div></div>
+      </div>
+      <p class="lead muted" style="margin-top:24px;font-size:16px">The human named the two smallest fish. The audit caught the bigger ones:
+        Columbus GA (202k), Springfield MO &amp; MA (170k / 154k), Concord CA (122k).</p>
+    </div>
+  </section>
+
+  <!-- 8 — DECISION GATE -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">Phase 3 · The decision gate</div>
+      <h2>It asked only what it could not decide.</h2>
+      <p class="lead">The audit produced one genuine judgment call: should a capital that shares a name with a bigger
+        city accept both states, or stay strict? That is a taste question, not a fact. So it stopped and asked.</p>
+      <div class="cards">
+        <div class="qcard dec"><div class="tag">Presented to the human</div>
+          <p>A complete findings table, a recommended fix, and the one fork that needed a human: strict capitals
+             with a clarifying label, or multi-state accept.</p></div>
+        <div class="qcard"><div class="tag">Decided in two lines</div>
+          <p>Strict capitals, add the "(Capital City)" label, take the five city adds, ship as a game fix. Roughly
+             ninety seconds of human attention.</p></div>
+      </div>
+      <p class="lead muted" style="margin-top:22px;font-size:16px">Everything before and after this slide was autonomous.
+        The human was consulted once, on the one thing only they should own.</p>
+    </div>
+  </section>
+
+  <!-- 9 — IMPLEMENT / VERIFY / SHIP -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">Phases 4 to 6 · On rails</div>
+      <h2>Build, verify, and ship ran themselves.</h2>
+      <div class="grid3">
+        <div class="tool"><div class="ic">Implement</div><div class="nm">Isolated &amp; clean</div><div class="ds">Git worktree for parallel safety. Five source edits. antislop pass on every line players read (no em-dashes, US spelling).</div></div>
+        <div class="tool"><div class="ic">Implement</div><div class="nm">Release hygiene</div><div class="ds"><span class="mono">./zpx bump game</span>, public + internal patch notes, manifest regeneration. None of it prompted by the human.</div></div>
+        <div class="tool"><div class="ic">Verify</div><div class="nm">Proof before claims</div><div class="ds">Typecheck clean. <b>3,643</b> unit tests green. Prepublish gates (validate, patch notes, bundle build) all passed.</div></div>
+        <div class="tool"><div class="ic">Ship</div><div class="nm">Safe landing</div><div class="ds">merge-lock critical section: lock → rebase → verify → push → release. No racing other agents, no red tree on main.</div></div>
+        <div class="tool"><div class="ic">Ship</div><div class="nm">Right deploy path</div><div class="ds">Knew the push auto-publishes to <b>dev</b>, and prod needs a separate gated dispatch. Did not "push and hope."</div></div>
+        <div class="tool"><div class="ic">Ship</div><div class="nm">Verified live</div><div class="ds">Smoke-checked prod: CDN bundle HTTP 200, feed catalog serving v1.2.3. Then cleaned up the worktree.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — RAW VS ZIPIX -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">Why workflows beat raw prompting</div>
+      <h2>Same model. Very different outcome.</h2>
+      <div class="vs">
+        <div class="col raw"><h3>Raw LLM, no scaffolding</h3>
+          <ul>
+            <li>Patches the two named bugs, misses 26.</li>
+            <li>Invents populations from memory.</li>
+            <li>Dumps 81k rows into context, or skips the data entirely.</li>
+            <li>Edits <span class="mono">main</span> directly, no tests.</li>
+            <li>Forgets version, manifest, patch notes.</li>
+            <li>"Push and hope" to whatever environment.</li>
+          </ul>
+        </div>
+        <div class="col zpx"><h3>Zipix, skills + plugins + CLI</h3>
+          <ul>
+            <li>Audits all 28 against authoritative data.</li>
+            <li>Verifies every population from the Census file.</li>
+            <li>Keeps raw data in a sandbox; context stays lean.</li>
+            <li>Worktree + merge-lock + 3,643 tests.</li>
+            <li>Bump, notes, and manifests fire reflexively.</li>
+            <li>Dev auto, prod gated, both smoke-checked.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 — TOOLCHAIN -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The instruments</div>
+      <h2>What actually did the work.</h2>
+      <p class="lead muted" style="font-size:17px">Each one is a piece of studio knowledge, encoded once and reused on every task.</p>
+      <div class="grid3">
+        <div class="tool"><div class="ic">Memory</div><div class="nm">CLAUDE.md + gotcha index</div><div class="ds">A load-on-demand directory of how the studio works. Told it about version bumps, manifest regen, and the dev-vs-prod gate before it could trip on them.</div></div>
+        <div class="tool"><div class="ic">Plugin</div><div class="nm">context-mode</div><div class="ds">Think-in-code sandbox. Let it audit an 81k-row dataset while spending almost no context window.</div></div>
+        <div class="tool"><div class="ic">Skill</div><div class="nm">antislop</div><div class="ds">House-style guard on all player copy. No em-dashes, American spelling, no AI tells.</div></div>
+        <div class="tool"><div class="ic">Skill</div><div class="nm">landing-a-worktree-on-main</div><div class="ds">The merge-lock protocol. A safe critical section so parallel agents never clobber main.</div></div>
+        <div class="tool"><div class="ic">CLI</div><div class="nm">./zpx</div><div class="ds">One entry point for bump, prepublish, and publish, with secrets injected. Turns release steps into single commands.</div></div>
+        <div class="tool"><div class="ic">CI</div><div class="nm">Gated workflows</div><div class="ds">Publish Game with a dev/prod switch and a production environment gate. The studio's safety rails, not the model's.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 — SCOREBOARD -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The scoreboard</div>
+      <h2>One bug report, fully closed out.</h2>
+      <div class="stats">
+        <div class="stat hl"><div class="n accent">2</div><div class="l">human messages of substance</div></div>
+        <div class="stat"><div class="n">28</div><div class="l">findings surfaced from those 2</div></div>
+        <div class="stat"><div class="n">81,375</div><div class="l">source rows audited</div></div>
+        <div class="stat"><div class="n">8</div><div class="l">files changed (4 source, 2 generated, 2 notes)</div></div>
+      </div>
+      <div class="stats" style="margin-top:18px">
+        <div class="stat"><div class="n">3,643</div><div class="l">tests green</div></div>
+        <div class="stat"><div class="n">6+</div><div class="l">skills, plugins, CLIs engaged</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">session, no context lost</div></div>
+        <div class="stat hl"><div class="n accent">LIVE</div><div class="l">v1.2.3 verified on prod</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 — CLOSING -->
+  <section class="slide">
+    <div class="wrap stagger">
+      <div class="eyebrow">The thesis</div>
+      <h1 style="font-size:clamp(32px,5.2vw,64px)">A lean studio amplifies<br><span class="accent">judgment</span>, not effort.</h1>
+      <p class="kicker" style="margin-top:26px">The person noticed something was wrong and made two calls only a human should make.
+        The studio's encoded workflows did the other ninety-five percent: the audit, the correctness, the tests, the release.
+        That is what operational leverage looks like.</p>
+      <div class="sign">State Tap v1.2.3 · live on prod · 2 reported bugs → 28 fixed<br>
+        ~90 seconds of human decisions · one uninterrupted session</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="chrome">
+  <div class="foot-brand"><span class="d"></span><span>ZIPIX · Lean Ops Case Study</span></div>
+  <div><span id="counter">01 / 13</span></div>
+</div>
+<div class="hint">← → or space to navigate</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const nav=document.getElementById('nav');
+  const prog=document.getElementById('prog');
+  const counter=document.getElementById('counter');
+  let i=0;
+  slides.forEach((_,n)=>{const b=document.createElement('button');b.onclick=()=>go(n);nav.appendChild(b);});
+  const dots=[...nav.children];
+  function go(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+    prog.style.width=((i+1)/slides.length*100)+'%';
+    counter.textContent=String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  }
+  function next(){go(i+1)} function prev(){go(i-1)}
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
+  });
+  let sx=null;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>50){dx<0?next():prev();}sx=null;});
+  document.getElementById('deck').addEventListener('click',e=>{
+    if(e.target.closest('.nav'))return;
+    const x=e.clientX/window.innerWidth; if(x>0.62)next(); else if(x<0.20)prev();
+  });
+  go(0);
+</script>
+</body>
+</html>

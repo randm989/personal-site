@@ -102,6 +102,39 @@ p.body, .body{ font-size:17px; line-height:1.62; color:var(--ink-soft); max-widt
 .panel p{ margin:0; font-size:15px; color:var(--ink-soft) }
 .panel-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)) }
 
+/* ---- work entries: screenshot left, what-I-did right, separators between ---- */
+.entries{ margin-top:8px }
+.entry{ display:grid; grid-template-columns:300px 1fr; gap:30px; align-items:center;
+  padding:34px 0; border-top:1px solid var(--line) }
+.entry:first-child{ border-top:none; padding-top:6px }
+.entry .shot{ aspect-ratio:4/3; border-radius:16px; overflow:hidden; background:var(--paper-2);
+  box-shadow:10px 10px 30px var(--sh-dark), -8px -8px 24px var(--sh-light);
+  transition:transform .35s var(--ease-out), box-shadow .4s var(--ease-out) }
+.entry .shot img{ width:100%; height:100%; object-fit:cover; display:block }
+.entry .when{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint);
+  font-weight:600 }
+.entry h3{ font-family:var(--display); font-weight:700; font-size:23px; letter-spacing:-.01em;
+  margin:6px 0 2px }
+.entry .role{ color:var(--accent); font-weight:600; font-size:14px; margin:0 0 10px }
+.entry p.body{ font-size:15.5px }
+@media (max-width:640px){
+  .entry{ grid-template-columns:1fr; gap:16px; padding:26px 0 }
+  .entry:first-child{ padding-top:0 }
+}
+
+/* ---- talks list: each links out to a self-serving document ---- */
+.talks{ margin-top:8px }
+.talk{ display:flex; align-items:baseline; justify-content:space-between; gap:24px;
+  padding:24px 0; border-top:1px solid var(--line); text-decoration:none; color:inherit;
+  transition:padding-left .3s var(--ease-out) }
+.talk:first-child{ border-top:none }
+.talk .tk-kind{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--accent);
+  font-weight:600 }
+.talk h3{ font-family:var(--display); font-weight:700; font-size:21px; margin:7px 0 6px }
+.talk p{ margin:0; font-size:15px; color:var(--ink-soft); max-width:54ch }
+.talk .arrow{ font-size:20px; color:var(--ink-faint); flex:0 0 auto; align-self:center;
+  transition:transform .3s var(--ease-out), color .3s var(--ease-out) }
+
 /* ---- entrance choreography (progressive enhancement: only hides when JS is on) ---- */
 .reveal{ transition:opacity .55s var(--ease-out), transform .55s var(--ease-out) }
 html.js .reveal:not(.in){ opacity:0; transform:translateY(12px) }
@@ -123,6 +156,10 @@ footer a:hover{ color:var(--accent) }
   .brand:hover .mark i{ transform:scaleY(1.18) }
   .brand:hover .mark i:nth-child(2){ transition-delay:.04s }
   .brand:hover .mark i:nth-child(3){ transition-delay:.08s }
+  .entry:hover .shot{ transform:translateY(-3px);
+    box-shadow:14px 14px 38px var(--sh-dark), -10px -10px 28px var(--sh-light), 0 0 0 1px var(--glow) }
+  .talk:hover{ padding-left:10px }
+  .talk:hover .arrow{ transform:translateX(5px); color:var(--accent) }
 }
 
 /* ---- reduced motion: keep fades, drop movement ---- */

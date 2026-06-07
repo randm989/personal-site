@@ -1,23 +1,65 @@
 ---
 import Base from '../../layouts/Base.astro';
+
+const entries = [
+  {
+    img: '/work/zipix.webp', alt: 'Zipix micro-game gameplay',
+    studio: 'Zipix', game: 'Founder & Technical Director', when: '2026 — present',
+    body: `I founded a mobile micro-game studio and built its entire production system myself, the games and the machine that makes them. One CLI control plane for every operation, a design-token system shared across the web UI and the game canvas, automated test gates, and release engineering with kill switches and runbooks. Twenty games and ten weeks from seed to live, built as the surface a team plugs into before I hired anyone.`,
+    link: 'https://playzipix.app',
+  },
+  {
+    img: '/work/fortnite.webp', alt: 'Fortnite UI',
+    studio: 'Epic Games · Fortnite', game: 'Senior UI Engineer', when: '2025 — 2026',
+    body: `Sole UI engineer on Fortnite's in-game HUD refresh, in front of hundreds of millions of players. I implemented a rasterization technique for spline-based storm visualization in low-level C++ and custom rendering code, and built a ViewModel data debugger with the tools team for real-time UI state inspection. The competitive team had no lead, so I became its de facto technical lead and directed eight contractors, and I wrote the framework for AI use across the UI engineering org and rolled it out department-wide.`,
+  },
+  {
+    img: '/work/manticore.svg', alt: 'Manticore Games · Core',
+    studio: 'Manticore Games', game: 'Lead Engineer / Engineering Manager', when: '2021 — 2024',
+    body: `Promoted to lead engineer in my first year, a peer to the Director of Engineering. I built and led a gameplay team that grew from four to six or seven, and held it together through a round of layoffs and the onboarding after. I promoted three engineers, mentored more than five, and turned a struggling engineer around through a performance plan instead of out the door. I kept a fifty-fifty split between managing and writing Unreal C++, and pushed for generic systems that later absorbed two full design pivots without a rewrite.`,
+  },
+  {
+    img: '/work/vainglory.webp', alt: 'Vainglory',
+    studio: 'Super Evil Megacorp · Vainglory', game: 'Senior Client Engineer', when: '2017 — 2021',
+    body: `I architected and led a complete front-end rewrite of Vainglory on Super Evil's proprietary NUO engine, moving a legacy codebase to a modern component system and setting the patterns for how widgets compose.`,
+  },
+  {
+    img: '/work/kixeye.svg', alt: 'War Commander: Rogue Assault',
+    studio: 'KIXEYE · War Commander: Rogue Assault', game: 'Senior Gameplay Engineer', when: '2012 — 2015',
+    body: `I owned full-stack feature work and rebuilt the matchmaking system for War Commander: Rogue Assault using asymmetric ELO scores, client in Unity and C#, server in C#.`,
+  },
+  {
+    img: '/work/zynga.svg', alt: 'FarmVille',
+    studio: 'Zynga · FarmVille', game: 'Software Engineer', when: '2010 — 2012',
+    body: `I shipped features into FarmVille's monetization pipeline and supported content-management tooling during the peak of social gaming.`,
+  },
+];
 ---
-<Base title="Work — Josh Rutz" description="The work is the proof.">
+<Base title="Work — Josh Rutz" description="Fifteen years of shipping games, six studios, individual contributor to founder.">
   <header class="hero"><div class="wrap">
     <div class="eyebrow reveal">The work</div>
-    <h1 class="reveal">The proof is what I build.</h1>
-    <p class="lede reveal">Each of these is a belief I hold, built into something real.</p>
+    <h1 class="reveal">Fifteen years of shipping games.</h1>
+    <p class="lede reveal">Six studios, from individual contributor to founder. Here's what I built
+      at each one, and what it took to ship it.</p>
   </div></header>
 
   <section><div class="wrap">
-    <div class="panel-grid">
-      <a class="panel reveal" href="https://playzipix.app">
-        <div class="kind">Platform</div><h3>Zipix</h3>
-        <p>A mobile-first micro-game platform. Every game is one complete experience in about a minute. You pick it up, you finish something, you put it down.</p>
-      </a>
-      <div class="panel reveal">
-        <div class="kind">More soon</div><h3>Next project</h3>
-        <p>One file per project. The next one goes up when it's ready.</p>
-      </div>
+    <div class="entries">
+      {entries.map((e) => (
+        <article class="entry reveal">
+          <div class="shot">
+            {e.link
+              ? <a href={e.link} target="_blank" rel="noopener"><img src={e.img} alt={e.alt} loading="lazy" /></a>
+              : <img src={e.img} alt={e.alt} loading="lazy" />}
+          </div>
+          <div class="meta">
+            <div class="when">{e.when}</div>
+            <h3>{e.studio}</h3>
+            <p class="role">{e.game}</p>
+            <p class="body">{e.body}</p>
+          </div>
+        </article>
+      ))}
     </div>
   </div></section>
 </Base>

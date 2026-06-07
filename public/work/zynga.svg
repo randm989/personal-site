@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="570" viewBox="0 0 760 570">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#15171f"/><stop offset="1" stop-color="#0c0d12"/>
+    </linearGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.5" fill="#ffffff" opacity="0.04"/>
+    </pattern>
+  </defs>
+  <rect width="760" height="570" fill="url(#g)"/>
+  <rect width="760" height="570" fill="url(#dots)"/>
+  <rect x="60" y="250" width="44" height="4" rx="2" fill="#5bbf57"/>
+  <text x="60" y="232" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="17" letter-spacing="3" fill="#8a8f9c" text-transform="uppercase">ZYNGA</text>
+  <text x="60" y="320" font-family="'Bricolage Grotesque',system-ui,sans-serif" font-weight="700" font-size="44" fill="#f3f4f7">FarmVille</text>
+  
+</svg>
