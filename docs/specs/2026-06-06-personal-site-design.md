@@ -142,6 +142,21 @@ enhancement on top. Mirrors Josh's Zipix instinct of shared systems over one-off
    command `npm run build` and output dir `dist`.
 3. (Deferred) Create a personal Doppler project if/when a secret is needed.
 
+### Deferred: "get it onto GitHub" step (decided 2026-06-06)
+
+The repo lives **locally only** for now (clean git history at `/home/josh/Projects/personal-site`).
+Pushing to GitHub is its own later step, bundled with two decisions:
+
+- **Account:** target is the genuinely-personal **`randm989`** account (business-separate),
+  *not* `josh-rutz` (which is tied to the playzipix org). The agent is currently
+  authenticated only as `josh-rutz` and has **no write access** to `randm989`.
+- **Handle rename:** revisit renaming `randm989` to a cleaner public handle at the same time
+  (the site's job is "be known and found"; the handle is part of the brand surface).
+- **Access mechanism:** set up a **personal Doppler** project to hold a `randm989` PAT (the
+  token-holding pattern Josh wanted), or `gh auth login` as `randm989` directly.
+
+Until then, all work stays in local commits — losing nothing.
+
 Everything else — scaffold, content, build config, the delight layer — the agent does.
 
 ## 8. Domain
