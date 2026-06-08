@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Zipix | Founder Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070c;
+    --bg-2: #0b0d15;
+    --panel: #11131e;
+    --line: #20232f;
+    --text: #f6f7fa;
+    --muted: #99a0b0;
+    --faint: #5c6373;
+    --accent: #5fe1c4;
+    --display: "Archivo", system-ui, sans-serif;
+    --body: "Hanken Grotesk", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { height: 100%; }
+  body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  a { color: inherit; }
+
+  .slide {
+    height: 100vh; width: 100%;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 7vw;
+  }
+  .inner { max-width: 1080px; margin: 0 auto; width: 100%; }
+
+  .kicker { font-family: var(--body); text-transform: uppercase; letter-spacing: 0.32em; font-size: clamp(11px,1.1vw,13px); font-weight: 600; color: var(--accent); margin-bottom: 26px; }
+  .accent { color: var(--accent); }
+
+  /* ---------- title slide ---------- */
+  .title { background: radial-gradient(ellipse 70% 60% at 50% 38%, #0e1626, var(--bg) 70%); text-align: left; }
+  .title .name { font-family: var(--display); font-weight: 800; font-size: clamp(56px, 12vw, 168px); line-height: 0.9; letter-spacing: -0.045em; }
+  .title .role { font-family: var(--display); font-weight: 600; font-size: clamp(18px, 2.4vw, 30px); color: var(--text); margin-top: 18px; letter-spacing: -0.01em; }
+  .title .sub { font-size: clamp(16px, 1.9vw, 21px); color: var(--muted); margin-top: 14px; max-width: 560px; }
+
+  /* ---------- statement slide ---------- */
+  .statement { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .statement h2 { font-family: var(--display); font-weight: 800; font-size: clamp(34px, 6vw, 88px); line-height: 1.02; letter-spacing: -0.04em; max-width: 16ch; }
+  .statement .s2sub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 28px; max-width: 660px; line-height: 1.5; }
+
+  /* ---------- numbers slide ---------- */
+  .numbers { background: linear-gradient(180deg, var(--bg), #080a12); }
+  .numbers h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 58px); letter-spacing: -0.035em; margin-bottom: 8px; }
+  .numbers .lead { color: var(--muted); font-size: clamp(15px,1.6vw,18px); margin-bottom: 48px; max-width: 620px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cell { padding: 26px 26px 24px; background: #0a0c14; border: 1px solid var(--line); border-radius: 14px; }
+  .cell .n { font-family: var(--display); font-weight: 800; font-size: clamp(40px,5vw,68px); letter-spacing: -0.04em; line-height: 1; }
+  .cell .c { color: var(--muted); font-size: clamp(13px,1.4vw,15px); margin-top: 12px; line-height: 1.45; }
+  .cell .c b { color: var(--text); font-weight: 600; }
+  .foot { margin-top: 26px; font-size: 13px; color: var(--faint); letter-spacing: 0.02em; }
+
+  /* ---------- image slide ---------- */
+  .shot { padding: 0; justify-content: flex-end; }
+  .shot .bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; }
+  .shot .scrim { position: absolute; inset: 0; z-index: 1;
+    background:
+      linear-gradient(to top, rgba(6,7,12,0.96) 2%, rgba(6,7,12,0.55) 32%, rgba(6,7,12,0.05) 62%),
+      linear-gradient(to right, rgba(6,7,12,0.78), rgba(6,7,12,0.05) 55%); }
+  .shot .cap { position: relative; z-index: 2; padding: 0 7vw 9vh; width: 100%; }
+  .shot .cap .h { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 4.6vw, 62px); line-height: 1.0; letter-spacing: -0.035em; max-width: 18ch; }
+  .shot .cap .d { font-size: clamp(16px, 1.9vw, 21px); color: #c8cdd8; margin-top: 18px; max-width: 640px; line-height: 1.5; }
+  .shot .stat { position: absolute; top: 11vh; right: 7vw; z-index: 2; text-align: right; }
+  .shot .stat .sn { font-family: var(--display); font-weight: 800; font-size: clamp(28px,3.6vw,46px); letter-spacing: -0.03em; color: #fff; line-height: 1; }
+  .shot .stat .sl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-top: 8px; }
+
+  /* ---------- stack slide (heading + capability rows) ---------- */
+  .stack { background: var(--bg); }
+  .stack h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.035em; max-width: 15ch; margin-bottom: 36px; }
+  .rows { display: flex; flex-direction: column; gap: 11px; max-width: 760px; }
+  .row { display: flex; align-items: baseline; gap: 20px; padding: 17px 24px; background: #0a0c14; border: 1px solid var(--line); border-radius: 12px; }
+  .row .rn { font-family: var(--display); font-weight: 600; font-size: clamp(16px,1.8vw,19px); letter-spacing: -0.01em; min-width: 38%; }
+  .row .rd { color: var(--muted); font-size: clamp(14px,1.5vw,16px); line-height: 1.45; }
+  .stack .foot { margin-top: 28px; }
+  .stack .foot a { color: var(--accent); text-decoration: none; }
+  @media (max-width: 720px){ .row { flex-direction: column; gap: 6px; } .row .rn { min-width: 0; } }
+
+  /* ---------- close ---------- */
+  .close { background: radial-gradient(ellipse 80% 70% at 50% 50%, #0e1626, var(--bg) 72%); }
+  .close h2 { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5.5vw, 76px); line-height: 1.02; letter-spacing: -0.04em; max-width: 16ch; }
+  .close .csub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 24px; max-width: 620px; line-height: 1.5; }
+  .close .contact { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; color: var(--muted); padding-top: 26px; border-top: 1px solid var(--line); }
+  .close .contact b { color: var(--text); font-weight: 600; }
+  .close .contact a { color: var(--accent); text-decoration: none; }
+
+  /* ---------- chrome ---------- */
+  .dots { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 13px; }
+  .dots a { width: 8px; height: 8px; border-radius: 50%; background: #2c303d; transition: all .3s ease; cursor: pointer; }
+  .dots a.on { background: var(--accent); transform: scale(1.35); }
+  .counter { position: fixed; left: 28px; bottom: 24px; z-index: 60; font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--faint); letter-spacing: 0.05em; }
+  .counter b { color: var(--text); }
+  .hint { position: absolute; left: 7vw; bottom: 6vh; z-index: 3; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--faint); display: flex; align-items: center; gap: 10px; }
+  .hint .chev { width: 16px; height: 16px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(45deg); animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform: rotate(45deg) translate(0,0);} 50%{ transform: rotate(45deg) translate(3px,3px);} }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .reveal { opacity: 1; transform: none; }
+  .slide.active .reveal:nth-child(2){ transition-delay: .08s; }
+  .slide.active .reveal:nth-child(3){ transition-delay: .16s; }
+  .slide.active .reveal:nth-child(4){ transition-delay: .24s; }
+  .slide.active .reveal:nth-child(5){ transition-delay: .32s; }
+
+  @media (max-width: 720px){
+    .grid { grid-template-columns: 1fr; }
+    .dots { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- 01 title -->
+  <section class="slide title active" id="s1">
+    <div class="inner">
+      <div class="kicker reveal">Zipix &middot; Founder &amp; Technical Director</div>
+      <div class="name reveal">Zipix</div>
+      <div class="role reveal">A mobile micro-game studio, built solo.</div>
+      <div class="sub reveal">Building the studio for a team.</div>
+    </div>
+    <div class="hint">Scroll <span class="chev"></span></div>
+  </section>
+
+  <!-- 02 the bet -->
+  <section class="slide statement" id="s2">
+    <div class="inner">
+      <div class="kicker reveal">The bet</div>
+      <h2 class="reveal">A whole game in about a minute.</h2>
+      <p class="s2sub reveal">Mobile-first micro-games, each one complete in about a minute, with a clean win
+        or loss and an honest timer. Small enough to finish in one sitting, with nothing padded to keep you longer.</p>
+    </div>
+  </section>
+
+  <!-- 03 numbers -->
+  <section class="slide numbers" id="s3">
+    <div class="inner">
+      <div class="kicker reveal">Ten weeks, solo</div>
+      <h2 class="reveal">Seed to live.</h2>
+      <p class="lead reveal">Designed, built, and shipped end to end, before hiring anyone.</p>
+      <div class="grid reveal">
+        <div class="cell"><div class="n" data-to="20">0</div><div class="c"><b>Games shipped</b>, one shared engine contract</div></div>
+        <div class="cell"><div class="n" data-to="10">0</div><div class="c"><b>Weeks</b> from seed to live in production</div></div>
+        <div class="cell"><div class="n" data-to="437">0</div><div class="c"><b>Automated tests</b> across the platform</div></div>
+      </div>
+      <div class="foot reveal">In production across web and native. TypeScript, Phaser 3, Capacitor, Cloudflare, Supabase.</div>
+    </div>
+  </section>
+
+  <!-- 04 shot -->
+  <section class="slide shot" id="s4">
+    <div class="bg" style="background-image:url('../work/zipix.webp')"></div>
+    <div class="scrim"></div>
+    <div class="stat reveal"><div class="sn">20</div><div class="sl">Live games</div></div>
+    <div class="cap">
+      <div class="h reveal">Twenty games, one engine contract.</div>
+      <div class="d reveal">A shared host runtime every game plugs into, so a new game is just content on top of it.
+        Design tokens carry the brand from the web shell onto the game canvas.</div>
+    </div>
+  </section>
+
+  <!-- 05 the machine -->
+  <section class="slide stack" id="s5">
+    <div class="inner">
+      <div class="kicker reveal">The machine</div>
+      <h2 class="reveal">The studio is a system a team plugs into.</h2>
+      <div class="rows">
+        <div class="row reveal"><div class="rn">CLI control plane</div><div class="rd">One entry point for every privileged operation, secrets injected, no loose scripts.</div></div>
+        <div class="row reveal"><div class="rn">Shared design tokens</div><div class="rd">One semantic system across the web UI and the game canvas.</div></div>
+        <div class="row reveal"><div class="rn">Automated test gates</div><div class="rd">437 tests standing between a change and production.</div></div>
+        <div class="row reveal"><div class="rn">Release engineering</div><div class="rd">Nine CI/CD pipelines, versioned and repeatable.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 ai workflows -->
+  <section class="slide stack" id="s6">
+    <div class="inner">
+      <div class="kicker reveal">AI-driven development</div>
+      <h2 class="reveal">One operator, the output of a team.</h2>
+      <div class="rows">
+        <div class="row reveal"><div class="rn">19 agent playbooks</div><div class="rd">Each discipline's workflow, codified once and reused.</div></div>
+        <div class="row reveal"><div class="rn">Game-creation pipeline</div><div class="rd">Scaffolds, implements, and verifies a game, with a human checkpoint at every stage.</div></div>
+      </div>
+      <div class="foot reveal">The lean-ops case study goes deep on this. <a href="./zipix-lean-ops-case-study.html">Read it &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- 07 live ops -->
+  <section class="slide stack" id="s7">
+    <div class="inner">
+      <div class="kicker reveal">Live operations</div>
+      <h2 class="reveal">Every change has a tested path back.</h2>
+      <div class="rows">
+        <div class="row reveal"><div class="rn">Release manifest</div><div class="rd">Every prod-bound change captures its steps and its smoke check.</div></div>
+        <div class="row reveal"><div class="rn">Kill switches</div><div class="rd">Turn a feature off without shipping a deploy.</div></div>
+        <div class="row reveal"><div class="rn">Incident &amp; cost runbooks</div><div class="rd">The next step is written down before it's needed.</div></div>
+        <div class="row reveal"><div class="rn">Production monitor</div><div class="rd">Degradation pages me, not the players.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 close -->
+  <section class="slide close" id="s8">
+    <div class="inner">
+      <div class="kicker reveal">What's next</div>
+      <h2 class="reveal">Built for a team to plug into.</h2>
+      <p class="csub reveal">The system is live and the seat is open. I'm ready for the team it was built for.</p>
+      <div class="contact reveal">
+        <span><b>Josh Rutz</b></span>
+        <span><a href="https://www.joshrutz.com">joshrutz.com</a></span>
+        <span><a href="https://playzipix.app">playzipix.app</a></span>
+        <span><a href="mailto:joshrutz989@gmail.com">joshrutz989@gmail.com</a></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  slides.forEach((s, i) => {
+    const a = document.createElement('a');
+    a.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+    dotsWrap.appendChild(a);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function setActive(i) {
+    current = i;
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    counter.innerHTML = `<b>${String(i+1).padStart(2,'0')}</b> / ${String(slides.length).padStart(2,'0')}`;
+    runCounts(slides[i]);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting && e.intersectionRatio > 0.55) {
+      setActive(slides.indexOf(e.target));
+    }});
+  }, { threshold: [0.55] });
+  slides.forEach(s => io.observe(s));
+
+  function runCounts(slide) {
+    slide.querySelectorAll('.n[data-to]').forEach((el, idx) => {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      const to = parseInt(el.dataset.to, 10), dur = 1100, start = performance.now();
+      function tick(now){
+        const p = Math.min((now-start)/dur, 1);
+        el.textContent = Math.floor((1-Math.pow(1-p,3))*to);
+        if (p<1) requestAnimationFrame(tick); else el.textContent = to;
+      }
+      setTimeout(() => requestAnimationFrame(tick), 220 + idx*80);
+    });
+  }
+
+  function go(d) {
+    const next = Math.max(0, Math.min(slides.length-1, current + d));
+    slides[next].scrollIntoView({behavior:'smooth'});
+  }
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
+    else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); slides[0].scrollIntoView({behavior:'smooth'}); }
+    else if (e.key === 'End') { e.preventDefault(); slides[slides.length-1].scrollIntoView({behavior:'smooth'}); }
+  });
+
+  setActive(0);
+</script>
+</body>
+</html>
