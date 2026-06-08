@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Unlisted hub. noindex + not linked from the public nav. One link to reach every
+// deep-dive deck. To add a deck: drop the .html in public/talks/ and add a row here.
+const decks = [
+  {
+    href: '/talks/zipix-overview.html',
+    kind: 'Overview',
+    title: 'Zipix · Founder Overview',
+    blurb: "How one founder built a mobile studio's entire production system, and the twenty games on top of it.",
+  },
+  {
+    href: '/talks/manticore-overview.html',
+    kind: 'Overview',
+    title: 'Manticore · Lead & Manager',
+    blurb: 'Lead engineer to engineering manager. A team grown from four to seven and held through layoffs, and systems that outlasted two design pivots.',
+  },
+];
+---
+<Base title="Decks · Josh Rutz" description="Deep-dive decks behind the résumé." noindex={true}>
+  <header class="hero"><div class="wrap">
+    <div class="eyebrow reveal">Deep dives</div>
+    <h1 class="reveal">The full story behind each role.</h1>
+    <p class="lede reveal">A deck for each chapter of the résumé, every one a self-contained walkthrough.
+      Gathered here so there's a single link to reach them all.</p>
+  </div></header>
+
+  <section><div class="wrap">
+    <div class="talks">
+      {decks.map((d) => (
+        <a class="talk reveal" href={d.href} target="_blank" rel="noopener">
+          <div>
+            <div class="tk-kind">{d.kind}</div>
+            <h3>{d.title}</h3>
+            <p>{d.blurb}</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      ))}
+    </div>
+    <p class="lede reveal" style="margin-top:42px;font-size:1rem;opacity:.7;">
+      Public talks live on the <a href="/presentations">Talks page</a>.
+    </p>
+  </div></section>
+</Base>

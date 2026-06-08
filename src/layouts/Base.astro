@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-const { title = 'Josh Rutz', description = 'Game maker and team builder.' } = Astro.props;
+const { title = 'Josh Rutz', description = 'Game maker and team builder.', noindex = false } = Astro.props;
 const path = Astro.url.pathname;
 const isActive = (href) => path === href || (href !== '/' && path.startsWith(href));
 
@@ -16,6 +16,7 @@ const ogImage = new URL('/og.png', Astro.site).href;
   <meta name="description" content={description} />
   <title>{title}</title>
   <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
 
   <!-- Open Graph (LinkedIn, Facebook, iMessage, Discord) -->
   <meta property="og:type" content="website" />
@@ -26,7 +27,7 @@ const ogImage = new URL('/og.png', Astro.site).href;
   <meta property="og:image" content={ogImage} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Josh Rutz — game maker and team builder" />
+  <meta property="og:image:alt" content="Josh Rutz · game maker and team builder" />
 
   <!-- Twitter / X large card -->
   <meta name="twitter:card" content="summary_large_image" />
