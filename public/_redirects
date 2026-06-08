@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects.
+# Canonicalize www -> apex so joshrutz.com is the single source of truth.
+# (Both joshrutz.com and www.joshrutz.com are attached to this Pages project;
+#  without this, www would serve a duplicate of the site instead of redirecting.)
+https://www.joshrutz.com/* https://joshrutz.com/:splat 301
