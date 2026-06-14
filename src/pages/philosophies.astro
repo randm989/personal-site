@@ -1,0 +1,258 @@
+---
+import Base from '../layouts/Base.astro';
+
+const principles = [
+  { id: 'p1', n: '01', title: 'Systems &gt; Discipline' },
+  { id: 'p2', n: '02', title: 'End every status report with three questions' },
+  { id: 'p3', n: '03', title: 'Name the elephant, never the person' },
+  { id: 'p4', n: '04', title: 'Put people where they&rsquo;re already motivated' },
+  { id: 'p5', n: '05', title: 'Show people the level above their own' },
+  { id: 'p6', n: '06', title: 'Make my team so elite they don&rsquo;t need me' },
+];
+---
+<Base
+  title="Philosophies · Josh Rutz"
+  description="How I think and lead, written down — the principles I've actually used, not the ones that sound good in an interview."
+>
+  <header class="hero" id="top"><div class="wrap">
+    <div class="eyebrow reveal">How I lead</div>
+    <h1 class="reveal">My philosophies</h1>
+    <p class="lede reveal">Notes to myself, written down so I stop trusting memory: the principles
+      I&rsquo;ve actually used, not the ones that sound good in an interview. One idea sits under all of
+      them. People have a limited daily budget of good decisions, and my job is to keep that budget off
+      the boilerplate and spend it on the few decisions and conversations that genuinely need a human.</p>
+  </div></header>
+
+  <section><div class="wrap">
+    <div class="label reveal" id="six">The six<span class="rule"></span></div>
+    <div class="philo-grid">
+      {principles.map((p) => (
+        <a class="philo-card reveal" href={`#${p.id}`}>
+          <span class="pc-fx"><span class="pc-drop"><span class="pc-lobe a"></span><span class="pc-lobe b"></span></span></span>
+          <span class="pc-num">{p.n}</span>
+          <span class="pc-title" set:html={p.title}></span>
+          <span class="pc-read">Read</span>
+        </a>
+      ))}
+    </div>
+  </div></section>
+
+  <section id="p1" class="philo-section"><div class="wrap">
+    <div class="eyebrow reveal">Principle 01</div>
+    <h2 class="reveal">Systems &gt; Discipline</h2>
+    <p class="body reveal">If a team has to rely on willpower to do the right thing every time, I&rsquo;ve
+      built the wrong system. Discipline runs out, and decision fatigue spends the same budget that hard
+      problems need. So I&rsquo;d rather fix the environment once than ask people to be disciplined forever.</p>
+    <p class="body reveal">A concrete one. Designers on my team wrote their own Lua to drive game and
+      character logic. Smart people, but some of the code was getting out of hand: heavy loops, no review.
+      I didn&rsquo;t ask them to write cleaner code. I changed the path instead. They keep writing Lua
+      (autonomy), but a commit needs a programmer&rsquo;s sign-off (within scope). Inefficient loops dropped
+      sharply, and the review surface kept catching spots where a single new C++ API call would make a whole
+      class of Lua cheaper.</p>
+    <p class="body reveal">The designers didn&rsquo;t love being slowed down. What sold it was the trade:
+      in exchange for the gate, performance stopped being their problem and moved to the engineers.
+      That&rsquo;s the rule under the rule. A good constraint does more than say no. It gives something back
+      for what it takes.</p>
+    <a class="backlink reveal" href="#six">Back to the six</a>
+  </div></section>
+
+  <section id="p2" class="philo-section"><div class="wrap">
+    <div class="eyebrow reveal">Principle 02</div>
+    <h2 class="reveal">End every status report with three questions</h2>
+    <p class="body reveal">When someone finishes telling me where their work stands, I ask the same three
+      things. Are you blocked? Are you delayed? Are you confused about the requirements?</p>
+    <p class="body reveal">I want everyone to always have work they can move on, and those three questions
+      cover the only reasons they can&rsquo;t. If the answer to all three is no, I stay out of the way. They
+      have what they need, and stepping in would just be noise. If any one of them is yes, that&rsquo;s my
+      cue: reprioritize something, set up the meeting, or clear up the requirement, so they can get back to
+      their own work.</p>
+    <p class="body reveal">The questions aren&rsquo;t a check on the person. They&rsquo;re a check on whether
+      the system around the person is holding them up.</p>
+    <a class="backlink reveal" href="#six">Back to the six</a>
+  </div></section>
+
+  <section id="p3" class="philo-section"><div class="wrap">
+    <div class="eyebrow reveal">Principle 03</div>
+    <h2 class="reveal">Name the elephant, never the person</h2>
+    <p class="body reveal">Most work meetings I sit in could end early. When everyone&rsquo;s repeating what
+      we all already know, no new information is moving, and the meeting is just heat. The useful moments are
+      the hard ones: the blocker no one&rsquo;s saying, the miscommunication two people are quietly working
+      around.</p>
+    <p class="body reveal">So I bring it up. There&rsquo;s a method to it, and the method is the whole thing.</p>
+    <p class="body reveal">It&rsquo;s us against the problem, never person against person. I state the problem
+      the team is having and put everyone on the same side of it. Nobody&rsquo;s in the dock.</p>
+    <p class="body reveal">Process problems get aired to the group. People problems never do. If the issue is
+      a specific person rather than a situation, that&rsquo;s a 1:1, in private. Calling someone out in a room
+      doesn&rsquo;t create progress, it creates a defended, shut-down room.</p>
+    <p class="body reveal">I find the elephant by staying close to my team, my peers, and my boss, so I feel
+      the tension when it shows up. Nine times out of ten it&rsquo;s a misunderstanding, not a real
+      disagreement. Most engineers would rather avoid a direct confrontation than walk into one, so I stand
+      in as the intermediary: I keep my own feelings out of it and let both sides air their context until the
+      misunderstanding comes apart. That way nobody has to risk mixing how they feel with what&rsquo;s
+      actually wrong.</p>
+    <a class="backlink reveal" href="#six">Back to the six</a>
+  </div></section>
+
+  <section id="p4" class="philo-section"><div class="wrap">
+    <div class="eyebrow reveal">Principle 04</div>
+    <h2 class="reveal">Put people where they&rsquo;re already motivated</h2>
+    <p class="body reveal">Three things drive good work: autonomy, mastery, and purpose. Two out of three
+      gets someone engaged. All three gives you the best team you&rsquo;ll ever work on. They don&rsquo;t come
+      from the same place, and treating them as one lever is the mistake.</p>
+    <p class="body reveal"><strong>Purpose</strong> comes from the organization: the mission, the product,
+      the reason any of this matters. I keep it visible. I don&rsquo;t invent a private version of it for each
+      person.</p>
+    <p class="body reveal"><strong>Mastery</strong> is personal and can&rsquo;t be assigned. It&rsquo;s the
+      specific kind of work that clicks for someone and the area they want to grow in. The most I can do is
+      expose people to enough different work that they find their thing, then stay out of their way while they
+      chase it.</p>
+    <p class="body reveal"><strong>Autonomy</strong> is the one I actually control, and it&rsquo;s a dial, not
+      a switch. Grant none and I&rsquo;m a micromanager. Grant all of it and I&rsquo;m lazy, and the team
+      drifts. What I aim for is autonomy within scope: enough room that people feel invested and can move,
+      inside a boundary that keeps everyone pointed the same way. A boundary set right gives something back
+      for what it takes.</p>
+    <a class="backlink reveal" href="#six">Back to the six</a>
+  </div></section>
+
+  <section id="p5" class="philo-section"><div class="wrap">
+    <div class="eyebrow reveal">Principle 05</div>
+    <h2 class="reveal">Show people the level above their own</h2>
+    <p class="body reveal">For someone to level up, they have to want to see the meaning one level above
+      their work. For an IC, that&rsquo;s how their work affects the team. For a lead, how the team&rsquo;s
+      work affects the studio. For a studio director, how the studio advances the organization&rsquo;s goals.</p>
+    <p class="body reveal">That wider view does two things. It&rsquo;s how a person grows into the next level
+      before they&rsquo;re in it. And it surfaces options that would otherwise go unseen: when a technical or
+      artistic developer knows what a feature is actually for, they can propose alternatives only their
+      discipline would think of. A cheaper path, a better effect, a different shape of the same outcome.</p>
+    <p class="body reveal">The person closest to the craft often holds the best idea. They can only offer it
+      once they can see the goal from above.</p>
+    <a class="backlink reveal" href="#six">Back to the six</a>
+  </div></section>
+
+  <section id="p6" class="philo-section"><div class="wrap">
+    <div class="eyebrow reveal">Principle 06</div>
+    <h2 class="reveal">Make my team so elite they don&rsquo;t need me</h2>
+    <p class="body reveal">I want everyone on my team to level up into high-level seniors who can run
+      autonomously. That means every raise, promotion, and bonus I can advocate for, I do. I want them to
+      have all of it.</p>
+    <p class="body reveal">I&rsquo;m honest about the selfish half. A team of autonomous seniors is a team I
+      barely have to maintain, and every hour I&rsquo;m not spending holding the existing system together is
+      an hour I can put into making it better. The generous goal and the selfish one run the same direction:
+      the more my people grow, the less my job is maintenance and the more it&rsquo;s improvement.</p>
+    <a class="backlink reveal" href="#six">Back to the six</a>
+  </div></section>
+</Base>
+
+<style>
+  .philo-section { scroll-margin-top: 86px; }
+  #six { scroll-margin-top: 86px; }
+
+  .philo-grid {
+    margin-top: 10px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  /* neutral panel (depth from light) + a liquid green cursor-light */
+  .philo-card {
+    position: relative;
+    display: flex; flex-direction: column;
+    min-height: 152px;
+    border-radius: 24px;
+    background: var(--paper);
+    padding: 22px 22px 18px;
+    overflow: hidden;
+    text-decoration: none; color: inherit;
+    box-shadow: 16px 16px 44px var(--sh-dark), -13px -13px 36px var(--sh-light);
+    transition: transform .3s var(--ease-out), box-shadow .4s var(--ease-out);
+  }
+  .pc-num { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .pc-title { font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.18; letter-spacing: -.01em; margin: 10px 0 0; color: var(--ink); }
+  .pc-read { margin-top: auto; padding-top: 14px; font-size: 12.5px; color: var(--ink-faint);
+    display: inline-flex; align-items: center; gap: 6px; transition: color .25s var(--ease-out), gap .25s var(--ease-out); }
+  .pc-read::after { content: "\2193"; }
+
+  /* the liquid light, contained inside the panel so green never floods */
+  .pc-fx { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 0; }
+  .pc-drop {
+    position: absolute; left: 0; top: 0; width: 260px; height: 260px; margin: -130px 0 0 -130px;
+    transform: translate(var(--bx, 50%), var(--by, 50%));
+    opacity: 0; transition: opacity .45s var(--ease-out);
+  }
+  .pc-lobe { position: absolute; inset: 0; background: var(--glow); filter: blur(22px);
+    animation-play-state: paused; will-change: transform, border-radius; }
+  .pc-lobe.a { border-radius: 46% 54% 57% 43% / 53% 46% 54% 47%; animation: pc-spinA 8s linear infinite, pc-morphA 6s ease-in-out infinite alternate; }
+  .pc-lobe.b { border-radius: 54% 46% 43% 57% / 47% 54% 46% 53%; animation: pc-spinB 11s linear infinite, pc-morphB 7.5s ease-in-out infinite alternate; }
+  .philo-card > :not(.pc-fx) { position: relative; z-index: 1; }
+
+  @keyframes pc-spinA { to { transform: rotate(360deg); } }
+  @keyframes pc-spinB { to { transform: rotate(-360deg); } }
+  @keyframes pc-morphA {
+    from { border-radius: 46% 54% 57% 43% / 53% 46% 54% 47%; }
+    to   { border-radius: 62% 38% 47% 53% / 42% 60% 40% 58%; }
+  }
+  @keyframes pc-morphB {
+    from { border-radius: 54% 46% 43% 57% / 47% 54% 46% 53%; }
+    to   { border-radius: 38% 62% 56% 44% / 59% 41% 58% 42%; }
+  }
+
+  .backlink { display: inline-block; margin-top: 22px; font-size: 12.5px; letter-spacing: .04em;
+    text-transform: uppercase; font-weight: 600; color: var(--ink-faint); text-decoration: none;
+    transition: color .25s var(--ease-out); }
+  .backlink::before { content: "\2191  "; }
+  .backlink:hover { color: var(--accent); }
+
+  @media (hover:hover) and (pointer:fine) {
+    .philo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 20px 20px 56px var(--sh-dark), -15px -15px 42px var(--sh-light), 0 0 0 1px var(--glow);
+    }
+    .philo-card:hover .pc-drop { opacity: 1; }
+    .philo-card:hover .pc-lobe { animation-play-state: running; }
+    .philo-card:hover .pc-read { color: var(--accent); gap: 9px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pc-lobe { animation: none; }
+    .philo-card:hover { transform: none; }
+  }
+</style>
+
+<script>
+  // The liquid cursor-light lags behind the pointer (exponential smoothing -> no overshoot / no bounce).
+  const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (fine) {
+    const E = 0.18; // lower = laggier
+    const states = [];
+    for (const card of document.querySelectorAll('.philo-card')) {
+      const st = { card, tx: 0, ty: 0, cx: 0, cy: 0, on: false, init: false };
+      states.push(st);
+      const aim = (e) => {
+        const r = card.getBoundingClientRect();
+        st.tx = e.clientX - r.left;
+        st.ty = e.clientY - r.top;
+      };
+      card.addEventListener('pointerenter', (e) => {
+        aim(e);
+        if (!st.init) { st.cx = st.tx; st.cy = st.ty; st.init = true; }
+        st.on = true; ensure();
+      });
+      card.addEventListener('pointerleave', () => { st.on = false; });
+      card.addEventListener('pointermove', aim);
+    }
+    let running = false;
+    function frame() {
+      let active = false;
+      for (const st of states) {
+        st.cx += (st.tx - st.cx) * E;
+        st.cy += (st.ty - st.cy) * E;
+        st.card.style.setProperty('--bx', st.cx.toFixed(1) + 'px');
+        st.card.style.setProperty('--by', st.cy.toFixed(1) + 'px');
+        if (st.on || Math.abs(st.tx - st.cx) + Math.abs(st.ty - st.cy) > 0.5) active = true;
+      }
+      if (active) requestAnimationFrame(frame); else running = false;
+    }
+    function ensure() { if (!running) { running = true; requestAnimationFrame(frame); } }
+  }
+</script>
