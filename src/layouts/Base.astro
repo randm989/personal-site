@@ -51,13 +51,19 @@ const ogImage = new URL('/og.png', Astro.site).href;
   </script>
 </head>
 <body>
-  <nav><div class="wrap">
+  <nav id="nav"><div class="wrap">
     <a class="brand" href="/"><span class="mark"><i></i><i></i><i></i></span> Josh Rutz</a>
-    <div class="navlinks">
-      <a href="/projects" aria-current={isActive('/projects') ? 'page' : undefined}>Work</a>
-      <a href="/presentations" aria-current={isActive('/presentations') ? 'page' : undefined}>Talks</a>
-      <a href="/resume" aria-current={isActive('/resume') ? 'page' : undefined}>Resume</a>
-      <button class="switch" id="theme-toggle" aria-label="Toggle light or dark theme"></button>
+    <div class="navright">
+      <div class="navlinks" id="navlinks">
+        <a href="/projects" aria-current={isActive('/projects') ? 'page' : undefined}>Work</a>
+        <a href="/presentations" aria-current={isActive('/presentations') ? 'page' : undefined}>Talks</a>
+        <a href="/philosophies" aria-current={isActive('/philosophies') ? 'page' : undefined}>Leading</a>
+        <a href="/resume" aria-current={isActive('/resume') ? 'page' : undefined}>Resume</a>
+      </div>
+      <div class="navactions">
+        <button class="switch" id="theme-toggle" aria-label="Toggle light or dark theme"></button>
+        <button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span></button>
+      </div>
     </div>
   </div></nav>
 
@@ -71,6 +77,9 @@ const ogImage = new URL('/og.png', Astro.site).href;
   </div></footer>
 
   <script>
+    // All GSAP-driven motion (entrance reveals + momentum cursor-light) lives in lib/motion.js
+    import '../../lib/motion.js';
+
     // theme toggle (persisted)
     const root = document.documentElement;
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
@@ -79,23 +88,24 @@ const ogImage = new URL('/og.png', Astro.site).href;
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
 
-    // entrance: hero staggers on load, sections rise on scroll
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('header .reveal').forEach((el, i) => { el.style.transitionDelay = (i * 70) + 'ms'; });
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-
-    // panel glow follows the cursor (sets --mx/--my the radial-gradient reads)
-    const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
-    if (fine) {
-      document.querySelectorAll('.panel').forEach((panel) => {
-        panel.addEventListener('pointermove', (e) => {
-          const r = panel.getBoundingClientRect();
-          panel.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-          panel.style.setProperty('--my', (e.clientY - r.top) + 'px');
-        });
+    // mobile nav: the hamburger toggles the link menu
+    const nav = document.getElementById('nav');
+    const menuBtn = document.getElementById('menu-btn');
+    const navlinks = document.getElementById('navlinks');
+    if (nav && menuBtn && navlinks) {
+      const setMenu = (open) => {
+        nav.classList.toggle('open', open);
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      };
+      menuBtn.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+      navlinks.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+      document.addEventListener('click', (e) => {
+        if (nav.classList.contains('open') && !nav.contains(e.target)) setMenu(false);
       });
+      // collapse the menu if the viewport grows back to desktop
+      matchMedia('(min-width: 641px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
     }
   </script>
 </body>

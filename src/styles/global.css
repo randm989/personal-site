@@ -60,6 +60,30 @@ nav .wrap{ display:flex; justify-content:space-between; align-items:center; heig
 .switch:active{ transform:scale(0.95) }
 [data-theme="dark"] .switch::after{ transform:translateX(24px) }
 
+/* ---- nav: right cluster + mobile hamburger menu ---- */
+.navright{ display:flex; align-items:center; gap:18px }
+.navactions{ display:flex; align-items:center; gap:12px }
+.menu-btn{ display:none; width:40px; height:32px; padding:0; flex:0 0 auto; cursor:pointer;
+  position:relative; border:1px solid var(--line); border-radius:10px; background:var(--paper-2);
+  transition:border-color .3s ease, background .3s ease }
+.menu-btn span{ position:absolute; left:10px; right:10px; height:2px; border-radius:2px; background:var(--ink);
+  transition:transform .25s var(--ease-out), opacity .2s ease }
+.menu-btn span:nth-child(1){ top:12px } .menu-btn span:nth-child(2){ bottom:12px }
+nav.open .menu-btn span:nth-child(1){ transform:translateY(3px) rotate(45deg) }
+nav.open .menu-btn span:nth-child(2){ transform:translateY(-3px) rotate(-45deg) }
+
+@media (max-width:640px){
+  .menu-btn{ display:inline-flex }
+  .navlinks{ position:absolute; top:100%; left:0; right:0; gap:0;
+    flex-direction:column; align-items:stretch; padding:6px 0 10px;
+    background:color-mix(in srgb, var(--paper) 95%, transparent); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    opacity:0; transform:translateY(-10px); pointer-events:none;
+    transition:opacity .26s var(--ease-out), transform .26s var(--ease-out) }
+  nav.open .navlinks{ opacity:1; transform:none; pointer-events:auto }
+  .navlinks a{ padding:13px 28px; font-size:16px }
+}
+
 /* ---- typography ---- */
 .eyebrow{ font-size:12.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--accent);
   font-weight:600; margin-bottom:18px }
@@ -135,9 +159,10 @@ p.body, .body{ font-size:17px; line-height:1.62; color:var(--ink-soft); max-widt
 .talk .arrow{ font-size:20px; color:var(--ink-faint); flex:0 0 auto; align-self:center;
   transition:transform .3s var(--ease-out), color .3s var(--ease-out) }
 
-/* ---- entrance choreography (progressive enhancement: only hides when JS is on) ---- */
-.reveal{ transition:opacity .55s var(--ease-out), transform .55s var(--ease-out) }
-html.js .reveal:not(.in){ opacity:0; transform:translateY(12px) }
+/* ---- entrance choreography (GSAP-driven; see lib/motion.js) ----
+   GSAP animates opacity/transform inline, so no CSS transition here (it would double-ease).
+   The pre-paint hide (gated on .js) prevents a flash before motion.js runs its reveal. */
+html.js .reveal{ opacity:0; transform:translateY(12px) }
 
 footer{ margin-top:60px; padding:36px 0 80px; border-top:1px solid var(--line);
   color:var(--ink-faint); font-size:14px }

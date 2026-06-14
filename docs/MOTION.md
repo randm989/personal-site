@@ -43,9 +43,10 @@ Never `ease-in` on UI (feels sluggish). Color/theme transitions may use plain `e
   through a per-frame **lerp** (`+= (target - current) * 0.16`), never bound directly to the
   mouse. Springs in from center on enter (no corner jump). This is the "lit by your attention"
   motif, with life instead of stiffness.
-- **Entrance choreography:** elements carry `.reveal` (opacity 0 + `translateY(12px)`), gain
-  `.in` via `IntersectionObserver`. The hero staggers on load (70ms steps); sections rise as
-  they enter the viewport. Stagger stays short; never blocks interaction.
+- **Entrance choreography:** elements carry `.reveal` (opacity 0 + `translateY(12px)`),
+  revealed by GSAP ScrollTrigger (`lib/motion.js`). The hero plays on load with a short
+  stagger; sections rise as they enter the viewport. Stagger stays short; never blocks
+  interaction.
 - **Nav mark:** three geometric bars (a nod to the clean spinner reference). **Static by
   default** — it's seen on every page, so it does not loop. It bumps on `.brand:hover` with a
   small per-bar stagger.
