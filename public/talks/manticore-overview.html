@@ -7,18 +7,18 @@
 <title>Manticore | Lead & Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #06070c;
-    --bg-2: #0b0d15;
-    --panel: #11131e;
-    --line: #20232f;
-    --text: #f6f7fa;
-    --muted: #99a0b0;
-    --faint: #5c6373;
-    --accent: #5fe1c4;
-    --display: "Archivo", system-ui, sans-serif;
+    --bg: oklch(0.185 0.003 60);
+    --bg-2: oklch(0.225 0.003 60);
+    --panel: oklch(0.255 0.004 60);
+    --line: oklch(0.32 0.005 60);
+    --text: oklch(0.93 0.004 80);
+    --muted: oklch(0.75 0.006 72);
+    --faint: oklch(0.56 0.005 65);
+    --accent: oklch(0.66 0.13 155);
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
     --body: "Hanken Grotesk", system-ui, sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,7 +49,7 @@
   .accent { color: var(--accent); }
 
   /* ---------- title slide ---------- */
-  .title { background: radial-gradient(ellipse 70% 60% at 50% 38%, #0e1626, var(--bg) 70%); text-align: left; }
+  .title { background: radial-gradient(ellipse 70% 60% at 50% 38%, oklch(0.265 0.008 75), var(--bg) 70%); text-align: left; }
   .title .name { font-family: var(--display); font-weight: 800; font-size: clamp(56px, 12vw, 168px); line-height: 0.9; letter-spacing: -0.045em; }
   .title .role { font-family: var(--display); font-weight: 600; font-size: clamp(18px, 2.4vw, 30px); color: var(--text); margin-top: 18px; letter-spacing: -0.01em; }
   .title .sub { font-size: clamp(16px, 1.9vw, 21px); color: var(--muted); margin-top: 14px; max-width: 560px; }
@@ -60,11 +60,11 @@
   .statement .s2sub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 28px; max-width: 660px; line-height: 1.5; }
 
   /* ---------- numbers slide ---------- */
-  .numbers { background: linear-gradient(180deg, var(--bg), #080a12); }
+  .numbers { background: linear-gradient(180deg, var(--bg), oklch(0.17 0.003 60)); }
   .numbers h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 58px); letter-spacing: -0.035em; margin-bottom: 8px; }
   .numbers .lead { color: var(--muted); font-size: clamp(15px,1.6vw,18px); margin-bottom: 48px; max-width: 620px; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .cell { padding: 26px 26px 24px; background: #0a0c14; border: 1px solid var(--line); border-radius: 14px; }
+  .cell { padding: 26px 26px 24px; background: oklch(0.235 0.004 60); border: 1px solid var(--line); border-radius: 14px; }
   .cell .n { font-family: var(--display); font-weight: 800; font-size: clamp(40px,5vw,68px); letter-spacing: -0.04em; line-height: 1; }
   .cell .c { color: var(--muted); font-size: clamp(13px,1.4vw,15px); margin-top: 12px; line-height: 1.45; }
   .cell .c b { color: var(--text); font-weight: 600; }
@@ -75,20 +75,20 @@
   .shot .bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 0; }
   .shot .scrim { position: absolute; inset: 0; z-index: 1;
     background:
-      linear-gradient(to top, rgba(6,7,12,0.96) 2%, rgba(6,7,12,0.55) 32%, rgba(6,7,12,0.05) 62%),
-      linear-gradient(to right, rgba(6,7,12,0.78), rgba(6,7,12,0.05) 55%); }
+      linear-gradient(to top, oklch(0.185 0.003 60 / 0.96) 2%, oklch(0.185 0.003 60 / 0.55) 32%, oklch(0.185 0.003 60 / 0.05) 62%),
+      linear-gradient(to right, oklch(0.185 0.003 60 / 0.78), oklch(0.185 0.003 60 / 0.05) 55%); }
   .shot .cap { position: relative; z-index: 2; padding: 0 7vw 9vh; width: 100%; }
   .shot .cap .h { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 4.6vw, 62px); line-height: 1.0; letter-spacing: -0.035em; max-width: 18ch; }
-  .shot .cap .d { font-size: clamp(16px, 1.9vw, 21px); color: #c8cdd8; margin-top: 18px; max-width: 640px; line-height: 1.5; }
+  .shot .cap .d { font-size: clamp(16px, 1.9vw, 21px); color: oklch(0.82 0.005 75); margin-top: 18px; max-width: 640px; line-height: 1.5; }
   .shot .stat { position: absolute; top: 11vh; right: 7vw; z-index: 2; text-align: right; }
-  .shot .stat .sn { font-family: var(--display); font-weight: 800; font-size: clamp(28px,3.6vw,46px); letter-spacing: -0.03em; color: #fff; line-height: 1; }
+  .shot .stat .sn { font-family: var(--display); font-weight: 800; font-size: clamp(28px,3.6vw,46px); letter-spacing: -0.03em; color: oklch(0.97 0.004 80); line-height: 1; }
   .shot .stat .sl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-top: 8px; }
 
   /* ---------- stack slide (heading + capability rows) ---------- */
   .stack { background: var(--bg); }
   .stack h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 64px); line-height: 1.02; letter-spacing: -0.035em; max-width: 15ch; margin-bottom: 36px; }
   .rows { display: flex; flex-direction: column; gap: 11px; max-width: 760px; }
-  .row { display: flex; align-items: baseline; gap: 20px; padding: 17px 24px; background: #0a0c14; border: 1px solid var(--line); border-radius: 12px; }
+  .row { display: flex; align-items: baseline; gap: 20px; padding: 17px 24px; background: oklch(0.235 0.004 60); border: 1px solid var(--line); border-radius: 12px; }
   .row .rn { font-family: var(--display); font-weight: 600; font-size: clamp(16px,1.8vw,19px); letter-spacing: -0.01em; min-width: 38%; }
   .row .rd { color: var(--muted); font-size: clamp(14px,1.5vw,16px); line-height: 1.45; }
   .stack .foot { margin-top: 28px; }
@@ -96,7 +96,7 @@
   @media (max-width: 720px){ .row { flex-direction: column; gap: 6px; } .row .rn { min-width: 0; } }
 
   /* ---------- close ---------- */
-  .close { background: radial-gradient(ellipse 80% 70% at 50% 50%, #0e1626, var(--bg) 72%); }
+  .close { background: radial-gradient(ellipse 80% 70% at 50% 50%, oklch(0.265 0.008 75), var(--bg) 72%); }
   .close h2 { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5.5vw, 76px); line-height: 1.02; letter-spacing: -0.04em; max-width: 16ch; }
   .close .csub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 24px; max-width: 620px; line-height: 1.5; }
   .close .contact { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; color: var(--muted); padding-top: 26px; border-top: 1px solid var(--line); }
@@ -105,7 +105,7 @@
 
   /* ---------- chrome ---------- */
   .dots { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 13px; }
-  .dots a { width: 8px; height: 8px; border-radius: 50%; background: #2c303d; transition: all .3s ease; cursor: pointer; }
+  .dots a { width: 8px; height: 8px; border-radius: 50%; background: oklch(0.38 0.005 60); transition: all .3s ease; cursor: pointer; }
   .dots a.on { background: var(--accent); transform: scale(1.35); }
   .counter { position: fixed; left: 28px; bottom: 24px; z-index: 60; font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--faint); letter-spacing: 0.05em; }
   .counter b { color: var(--text); }

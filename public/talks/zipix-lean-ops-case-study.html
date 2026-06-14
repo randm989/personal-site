@@ -4,14 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zipix · Lean Ops Case Study · State Tap v1.2.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0b14; --surface:#12131a; --surface2:#1d2030; --line:#262a3d;
-    --text:#f5f6fa; --muted:#7e8597; --accent:#3ecf8e; --accent-dk:#1a7a52;
-    --accent-lt:#8ee2b5; --violet:#c7aaff; --red:#e88a8a; --red-dk:#cc3333;
+    --bg:oklch(0.185 0.003 60); --surface:oklch(0.225 0.004 60); --surface2:oklch(0.255 0.004 60); --line:oklch(0.32 0.005 60);
+    --text:oklch(0.93 0.004 80); --muted:oklch(0.70 0.006 70); --accent:oklch(0.66 0.13 155); --accent-dk:oklch(0.50 0.11 152);
+    --accent-lt:oklch(0.80 0.10 158); --violet:#c7aaff; --red:#e88a8a; --red-dk:#cc3333;
     --amber:#f0c46a;
     --mono:"SF Mono",ui-monospace,"JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
-    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --display:"Bricolage Grotesque",system-ui,sans-serif; --sans:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
@@ -19,7 +22,7 @@
     background:var(--bg); color:var(--text); font-family:var(--sans);
     overflow:hidden; -webkit-font-smoothing:antialiased;
     background-image:
-      radial-gradient(900px 600px at 82% -10%, rgba(62,207,142,.10), transparent 60%),
+      radial-gradient(900px 600px at 82% -10%, oklch(0.66 0.13 155 / .10), transparent 60%),
       radial-gradient(700px 500px at -5% 110%, rgba(199,170,255,.07), transparent 55%);
   }
   /* ---- deck ---- */
@@ -47,7 +50,7 @@
   .eyebrow::before{content:"";width:30px;height:2px;background:var(--accent);display:inline-block;border-radius:2px}
   h1{font-size:clamp(38px,6.4vw,82px);line-height:1.02;letter-spacing:-.02em;font-weight:800}
   h2{font-size:clamp(28px,4.2vw,52px);line-height:1.06;letter-spacing:-.015em;font-weight:800;margin-bottom:10px}
-  .lead{font-size:clamp(17px,2.1vw,24px);color:#cfd3e0;line-height:1.5;font-weight:400;max-width:60ch}
+  .lead{font-size:clamp(17px,2.1vw,24px);color:oklch(0.83 0.005 76);line-height:1.5;font-weight:400;max-width:60ch}
   .muted{color:var(--muted)}
   .accent{color:var(--accent)}
   .violet{color:var(--violet)}
@@ -58,8 +61,8 @@
   /* ---- title ---- */
   .brandrow{display:flex;align-items:center;gap:14px;margin-bottom:34px}
   .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(150deg,var(--accent),var(--accent-dk));
-    display:grid;place-items:center;font-weight:900;color:#04140c;font-size:22px;
-    box-shadow:0 8px 30px rgba(62,207,142,.35)}
+    display:grid;place-items:center;font-weight:900;color:oklch(0.17 0.02 155);font-size:22px;
+    box-shadow:0 8px 30px oklch(0.66 0.13 155 / .35)}
   .brandname{font-weight:800;letter-spacing:.02em;font-size:20px}
   .titlemeta{margin-top:38px;font-family:var(--mono);font-size:14px;color:var(--muted);
     display:flex;gap:10px;flex-wrap:wrap}
@@ -70,14 +73,14 @@
   .stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 20px}
   .stat .n{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.02em;line-height:1}
   .stat .l{margin-top:10px;font-size:13.5px;color:var(--muted);line-height:1.35}
-  .stat.hl{border-color:rgba(62,207,142,.5);background:linear-gradient(160deg,rgba(62,207,142,.10),var(--surface))}
+  .stat.hl{border-color:oklch(0.66 0.13 155 / .5);background:linear-gradient(160deg,oklch(0.66 0.13 155 / .10),var(--surface))}
 
   /* ---- quote cards ---- */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
   .qcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 28px;position:relative}
   .qcard::before{content:"“";position:absolute;top:6px;left:18px;font-size:60px;color:var(--accent);opacity:.25;font-family:Georgia,serif}
   .qcard .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-  .qcard p{font-size:16.5px;line-height:1.55;color:#dfe2ec}
+  .qcard p{font-size:16.5px;line-height:1.55;color:oklch(0.88 0.005 78)}
   .qcard.dec .tag{color:var(--violet)}
   .qcard.dec::before{color:var(--violet)}
 
@@ -94,7 +97,7 @@
   .step .badge{position:absolute;top:-10px;right:12px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
     text-transform:uppercase;padding:4px 9px;border-radius:999px}
   .badge.h{background:rgba(199,170,255,.16);color:var(--violet);border:1px solid rgba(199,170,255,.4)}
-  .badge.a{background:rgba(62,207,142,.14);color:var(--accent);border:1px solid rgba(62,207,142,.35)}
+  .badge.a{background:oklch(0.66 0.13 155 / .14);color:var(--accent);border:1px solid oklch(0.66 0.13 155 / .35)}
   .pipelegend{margin-top:20px;display:flex;gap:24px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
   .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:middle}
 
@@ -104,7 +107,7 @@
   .col h3{font-size:15px;font-family:var(--mono);letter-spacing:.06em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
   .col.raw{border-color:rgba(204,51,51,.35)}
   .col.raw h3{color:var(--red)}
-  .col.zpx{border-color:rgba(62,207,142,.4)}
+  .col.zpx{border-color:oklch(0.66 0.13 155 / .4)}
   .col.zpx h3{color:var(--accent)}
   .col ul{list-style:none}
   .col li{padding:9px 0 9px 26px;position:relative;font-size:15px;line-height:1.45;border-top:1px solid var(--line)}
@@ -118,12 +121,12 @@
   .fbox .big{font-size:clamp(46px,8vw,92px);font-weight:800;line-height:1;letter-spacing:-.03em}
   .fbox .cap{margin-top:10px;color:var(--muted);font-size:14px}
   .fbox.in .big{color:var(--violet)}
-  .fbox.out{border-color:rgba(62,207,142,.5);background:linear-gradient(160deg,rgba(62,207,142,.12),var(--surface))}
+  .fbox.out{border-color:oklch(0.66 0.13 155 / .5);background:linear-gradient(160deg,oklch(0.66 0.13 155 / .12),var(--surface))}
   .fbox.out .big{color:var(--accent)}
   .farrow{font-size:34px;color:var(--muted);font-family:var(--mono)}
   .bars{margin-top:30px;display:flex;flex-direction:column;gap:14px}
   .bar{display:grid;grid-template-columns:170px 1fr 56px;align-items:center;gap:16px}
-  .bar .name{font-size:14.5px;color:#dfe2ec}
+  .bar .name{font-size:14.5px;color:oklch(0.88 0.005 78)}
   .bar .track{height:16px;background:var(--surface2);border-radius:999px;overflow:hidden}
   .bar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent-dk),var(--accent));
     transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -148,7 +151,7 @@
   .row .body p{font-size:14.5px;color:var(--muted);line-height:1.5}
   .row .body p .accent{color:var(--accent-lt)}
 
-  .kicker{font-size:clamp(20px,2.6vw,28px);line-height:1.45;font-weight:500;color:#e7e9f1;max-width:48ch}
+  .kicker{font-size:clamp(20px,2.6vw,28px);line-height:1.45;font-weight:500;color:oklch(0.90 0.004 80);max-width:48ch}
   .kicker .accent{font-weight:700}
   .sign{margin-top:34px;font-family:var(--mono);font-size:14px;color:var(--muted);
     border-left:2px solid var(--accent);padding-left:16px;line-height:1.6}
@@ -157,7 +160,7 @@
   .chrome{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;
     padding:16px 26px;font-family:var(--mono);font-size:12.5px;color:var(--muted);z-index:20;pointer-events:none}
   .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:30;transition:width .42s ease;
-    box-shadow:0 0 14px rgba(62,207,142,.6)}
+    box-shadow:0 0 14px oklch(0.66 0.13 155 / .6)}
   .nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:25}
   .nav button{width:9px;height:9px;border-radius:50%;border:none;background:var(--surface2);cursor:pointer;padding:0;
     transition:all .25s}
@@ -177,6 +180,8 @@
       page-break-after:always;height:100vh;inset:auto}
     .chrome,.nav,.progress,.hint{display:none!important}
   }
+  /* site-display-pass */
+  h1,h2,h3,h4{ font-family:var(--display); letter-spacing:-0.02em; }
 </style>
 </head>
 <body>
