@@ -46,12 +46,14 @@ import Base from '../layouts/Base.astro';
 </Base>
 
 <script>
-  // the stick figure runs the "Why games" separator (single source: /lib/stickman.js)
+  // the stick figure hops between the section's separator lines as you scroll — jumping up or
+  // falling down to whichever divider is nearest the middle (single source: /lib/stickman.js)
   import '../../lib/stickman.js';
-  const line = document.getElementById('why-line');
+  const host = document.getElementById('why-line')?.closest('.wrap');
   const S = window.Stickman;
-  if (line && S) {
-    const runner = S.createRunner({ mount: line, color: 'var(--ink)', dustColor: 'var(--ink-faint)' });
-    S.attachLineFollow(runner, { line: line.querySelector('.rule') });
+  if (host && S) {
+    const lines = Array.from(host.querySelectorAll('.label .rule'));
+    const runner = S.createRunner({ mount: host, color: 'var(--ink)', dustColor: 'var(--ink-faint)' });
+    S.attachScrollHop(runner, { host, lines });
   }
 </script>
