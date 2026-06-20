@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Define the Fun · Josh Rutz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Tempered system (locked, per DESIGN.md): dark deck tokens, matching the sibling presentations.
+     Green is the only real color; near-neutral surfaces; no texture; gradients illuminate, never text. */
+  :root {
+    --bg: oklch(0.185 0.003 60);
+    --bg-2: oklch(0.225 0.003 60);
+    --panel: oklch(0.235 0.004 60);
+    --line: oklch(0.32 0.005 60);
+    --text: oklch(0.93 0.004 80);
+    --muted: oklch(0.75 0.006 72);
+    --faint: oklch(0.56 0.005 65);
+    --accent: oklch(0.66 0.13 155);
+    --accent-ink: oklch(0.16 0.02 150);
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: "Hanken Grotesk", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { height: 100%; }
+  body {
+    height: 100%; background: var(--bg); color: var(--text); font-family: var(--body);
+    -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-y: scroll;
+    scroll-snap-type: y mandatory; scroll-behavior: smooth;
+  }
+  a { color: inherit; }
+
+  .slide {
+    height: 100vh; width: 100%;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 7vw;
+  }
+  .inner { max-width: 1080px; margin: 0 auto; width: 100%; }
+  .kicker { font-family: var(--body); text-transform: uppercase; letter-spacing: 0.32em; font-size: clamp(11px,1.1vw,13px); font-weight: 600; color: var(--accent); margin-bottom: 26px; }
+  .accent { color: var(--accent); }
+
+  /* ---------- title ---------- */
+  .title { background: radial-gradient(ellipse 70% 60% at 50% 38%, oklch(0.265 0.008 75), var(--bg) 70%); text-align: left; }
+  .title .name { font-family: var(--display); font-weight: 800; font-size: clamp(52px, 12vw, 156px); line-height: 0.9; letter-spacing: -0.045em; }
+  .title .role { font-family: var(--display); font-weight: 600; font-size: clamp(18px, 2.5vw, 31px); color: var(--text); margin-top: 22px; letter-spacing: -0.01em; max-width: 22ch; }
+  .title .sub { font-size: clamp(16px, 1.9vw, 21px); color: var(--muted); margin-top: 14px; max-width: 600px; }
+
+  /* ---------- statement ---------- */
+  .statement { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .statement h2 { font-family: var(--display); font-weight: 800; font-size: clamp(33px, 5.8vw, 82px); line-height: 1.03; letter-spacing: -0.04em; max-width: 18ch; }
+  .statement .s2sub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 28px; max-width: 720px; line-height: 1.5; }
+  .statement .s2sub b { color: var(--text); font-weight: 600; }
+
+  /* ---------- principle / belief ---------- */
+  .principle { background: var(--bg); }
+  .principle .pn { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+  .principle h2 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 5vw, 64px); line-height: 1.01; letter-spacing: -0.04em; max-width: 20ch; }
+  .principle .belief { font-size: clamp(16px, 1.95vw, 21px); color: var(--muted); margin-top: 24px; max-width: 760px; line-height: 1.5; }
+  .principle .proof { margin-top: 28px; max-width: 800px; padding: 20px 24px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 0 14px 14px 0; }
+  .principle .proof .lab { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+  .principle .proof p { font-size: clamp(14px, 1.5vw, 16.5px); color: oklch(0.82 0.005 75); line-height: 1.55; }
+  .principle .proof p b { color: var(--text); font-weight: 600; }
+
+  /* ---------- diagram ---------- */
+  .diagram { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .diagram .pn { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .diagram h2 { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 3.4vw, 40px); line-height: 1.05; letter-spacing: -0.03em; max-width: 22ch; margin-bottom: 18px; }
+  .diagram .figwrap { width: 100%; max-width: 820px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .diagram .cap { font-size: clamp(13px, 1.4vw, 15.5px); color: var(--muted); margin-top: 14px; max-width: 820px; line-height: 1.5; }
+  .diagram .cap b { color: var(--text); font-weight: 600; }
+
+  /* amplitude profiles: soft-light panels, green-only */
+  .profiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 900px; margin-top: 6px; }
+  .profile { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); padding: 14px 16px; box-shadow: 14px 14px 34px oklch(0.15 0.01 55 / .55), -12px -12px 30px oklch(0.27 0.014 55 / .45); }
+  .profile svg { width: 100%; height: auto; margin-bottom: 8px; }
+  .profile h5 { font-family: var(--display); font-weight: 700; font-size: clamp(15px,1.7vw,19px); margin-bottom: 2px; letter-spacing: -0.015em; }
+  .profile .amp { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; color: var(--accent); margin-bottom: 7px; }
+  .profile p { font-size: clamp(12px,1.25vw,14px); color: var(--muted); line-height: 1.45; }
+
+  /* ---------- menu (the seven) ---------- */
+  .menu { background: var(--bg); }
+  .menu h2 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.6vw, 60px); line-height: 1.02; letter-spacing: -0.04em; max-width: 18ch; margin-bottom: 26px; }
+  .menu .chips { display: flex; flex-wrap: wrap; gap: 12px; max-width: 900px; }
+  .menu .chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 10px 22px; font-family: var(--display); font-weight: 600; font-size: clamp(16px,2.1vw,24px); color: var(--text); letter-spacing: -0.015em; }
+  .menu .chip.accent { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+  .menu .src { color: var(--muted); margin-top: 30px; max-width: 760px; font-size: clamp(14px,1.5vw,17px); line-height: 1.5; }
+
+  /* ---------- levers ---------- */
+  .leversld { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .leversld h2 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 4.4vw, 56px); line-height: 1.03; letter-spacing: -0.04em; margin-bottom: 24px; max-width: 20ch; }
+  .levers { display: grid; gap: 10px; max-width: 920px; }
+  .lever-row { display: grid; grid-template-columns: 150px 1fr; align-items: stretch; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
+  .lever-row .ln { padding: 13px 18px; font-family: var(--display); font-weight: 700; color: var(--text); display: flex; align-items: center; font-size: clamp(15px,1.7vw,19px); letter-spacing: -0.015em; border-left: 3px solid var(--accent); background: var(--bg-2); }
+  .lever-row .lb { padding: 12px 18px; display: flex; align-items: center; gap: 10px; font-size: clamp(14px,1.5vw,17px); color: var(--muted); }
+  .lever-row .lb .to { color: var(--text); font-weight: 600; }
+  .lever-row .lb .g { color: var(--accent); font-weight: 700; }
+
+  /* ---------- close ---------- */
+  .close { background: radial-gradient(ellipse 80% 70% at 50% 50%, oklch(0.265 0.008 75), var(--bg) 72%); }
+  .close h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5.2vw, 72px); line-height: 1.02; letter-spacing: -0.04em; max-width: 19ch; }
+  .close .csub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 24px; max-width: 700px; line-height: 1.5; }
+  .close .contact { margin-top: 46px; display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; color: var(--muted); padding-top: 26px; border-top: 1px solid var(--line); }
+  .close .contact b { color: var(--text); font-weight: 600; }
+  .close .contact a { color: var(--accent); text-decoration: none; }
+
+  /* ---------- chrome ---------- */
+  .dots { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 12px; }
+  .dots a { width: 8px; height: 8px; border-radius: 50%; background: oklch(0.38 0.005 60); transition: all .3s ease; cursor: pointer; }
+  .dots a.on { background: var(--accent); transform: scale(1.35); box-shadow: 0 0 10px oklch(0.70 0.14 155 / 0.5); }
+  .counter { position: fixed; left: 28px; bottom: 24px; z-index: 60; font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--faint); letter-spacing: 0.05em; }
+  .counter b { color: var(--text); }
+  .hint { position: absolute; left: 7vw; bottom: 6vh; z-index: 3; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--faint); display: flex; align-items: center; gap: 10px; }
+  .hint .chev { width: 16px; height: 16px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(45deg); animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform: rotate(45deg) translate(0,0);} 50%{ transform: rotate(45deg) translate(3px,3px);} }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .reveal { opacity: 1; transform: none; }
+  .slide.active .reveal:nth-child(2){ transition-delay: .08s; }
+  .slide.active .reveal:nth-child(3){ transition-delay: .16s; }
+  .slide.active .reveal:nth-child(4){ transition-delay: .24s; }
+  .slide.active .reveal:nth-child(5){ transition-delay: .32s; }
+
+  @media (max-width: 820px){ .profiles { grid-template-columns: 1fr; } }
+  @media (max-width: 720px){ .dots { display: none; } .lever-row { grid-template-columns: 116px 1fr; } }
+</style>
+</head>
+<body>
+
+  <!-- 01 title -->
+  <section class="slide title active" id="s1">
+    <div class="inner">
+      <div class="kicker reveal">Josh Rutz &middot; A keynote on fun</div>
+      <div class="name reveal">Define the Fun</div>
+      <div class="role reveal">A play on "find the fun." Find it, define it, then carry the part that lasts.</div>
+      <div class="sub reveal">What makes something fun, which fun lasts, and how to ride it.</div>
+    </div>
+    <div class="hint">Scroll <span class="chev"></span></div>
+  </section>
+
+  <!-- 02 the menu -->
+  <section class="slide menu" id="s2">
+    <div class="inner">
+      <div class="kicker reveal">Start with the map</div>
+      <h2 class="reveal">There are at least seven kinds of fun.</h2>
+      <div class="chips reveal">
+        <span class="chip">Mastery</span><span class="chip">Discovery</span><span class="chip">Immersion</span>
+        <span class="chip">Belonging</span><span class="chip">Expression</span><span class="chip">Thrill</span>
+        <span class="chip">Comfort</span><span class="chip accent">Meaning</span>
+      </div>
+      <p class="src reveal">Drawn from a century of research: Bartle, Caillois, Lazzaro, Koster, the MDA framework, and Quantic Foundry's data on 140,000 players. A real map. But a map is flat.</p>
+    </div>
+  </section>
+
+  <!-- 03 the real question -->
+  <section class="slide statement" id="s3">
+    <div class="inner">
+      <div class="kicker reveal">The turn</div>
+      <h2 class="reveal">The question isn't what's fun. It's which fun <span class="accent">lasts</span>.</h2>
+      <p class="s2sub reveal">Pleasure feels good now and asks nothing of you. Purpose costs something and stays with you afterward. <b>Every kind of fun can be lived shallow or deep.</b> The rest of this is one answer to what moves it from one to the other, in three beliefs.</p>
+    </div>
+  </section>
+
+  <!-- 04 belief one -->
+  <section class="slide principle" id="s4">
+    <div class="inner">
+      <div class="pn reveal">Belief 01 &middot; the edge of engagement</div>
+      <h2 class="reveal">Fun lives on the edge of order and chaos.</h2>
+      <p class="belief reveal">Between what you already know and what you don't yet. Too far into the known and you are bored. Too far into the unknown and you are overwhelmed. The narrow band between is where attention sharpens and you actually learn.</p>
+      <div class="proof reveal"><div class="lab">In the research</div>
+        <p>Flow sits in a channel between boredom and anxiety. Koster: fun is the brain's reward for learning a pattern. The Goldilocks effect: infants attend to events of intermediate complexity, ignoring the too-simple and the too-complex. <b>A century of separate research keeps rediscovering the same border.</b></p></div>
+    </div>
+  </section>
+
+  <!-- 05 the edge diagram -->
+  <section class="slide diagram" id="s5">
+    <div class="inner">
+      <div class="pn reveal">One picture</div>
+      <h2 class="reveal">The edge is a channel you ride, not a place you arrive.</h2>
+      <div class="figwrap reveal">
+        <svg viewBox="0 0 820 360" role="img" aria-label="The flow channel between boredom and overwhelm">
+          <defs>
+            <linearGradient id="band" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#3fae7e" stop-opacity="0.16"/>
+              <stop offset="1" stop-color="#3fae7e" stop-opacity="0.48"/>
+            </linearGradient>
+            <marker id="ar" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6fd3a3"/></marker>
+          </defs>
+          <line x1="84" y1="20" x2="84" y2="312" stroke="#43463f" stroke-width="2"/>
+          <line x1="84" y1="312" x2="788" y2="312" stroke="#43463f" stroke-width="2"/>
+          <polygon points="84,312 150,312 788,38 788,118" fill="url(#band)"/>
+          <line x1="84" y1="312" x2="788" y2="78" stroke="#6fd3a3" stroke-width="2.5"/>
+          <line x1="180" y1="280" x2="720" y2="86" stroke="#6fd3a3" stroke-width="1.6" stroke-dasharray="7 6" marker-end="url(#ar)" opacity="0.85"/>
+          <text x="455" y="172" transform="rotate(-21 455 172)" font-family="Bricolage Grotesque, sans-serif" font-size="16" font-weight="700" fill="#8fe0b4">THE EDGE: engagement &middot; learning &middot; purpose</text>
+          <text x="150" y="74" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#aeafa7">OVERWHELM &middot; BREAKING</text>
+          <text x="150" y="95" font-family="Hanken Grotesk, sans-serif" font-size="12.5" fill="#878c84">too much chaos &middot; too much weight</text>
+          <text x="455" y="286" font-family="Bricolage Grotesque, sans-serif" font-size="15" font-weight="700" fill="#878c84">BOREDOM &middot; APATHY</text>
+          <text x="455" y="305" font-family="Hanken Grotesk, sans-serif" font-size="12.5" fill="#6e736c">too much order &middot; too little weight</text>
+          <text x="436" y="346" text-anchor="middle" font-family="Hanken Grotesk, sans-serif" font-size="12.5" font-weight="600" fill="#9aa0aa">CAPACITY  →  (what you know &middot; weight you can carry)</text>
+        </svg>
+      </div>
+      <p class="cap reveal">The same picture works twice. Read the diagonal as <b>knowledge</b> and it explains engagement. Read it as <b>responsibility</b> and it explains purpose. Sit below it and you stagnate; rise above it and you break; ride it and you grow, which pushes the whole channel outward.</p>
+    </div>
+  </section>
+
+  <!-- 06 belief two -->
+  <section class="slide principle" id="s6">
+    <div class="inner">
+      <div class="pn reveal">Belief 02 &middot; the edge of meaning</div>
+      <h2 class="reveal">Purpose comes from taking on as much responsibility as you can without breaking.</h2>
+      <p class="belief reveal">Too little and nothing rests on you, so nothing matters. Too much and you break. Purpose is the band between, where the weight is real but bearable. The same edge as belief one, measured in weight instead of knowledge.</p>
+      <div class="proof reveal"><div class="lab">In the research</div>
+        <p>Frankl found meaning through responsibility, and wanted a Statue of Responsibility to stand opposite the Statue of Liberty. Aristotle's eudaimonia is flourishing through effort, not pleasure. Taleb's antifragility is the exact meaning of "without breaking": stress strengthens you, up to a dose. <b>All verified, including the Frankl quote.</b></p></div>
+    </div>
+  </section>
+
+  <!-- 07 belief three -->
+  <section class="slide principle" id="s7">
+    <div class="inner">
+      <div class="pn reveal">Belief 03 &middot; the escalating wave</div>
+      <h2 class="reveal">You can't hold the edge forever. You ride it as a wave.</h2>
+      <p class="belief reveal">Sit pinned at your limit and you fray: fatigue, then burnout, then breaking. Challenge has to rise and fall. Spike at a boss, drop into a valley to recover and consolidate, then come back to a higher floor. The whole wave climbs up and to the right.</p>
+      <div class="proof reveal"><div class="lab">In the research</div>
+        <p>Schell's interest curve is exactly this: peaks and valleys, trending up to a climax. Supercompensation: a stress plus recovery leaves your baseline higher; constant stress with no recovery just overtrains you. Selye: skip recovery and you run through resistance into exhaustion. <b>The valleys are not filler. They are how you climb without breaking.</b></p></div>
+    </div>
+  </section>
+
+  <!-- 08 the wave diagram -->
+  <section class="slide diagram" id="s8">
+    <div class="inner">
+      <div class="pn reveal">One picture</div>
+      <h2 class="reveal">Spike at the boss. Recover in the valley. Return stronger.</h2>
+      <div class="figwrap reveal">
+        <svg viewBox="0 0 820 360" role="img" aria-label="An escalating wave of challenge over time">
+          <defs><marker id="ar2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f9a6e"/></marker></defs>
+          <line x1="78" y1="16" x2="78" y2="312" stroke="#43463f" stroke-width="2"/>
+          <line x1="78" y1="312" x2="792" y2="312" stroke="#43463f" stroke-width="2"/>
+          <line x1="120" y1="104" x2="780" y2="40" stroke="#7c8079" stroke-width="1.5" stroke-dasharray="5 6" opacity="0.75"/>
+          <text x="470" y="74" transform="rotate(-6 470 74)" font-family="Hanken Grotesk, sans-serif" font-size="12.5" font-weight="600" fill="#9aa0aa">the breaking point (rises with you)</text>
+          <polyline points="78,288 285,256 500,216 700,176 780,158" fill="none" stroke="#3f9a6e" stroke-width="1.8" stroke-dasharray="7 6" marker-end="url(#ar2)"/>
+          <text x="520" y="206" transform="rotate(-10 520 206)" font-family="Hanken Grotesk, sans-serif" font-size="12.5" font-weight="600" fill="#5fb98c">rising baseline competence →</text>
+          <polyline points="78,288 190,196 285,256 395,150 500,216 590,108 700,176 786,72" fill="none" stroke="#6fd3a3" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="190" cy="196" r="4.5" fill="#6fd3a3"/><circle cx="395" cy="150" r="4.5" fill="#6fd3a3"/><circle cx="590" cy="108" r="4.5" fill="#6fd3a3"/><circle cx="786" cy="72" r="5.5" fill="#8fe0b4"/>
+          <text x="162" y="184" font-family="Bricolage Grotesque, sans-serif" font-size="12" font-weight="700" fill="#8fe0b4">boss</text>
+          <text x="367" y="138" font-family="Bricolage Grotesque, sans-serif" font-size="12" font-weight="700" fill="#8fe0b4">boss</text>
+          <text x="562" y="96" font-family="Bricolage Grotesque, sans-serif" font-size="12" font-weight="700" fill="#8fe0b4">boss</text>
+          <text x="240" y="276" font-family="Hanken Grotesk, sans-serif" font-size="11.5" fill="#878c84">practice &middot; recover</text>
+          <text x="448" y="236" font-family="Hanken Grotesk, sans-serif" font-size="11.5" fill="#878c84">practice &middot; recover</text>
+          <text x="436" y="346" text-anchor="middle" font-family="Hanken Grotesk, sans-serif" font-size="12.5" font-weight="600" fill="#9aa0aa">TIME  →</text>
+        </svg>
+      </div>
+      <p class="cap reveal">Each valley sits above the last; each crest clears a bar the previous you could not. The breaking point rises with you, so the wave climbs without ever touching it, <b>as long as the valleys are real.</b></p>
+    </div>
+  </section>
+
+  <!-- 09 amplitude is personal -->
+  <section class="slide diagram" id="s9">
+    <div class="inner">
+      <div class="pn reveal">The wave is personal</div>
+      <h2 class="reveal">How tall the peaks, how deep the valleys: that's a dial.</h2>
+      <div class="profiles reveal">
+        <div class="profile">
+          <svg viewBox="0 0 240 56" aria-hidden="true"><polyline points="8,46 26,14 40,40 58,12 74,38 92,10 108,36 126,9 142,33 160,8 178,31 196,7 214,28 232,6" fill="none" stroke="#6fd3a3" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <h5>Dark Souls</h5><div class="amp">High amplitude</div>
+          <p>Tall, constant peaks; short valleys. For high sensation-seekers who want to live near the edge.</p>
+        </div>
+        <div class="profile">
+          <svg viewBox="0 0 240 56" aria-hidden="true"><polyline points="8,44 52,42 96,44 132,41 158,10 184,41 210,43 232,40" fill="none" stroke="#6fd3a3" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <h5>World of Warcraft</h5><div class="amp">Rare towering crest</div>
+          <p>Long, gentle valleys (grinding), then an occasional huge peak (a hard raid). Mass appeal.</p>
+        </div>
+        <div class="profile">
+          <svg viewBox="0 0 240 56" aria-hidden="true"><polyline points="8,46 40,44 72,47 104,43 136,46 168,44 200,47 232,45" fill="none" stroke="#6fd3a3" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <h5>Candy Crush &middot; TikTok</h5><div class="amp">Near-flat wind-down</div>
+          <p>Almost no peaks, little climb. For people who, right now, do not want to be challenged at all.</p>
+        </div>
+      </div>
+      <p class="cap reveal">It tracks a real, stable trait: <b>sensation seeking</b>. Match your audience's amplitude appetite, or better, let players tune it themselves.</p>
+    </div>
+  </section>
+
+  <!-- 10 proof: ticket to ride -->
+  <section class="slide statement" id="s10">
+    <div class="inner">
+      <div class="kicker reveal">Proof in play</div>
+      <h2 class="reveal">Ticket to Ride is the whole thesis in a box.</h2>
+      <p class="s2sub reveal">Commit to too few destination tickets and you cannot score enough to win. Commit to too many and you fail them for a penalty. <b>The entire game is one question: how much can I take on without breaking?</b> Twenty minutes, no narrative, the edge of responsibility made into a turn.</p>
+    </div>
+  </section>
+
+  <!-- 11 proof: 11 bit -->
+  <section class="slide statement" id="s11">
+    <div class="inner">
+      <div class="kicker reveal">The deep end</div>
+      <h2 class="reveal">11 bit built a studio on handing you weight.</h2>
+      <p class="s2sub reveal">Frostpunk, This War of Mine, The Alters. You are the law of the last city, or the conscience of people in a siege. Not fun in the hedonic sense. <b>Meaningful, because the responsibility is genuinely yours.</b> Proof that the eudaimonic edge is a market, not just a virtue.</p>
+    </div>
+  </section>
+
+  <!-- 12 the control group -->
+  <section class="slide statement" id="s12">
+    <div class="inner">
+      <div class="kicker reveal">The control group</div>
+      <h2 class="reveal">TikTok proves it by doing the <span class="accent">opposite</span>.</h2>
+      <p class="s2sub reveal">It pins you to the engagement edge better than anything ever built, and asks nothing of you: no weight, no peaks, no climb. Total engagement that never becomes purpose, which is why an hour on it evaporates. <b>Engagement without responsibility is pleasure that never converts. Retention is not meaning.</b></p>
+    </div>
+  </section>
+
+  <!-- 13 levers dialed -->
+  <section class="slide leversld" id="s13">
+    <div class="inner">
+      <div class="kicker reveal">The tool</div>
+      <h2 class="reveal">Every kind of fun has a purpose setting. The dial is responsibility.</h2>
+      <div class="levers reveal">
+        <div class="lever-row"><div class="ln">Mastery</div><div class="lb">"I got good" <span class="g">→</span> <span class="to">people rely on the standard I hold</span></div></div>
+        <div class="lever-row"><div class="ln">Belonging</div><div class="lb">"fun with people" <span class="g">→</span> <span class="to">they are counting on me, and I show up</span></div></div>
+        <div class="lever-row"><div class="ln">Expression</div><div class="lb">"I made a thing" <span class="g">→</span> <span class="to">I own what I put into the world</span></div></div>
+        <div class="lever-row"><div class="ln">Thrill</div><div class="lb">"what a rush" <span class="g">→</span> <span class="to">I owned the risk I chose, win or lose</span></div></div>
+        <div class="lever-row"><div class="ln">Comfort</div><div class="lb"><span class="to">the valley of the wave: the recovery that makes the next peak survivable</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 my bet -->
+  <section class="slide statement" id="s14">
+    <div class="inner">
+      <div class="kicker reveal">Where I'm taking this</div>
+      <h2 class="reveal">I'd rather build the thing that asks something of you.</h2>
+      <p class="s2sub reveal">Chosen, escalating, survivable responsibility, paced as a wave, so play becomes practice for a meaningful life instead of a substitute for one. Most of the industry is flattening the wave to maximize time-on-screen. <b>I want to go the other way.</b></p>
+    </div>
+  </section>
+
+  <!-- 15 close -->
+  <section class="slide close" id="s15">
+    <div class="inner">
+      <div class="kicker reveal">What it adds up to</div>
+      <h2 class="reveal">Define the fun. Then build the kind that asks something of you, and gives you room to come back stronger.</h2>
+      <p class="csub reveal">Three beliefs, one model: ride the edge of order and chaos, carry as much as you can without breaking, and climb it as a wave.</p>
+      <div class="contact reveal">
+        <span><b>Josh Rutz</b></span>
+        <span><a href="https://joshrutz.com">joshrutz.com</a></span>
+        <span><a href="https://playzipix.app">playzipix.app</a></span>
+        <span><a href="mailto:joshrutz989@gmail.com">joshrutz989@gmail.com</a></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  slides.forEach((s) => {
+    const a = document.createElement('a');
+    a.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+    dotsWrap.appendChild(a);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function setActive(i) {
+    current = i;
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    counter.innerHTML = `<b>${String(i+1).padStart(2,'0')}</b> / ${String(slides.length).padStart(2,'0')}`;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting && e.intersectionRatio > 0.55) {
+      setActive(slides.indexOf(e.target));
+    }});
+  }, { threshold: [0.55] });
+  slides.forEach(s => io.observe(s));
+
+  function go(d) {
+    const next = Math.max(0, Math.min(slides.length-1, current + d));
+    slides[next].scrollIntoView({behavior:'smooth'});
+  }
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
+    else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); slides[0].scrollIntoView({behavior:'smooth'}); }
+    else if (e.key === 'End') { e.preventDefault(); slides[slides.length-1].scrollIntoView({behavior:'smooth'}); }
+  });
+
+  setActive(0);
+</script>
+</body>
+</html>
