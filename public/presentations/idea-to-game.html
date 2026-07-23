@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Idea to Game · Josh Rutz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Tempered system (locked, per DESIGN.md): dark deck tokens, matching the sibling presentations.
+     Green is the only real color; near-neutral surfaces; no texture; gradients illuminate, never text. */
+  :root {
+    --bg: oklch(0.185 0.003 60);
+    --bg-2: oklch(0.225 0.003 60);
+    --panel: oklch(0.235 0.004 60);
+    --line: oklch(0.32 0.005 60);
+    --text: oklch(0.93 0.004 80);
+    --muted: oklch(0.75 0.006 72);
+    --faint: oklch(0.56 0.005 65);
+    --accent: oklch(0.66 0.13 155);
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: "Hanken Grotesk", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { height: 100%; }
+  body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  a { color: inherit; }
+
+  .slide {
+    height: 100vh; width: 100%;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 7vw;
+  }
+  .inner { max-width: 1080px; margin: 0 auto; width: 100%; }
+
+  .kicker { font-family: var(--body); text-transform: uppercase; letter-spacing: 0.32em; font-size: clamp(11px,1.1vw,13px); font-weight: 600; color: var(--accent); margin-bottom: 26px; }
+  .accent { color: var(--accent); }
+
+  /* ---------- title ---------- */
+  .title { background: radial-gradient(ellipse 70% 60% at 50% 38%, oklch(0.265 0.008 75), var(--bg) 70%); text-align: left; }
+  .title .name { font-family: var(--display); font-weight: 900; font-size: clamp(52px, 11vw, 150px); line-height: 0.9; letter-spacing: -0.045em; }
+  .title .role { font-family: var(--display); font-weight: 600; font-size: clamp(18px, 2.4vw, 30px); color: var(--text); margin-top: 18px; letter-spacing: -0.01em; }
+  .title .sub { font-size: clamp(16px, 1.9vw, 21px); color: var(--muted); margin-top: 14px; max-width: 620px; }
+
+  /* ---------- statement ---------- */
+  .statement { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .statement h2 { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5.6vw, 80px); line-height: 1.03; letter-spacing: -0.04em; max-width: 18ch; }
+  .statement .s2sub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 28px; max-width: 700px; line-height: 1.5; }
+
+  /* ---------- numbers ---------- */
+  .numbers { background: linear-gradient(180deg, var(--bg), oklch(0.17 0.003 60)); }
+  .numbers h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 58px); letter-spacing: -0.035em; margin-bottom: 8px; }
+  .numbers .lead { color: var(--muted); font-size: clamp(15px,1.6vw,18px); margin-bottom: 40px; max-width: 640px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cell { padding: 26px 26px 24px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+  .cell .n { font-family: var(--display); font-weight: 800; font-size: clamp(40px,5vw,68px); letter-spacing: -0.04em; line-height: 1; }
+  .cell .c { color: var(--muted); font-size: clamp(13px,1.4vw,15px); margin-top: 12px; line-height: 1.45; }
+  .cell .c b { color: var(--text); font-weight: 600; }
+  .foot { margin-top: 26px; font-size: 13px; color: var(--faint); letter-spacing: 0.02em; }
+
+  /* ---------- stack ---------- */
+  .stack { background: var(--bg); }
+  .stack h2 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.8vw, 60px); line-height: 1.03; letter-spacing: -0.035em; max-width: 20ch; margin-bottom: 24px; }
+  .rows { display: flex; flex-direction: column; gap: 11px; max-width: 860px; }
+  .row { display: flex; align-items: baseline; gap: 22px; padding: 15px 24px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .row .rn { font-family: var(--display); font-weight: 600; font-size: clamp(16px,1.8vw,19px); letter-spacing: -0.01em; min-width: 32%; }
+  .row .rn .num { color: var(--accent); font-weight: 800; margin-right: 10px; }
+  .row .rd { color: var(--muted); font-size: clamp(14px,1.5vw,16px); line-height: 1.45; }
+  @media (max-width: 720px){ .row { flex-direction: column; gap: 6px; } .row .rn { min-width: 0; } }
+
+  /* ---------- flow strip (pipeline diagram) ---------- */
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 30px; }
+  .fnode { padding: 9px 18px; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; font-family: var(--display); font-weight: 600; font-size: clamp(13px,1.4vw,15px); letter-spacing: -0.01em; }
+  .fnode.dim { color: var(--faint); border-style: dashed; background: transparent; }
+  .fnode.hot { color: var(--accent); border-color: var(--accent); background: transparent; }
+  .fa { width: 8px; height: 8px; border-right: 2px solid var(--faint); border-top: 2px solid var(--faint); transform: rotate(45deg); flex: none; }
+
+  /* ---------- scars (lesson rows) ---------- */
+  .scarsld { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .scarsld h2 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 4.4vw, 56px); line-height: 1.03; letter-spacing: -0.04em; margin-bottom: 24px; max-width: 20ch; }
+  .scars { display: grid; gap: 10px; max-width: 940px; }
+  .scar-row { display: grid; grid-template-columns: 170px 1fr; align-items: stretch; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
+  .scar-row .ln { padding: 13px 18px; font-family: var(--display); font-weight: 700; color: var(--text); display: flex; align-items: center; font-size: clamp(15px,1.7vw,19px); letter-spacing: -0.015em; border-left: 3px solid var(--accent); background: var(--bg-2); }
+  .scar-row .lb { padding: 12px 18px; display: flex; align-items: center; gap: 10px; font-size: clamp(14px,1.5vw,17px); color: var(--muted); line-height: 1.45; }
+  .scar-row .lb b { color: var(--text); font-weight: 600; }
+  @media (max-width: 720px){ .scar-row { grid-template-columns: 1fr; } .scar-row .ln { border-left: none; border-top: 3px solid var(--accent); } }
+
+  /* ---------- rails (invariant chips) ---------- */
+  .rails { background: var(--bg); }
+  .rails h2 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.8vw, 60px); line-height: 1.03; letter-spacing: -0.035em; max-width: 20ch; margin-bottom: 30px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; max-width: 860px; }
+  .chip { padding: 12px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; font-family: var(--display); font-weight: 600; font-size: clamp(14px,1.6vw,18px); letter-spacing: -0.01em; }
+  .rails .railsub { margin-top: 30px; color: var(--muted); font-size: clamp(15px,1.7vw,19px); max-width: 680px; line-height: 1.5; }
+
+  /* ---------- skill bars (the studio in lines) ---------- */
+  .skillbars { margin-top: 38px; max-width: 640px; display: flex; flex-direction: column; gap: 14px; }
+  .sk { display: grid; grid-template-columns: 190px 1fr; align-items: center; gap: 16px; }
+  .sk .skn { font-family: var(--display); font-weight: 600; font-size: clamp(13px,1.5vw,16px); color: var(--text); }
+  .sk .skt { position: relative; height: 22px; border-radius: 6px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
+  .sk .skf { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, oklch(0.66 0.13 155 / 0.35), oklch(0.66 0.13 155 / 0.85)); border-radius: 5px; transform: scaleX(0); transform-origin: left; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .sk .skf { transform: scaleX(1); }
+  .sk .skv { font-size: 12px; color: var(--faint); font-weight: 600; white-space: nowrap; }
+  .sk { grid-template-columns: 190px 1fr 82px; }
+  @media (max-width: 720px){ .sk { grid-template-columns: 1fr; gap: 5px; } .sk .skv { display: none; } }
+
+  /* ---------- cost-curve chart ---------- */
+  .chartsld { background: linear-gradient(180deg, var(--bg), oklch(0.17 0.003 60)); }
+  .chartsld h2 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 4.4vw, 54px); letter-spacing: -0.035em; margin-bottom: 6px; }
+  .chartsld .lead { color: var(--muted); font-size: clamp(14px,1.6vw,17px); max-width: 700px; }
+  .chartwrap { max-width: 1000px; margin-top: 44px; }
+  .cbars { display: flex; align-items: stretch; gap: 4px; height: 240px; border-bottom: 1px solid var(--line); }
+  .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 5px; min-width: 0; }
+  .cb { width: 100%; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, oklch(0.66 0.13 155 / 0.9), oklch(0.66 0.13 155 / 0.4)); transform: scaleY(0); transform-origin: bottom; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .cb { transform: scaleY(1); }
+  .bv { font-size: 10px; color: var(--faint); font-weight: 600; line-height: 1; }
+  .mk { width: 0; align-self: stretch; border-left: 1px dashed oklch(0.52 0.04 155); position: relative; }
+  .mkl { position: absolute; top: -26px; left: 7px; white-space: nowrap; font-size: 11px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+  .axis { display: flex; justify-content: space-between; color: var(--faint); font-size: 12px; margin-top: 10px; }
+  .capn { margin-top: 18px; font-size: 13px; color: var(--muted); max-width: 720px; line-height: 1.5; }
+  @media (max-width: 720px){ .bv { display: none; } .cbars { gap: 2px; height: 180px; } .mkl { font-size: 9px; } }
+
+  /* ---------- duo (text + phone mockup) ---------- */
+  .duo { display: flex; gap: 60px; align-items: center; }
+  .duo .dtext { flex: 1; }
+  .phone { width: 195px; height: 400px; flex: none; border: 1px solid var(--line); border-radius: 30px; background: var(--bg-2); padding: 16px 14px; display: flex; flex-direction: column; gap: 12px; }
+  .ph-top { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); text-align: center; }
+  .ph-canvas { flex: 1; border: 1px dashed var(--line); border-radius: 14px; position: relative; overflow: hidden; }
+  .sh { position: absolute; border: 2px solid var(--accent); }
+  .sh.c1 { width: 26px; height: 26px; border-radius: 50%; top: 18%; left: 16%; }
+  .sh.c2 { width: 18px; height: 18px; border-radius: 50%; top: 58%; left: 62%; }
+  .sh.c3 { width: 22px; height: 22px; border-radius: 50%; top: 34%; left: 68%; opacity: 0.55; }
+  .sh.sq { width: 20px; height: 20px; border-color: var(--faint); top: 66%; left: 22%; transform: rotate(12deg); }
+  .sh.dm { width: 18px; height: 18px; border-color: var(--faint); top: 14%; left: 64%; transform: rotate(45deg); }
+  .ph-timer { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-family: var(--display); font-weight: 700; font-size: 12px; color: var(--muted); }
+  .ph-slider { padding: 2px 4px; }
+  .ph-track { position: relative; height: 4px; border-radius: 2px; background: var(--line); }
+  .ph-fill { position: absolute; inset: 0 40% 0 0; background: var(--accent); border-radius: 2px; }
+  .ph-thumb { position: absolute; top: 50%; left: 60%; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); transform: translate(-50%,-50%); }
+  .ph-lab { margin-top: 8px; font-size: 11px; color: var(--muted); text-align: center; }
+  .ph-btn { padding: 9px; text-align: center; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-family: var(--display); font-weight: 600; font-size: 13px; }
+  @media (max-width: 860px){ .phone { display: none; } }
+
+  /* ---------- balance (equation + staircase) ---------- */
+  .balance { background: linear-gradient(160deg, var(--bg-2), var(--bg)); }
+  .balance h2 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 4.4vw, 54px); line-height: 1.03; letter-spacing: -0.04em; margin-bottom: 14px; max-width: 22ch; }
+  .balance .lead { color: var(--muted); font-size: clamp(14px,1.6vw,17px); max-width: 700px; line-height: 1.5; margin-bottom: 30px; }
+  .eq { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--display); font-size: clamp(13px,1.5vw,16px); margin-bottom: 34px; }
+  .eqb { padding: 9px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); font-weight: 600; }
+  .eqb.hot { border-color: var(--accent); color: var(--accent); }
+  .eqo { color: var(--accent); font-weight: 800; font-size: 19px; }
+  .balrow { display: flex; gap: 48px; align-items: flex-end; flex-wrap: wrap; }
+  .stair { display: flex; align-items: stretch; gap: 8px; height: 190px; flex: 1; min-width: 300px; max-width: 540px; }
+  .stp { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 7px; }
+  .sb { width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, oklch(0.66 0.13 155 / 0.85), oklch(0.66 0.13 155 / 0.35)); transform: scaleY(0); transform-origin: bottom; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .sb { transform: scaleY(1); }
+  .sl { font-size: 11px; color: var(--muted); }
+  .wr { display: flex; flex-direction: column; gap: 9px; min-width: 250px; }
+  .wrc { padding: 11px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); font-size: clamp(12px,1.4vw,14px); color: var(--muted); }
+  .wrc b { color: var(--text); font-weight: 600; }
+  .wrc .accent { font-weight: 700; }
+  .wrl { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 2px; }
+
+  /* ---------- gate flowchart ---------- */
+  .gflow { max-width: 780px; display: flex; flex-direction: column; }
+  .gpill { align-self: flex-start; padding: 8px 20px; border-radius: 999px; font-family: var(--display); font-weight: 600; font-size: clamp(13px,1.4vw,15px); }
+  .gpill.start { color: var(--muted); border: 1px dashed var(--line); }
+  .gpill.end { color: var(--accent); border: 1px solid var(--accent); }
+  .gline { width: 2px; height: 13px; background: var(--line); margin-left: 44px; flex: none; }
+  .gnode { display: flex; align-items: baseline; gap: 18px; padding: 12px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .gnode .gn { font-family: var(--display); font-weight: 700; min-width: 175px; font-size: clamp(14px,1.6vw,17px); letter-spacing: -0.01em; }
+  .gnode .gn::before { content: "✓"; color: var(--accent); margin-right: 10px; font-weight: 800; }
+  .gnode .gd { color: var(--muted); font-size: clamp(13px,1.4vw,15px); line-height: 1.45; }
+  @media (max-width: 720px){ .gnode { flex-direction: column; gap: 4px; } .gnode .gn { min-width: 0; } }
+
+  /* ---------- skill timeline ---------- */
+  .skillsld { background: var(--bg); }
+  .skillsld h2 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 4.4vw, 54px); line-height: 1.03; letter-spacing: -0.035em; margin-bottom: 6px; }
+  .skillsld .lead { color: var(--muted); font-size: clamp(14px,1.6vw,17px); max-width: 700px; margin-bottom: 28px; }
+  .tl { position: relative; max-width: 880px; padding-left: 26px; }
+  .tl::before { content: ""; position: absolute; left: 5px; top: 10px; bottom: 10px; width: 2px; background: linear-gradient(180deg, var(--accent), oklch(0.66 0.13 155 / 0.15)); }
+  .tlg { position: relative; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 14px 0 8px; }
+  .tlg:first-child { margin-top: 0; }
+  .tlg::before { content: ""; position: absolute; left: -25px; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); transform: translate(-1px,-50%); }
+  .tli { position: relative; display: flex; align-items: baseline; gap: 16px; padding: 8px 16px; margin-bottom: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .tli::before { content: ""; position: absolute; left: -22px; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--faint); transform: translateY(-50%); }
+  .tli .tn { font-family: var(--display); font-weight: 700; font-size: clamp(13px,1.5vw,16px); letter-spacing: -0.01em; min-width: 34%; white-space: nowrap; }
+  .tli .td { color: var(--muted); font-size: clamp(12px,1.4vw,14px); line-height: 1.4; }
+  @media (max-width: 720px){ .tli { flex-direction: column; gap: 2px; } .tli .tn { min-width: 0; white-space: normal; } }
+  @media (max-height: 760px){ .tli { padding: 5px 14px; margin-bottom: 4px; } .tlg { margin: 9px 0 5px; } }
+
+  /* ---------- month chart band (payoff) ---------- */
+  .band { display: flex; gap: 52px; align-items: center; margin-top: 30px; flex-wrap: wrap; }
+  .mchart { display: flex; align-items: stretch; gap: 14px; height: 130px; width: 290px; flex: none; }
+  .mcol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 5px; }
+  .mb { width: 100%; border-radius: 5px 5px 0 0; background: linear-gradient(180deg, oklch(0.66 0.13 155 / 0.9), oklch(0.66 0.13 155 / 0.4)); transform: scaleY(0); transform-origin: bottom; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .mb { transform: scaleY(1); }
+  .ml { font-size: 11px; color: var(--muted); }
+  .bandtext { flex: 1; min-width: 260px; font-size: clamp(13px,1.5vw,15px); color: var(--muted); line-height: 1.55; }
+  .bandtext b { color: var(--text); font-weight: 600; }
+  .mcap { font-size: 11px; color: var(--faint); margin-top: 8px; }
+
+  /* ---------- close ---------- */
+  .close { background: radial-gradient(ellipse 80% 70% at 50% 50%, oklch(0.265 0.008 75), var(--bg) 72%); }
+  .close h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 70px); line-height: 1.04; letter-spacing: -0.04em; max-width: 18ch; }
+  .close .csub { font-size: clamp(17px, 2vw, 23px); color: var(--muted); margin-top: 24px; max-width: 680px; line-height: 1.5; }
+  .close .contact { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 14px; color: var(--muted); padding-top: 26px; border-top: 1px solid var(--line); }
+  .close .contact b { color: var(--text); font-weight: 600; }
+  .close .contact a { color: var(--accent); text-decoration: none; }
+
+  /* ---------- chrome ---------- */
+  .dots { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; gap: 13px; }
+  .dots a { width: 8px; height: 8px; border-radius: 50%; background: oklch(0.38 0.005 60); transition: all .3s ease; cursor: pointer; }
+  .dots a.on { background: var(--accent); transform: scale(1.35); }
+  .counter { position: fixed; left: 28px; bottom: 24px; z-index: 60; font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--faint); letter-spacing: 0.05em; }
+  .counter b { color: var(--text); }
+  .hint { position: absolute; left: 7vw; bottom: 6vh; z-index: 3; font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--faint); display: flex; align-items: center; gap: 10px; }
+  .hint .chev { width: 16px; height: 16px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(45deg); animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform: rotate(45deg) translate(0,0);} 50%{ transform: rotate(45deg) translate(3px,3px);} }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .reveal { opacity: 1; transform: none; }
+  .slide.active .reveal:nth-child(2){ transition-delay: .08s; }
+  .slide.active .reveal:nth-child(3){ transition-delay: .16s; }
+  .slide.active .reveal:nth-child(4){ transition-delay: .24s; }
+  .slide.active .reveal:nth-child(5){ transition-delay: .32s; }
+  .slide.active .reveal:nth-child(6){ transition-delay: .40s; }
+  .slide.active .reveal:nth-child(7){ transition-delay: .48s; }
+
+  @media (max-width: 720px){ .grid { grid-template-columns: 1fr; } .dots { display: none; } }
+</style>
+</head>
+<body>
+
+  <!-- 01 title -->
+  <section class="slide title active" id="s1">
+    <div class="inner">
+      <div class="kicker reveal">Josh Rutz &middot; How Zipix ships games</div>
+      <div class="name reveal">Idea to game.</div>
+      <div class="role reveal">One designer. One pipeline. 25 live micro-games.</div>
+      <div class="sub reveal">The system that turns a one-line idea into a playable build on the dev feed, built one lesson at a time.</div>
+    </div>
+    <div class="hint">Scroll <span class="chev"></span></div>
+  </section>
+
+  <!-- 02 the frame -->
+  <section class="slide statement" id="s2">
+    <div class="inner">
+      <div class="kicker reveal">The frame</div>
+      <h2 class="reveal">A studio is a process, not a headcount.</h2>
+      <p class="s2sub reveal">Zipix runs on one designer and a pipeline of AI specialists. Every discipline a
+        studio would hire for exists as written process: design, balance, engineering, QA, release. An agent
+        runs the process, a human audits the output, and each new game starts with everything the last one
+        learned.</p>
+    </div>
+  </section>
+
+  <!-- 03 the old way -->
+  <section class="slide numbers" id="s3">
+    <div class="inner">
+      <div class="kicker reveal">Where it started</div>
+      <h2 class="reveal">The first games were built the old way.</h2>
+      <p class="lead reveal">Spring 2026. Hand-ported Phaser scenes, no design docs, no pipeline. Every game
+        re-learned the platform from scratch, and re-hit its traps.</p>
+      <div class="grid reveal">
+        <div class="cell"><div class="n" data-to="43">0</div><div class="c"><b>Commits of trial and error</b> to ship the first game</div></div>
+        <div class="cell"><div class="n" data-to="0">0</div><div class="c"><b>Design docs</b> among the first eight games. Code first, questions later</div></div>
+        <div class="cell"><div class="n" data-to="6">0</div><div class="c"><b>Days between games</b> on a good stretch</div></div>
+      </div>
+      <div class="foot reveal">Every new game paid the full cost of the last one.</div>
+    </div>
+  </section>
+
+  <!-- 04 scars to rules -->
+  <section class="slide scarsld" id="s4">
+    <div class="inner">
+      <div class="kicker reveal">The lessons</div>
+      <h2 class="reveal">Every bug we hit once became a rule no game can break twice.</h2>
+      <div class="scars reveal">
+        <div class="scar-row"><div class="ln">Fuzzy canvas</div><div class="lb">Retina rendering was blurry in every game. <b>Now the platform owns canvas scaling;</b> games never touch it.</div></div>
+        <div class="scar-row"><div class="ln">Ghost replays</div><div class="lb">Phaser reuses scenes, so replays inherited stale state and instant wins. <b>The engine now snapshots every game's clean state</b> and restores it each round.</div></div>
+        <div class="scar-row"><div class="ln">Dropped taps</div><div class="lb">Phaser tracks one finger by default; fast alternating taps silently vanished. <b>Multitouch is now on for every game</b> at the factory level.</div></div>
+        <div class="scar-row"><div class="ln">Stale releases</div><div class="lb">The CDN caches each version forever, so a republish served old code. <b>Every change ships with a version bump</b> in the same commit, and a gate checks.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 the turn -->
+  <section class="slide statement" id="s5">
+    <div class="inner">
+      <div class="kicker reveal">The turn</div>
+      <h2 class="reveal">Stop re-teaching the machine. Write the studio down.</h2>
+      <p class="s2sub reveal">Every lesson moved out of memory and into four skills: how to design a game, how
+        to price its difficulty, how to build it, how to ship it. They load on demand, and a new game starts
+        from all of them.</p>
+      <div class="skillbars reveal">
+        <div class="sk"><div class="skn">Designing a game</div><div class="skt"><div class="skf" style="width:62%"></div></div><div class="skv">272 lines</div></div>
+        <div class="sk"><div class="skn">Pricing its difficulty</div><div class="skt"><div class="skf" style="width:95%; transition-delay:.1s"></div></div><div class="skv">416 lines</div></div>
+        <div class="sk"><div class="skn">Building it</div><div class="skt"><div class="skf" style="width:100%; transition-delay:.2s"></div></div><div class="skv">440 lines</div></div>
+        <div class="sk"><div class="skn">Shipping it</div><div class="skt"><div class="skf" style="width:14%; transition-delay:.3s"></div></div><div class="skv">63 lines</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 the cost curve -->
+  <section class="slide chartsld" id="s6">
+    <div class="inner">
+      <div class="kicker reveal">The cost curve</div>
+      <h2 class="reveal">Commits to ship each game, in order.</h2>
+      <p class="lead reveal">Every bar is one game, from the first to the newest. The two dashed lines are the
+        days the skills landed.</p>
+      <div class="chartwrap reveal">
+        <div class="cbars">
+          <div class="col"><span class="bv">43</span><div class="cb" style="height:220px; transition-delay:0ms"></div></div>
+          <div class="col"><span class="bv">32</span><div class="cb" style="height:164px; transition-delay:25ms"></div></div>
+          <div class="col"><span class="bv">35</span><div class="cb" style="height:179px; transition-delay:50ms"></div></div>
+          <div class="col"><span class="bv">37</span><div class="cb" style="height:189px; transition-delay:75ms"></div></div>
+          <div class="col"><span class="bv">39</span><div class="cb" style="height:200px; transition-delay:100ms"></div></div>
+          <div class="col"><span class="bv">37</span><div class="cb" style="height:189px; transition-delay:125ms"></div></div>
+          <div class="col"><span class="bv">42</span><div class="cb" style="height:215px; transition-delay:150ms"></div></div>
+          <div class="col"><span class="bv">36</span><div class="cb" style="height:184px; transition-delay:175ms"></div></div>
+          <div class="col"><span class="bv">31</span><div class="cb" style="height:159px; transition-delay:200ms"></div></div>
+          <div class="mk"><span class="mkl">Build skill lands</span></div>
+          <div class="col"><span class="bv">21</span><div class="cb" style="height:107px; transition-delay:225ms"></div></div>
+          <div class="col"><span class="bv">21</span><div class="cb" style="height:107px; transition-delay:250ms"></div></div>
+          <div class="col"><span class="bv">13</span><div class="cb" style="height:67px; transition-delay:275ms"></div></div>
+          <div class="col"><span class="bv">26</span><div class="cb" style="height:133px; transition-delay:300ms"></div></div>
+          <div class="mk"><span class="mkl" style="top:-8px">Design + difficulty skills</span></div>
+          <div class="col"><span class="bv">16</span><div class="cb" style="height:82px; transition-delay:325ms"></div></div>
+          <div class="col"><span class="bv">11</span><div class="cb" style="height:56px; transition-delay:350ms"></div></div>
+          <div class="col"><span class="bv">16</span><div class="cb" style="height:82px; transition-delay:375ms"></div></div>
+          <div class="col"><span class="bv">16</span><div class="cb" style="height:82px; transition-delay:400ms"></div></div>
+          <div class="col"><span class="bv">28</span><div class="cb" style="height:143px; transition-delay:425ms"></div></div>
+          <div class="col"><span class="bv">7</span><div class="cb" style="height:36px; transition-delay:450ms"></div></div>
+          <div class="col"><span class="bv">9</span><div class="cb" style="height:46px; transition-delay:475ms"></div></div>
+          <div class="col"><span class="bv">3</span><div class="cb" style="height:15px; transition-delay:500ms"></div></div>
+          <div class="col"><span class="bv">6</span><div class="cb" style="height:31px; transition-delay:525ms"></div></div>
+          <div class="col"><span class="bv">7</span><div class="cb" style="height:36px; transition-delay:550ms"></div></div>
+          <div class="col"><span class="bv">6</span><div class="cb" style="height:31px; transition-delay:575ms"></div></div>
+          <div class="col"><span class="bv">17</span><div class="cb" style="height:87px; transition-delay:600ms"></div></div>
+        </div>
+        <div class="axis"><span>tap_target &middot; March 2026</span><span>globe_tap &middot; June 2026</span></div>
+        <p class="capn">Total commits touching each game, in the order they entered the repo. The late bump is
+          globe_tap, a spinning-globe geography experiment that earned its extra commits.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 the pipeline -->
+  <section class="slide stack" id="s7">
+    <div class="inner">
+      <div class="kicker reveal">The pipeline</div>
+      <h2 class="reveal">Five stages between a sentence and a live build.</h2>
+      <div class="flow reveal">
+        <span class="fnode dim">Idea</span><span class="fa"></span>
+        <span class="fnode">Design</span><span class="fa"></span>
+        <span class="fnode">Difficulty</span><span class="fa"></span>
+        <span class="fnode">Build</span><span class="fa"></span>
+        <span class="fnode">Verify</span><span class="fa"></span>
+        <span class="fnode">Publish</span><span class="fa"></span>
+        <span class="fnode hot">Live on dev</span>
+      </div>
+      <div class="rows">
+        <div class="row reveal"><div class="rn"><span class="num">01</span>Design</div><div class="rd">A nine-section questionnaire turns the idea into a design doc, plus an interactive mockup you can play before any code exists.</div></div>
+        <div class="row reveal"><div class="rn"><span class="num">02</span>Difficulty</div><div class="rd">Independent levers, stepped on skill-tier boundaries, sanity-checked with headroom math.</div></div>
+        <div class="row reveal"><div class="rn"><span class="num">03</span>Build</div><div class="rd">A thirteen-step scaffold with test-driven development on everything that computes.</div></div>
+        <div class="row reveal"><div class="rn"><span class="num">04</span>Verify</div><div class="rd">Unit tests, a local prepublish that mirrors CI, patch notes, and a human playtest at three skill levels.</div></div>
+        <div class="row reveal"><div class="rn"><span class="num">05</span>Publish</div><div class="rd">Version-bumped, published to an immutable CDN, live on the dev feed the same day.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 the toolbelt: every skill in order -->
+  <section class="slide skillsld" id="s7b">
+    <div class="inner">
+      <div class="kicker reveal">The toolbelt</div>
+      <h2 class="reveal">Every skill in the chain, in the order it runs.</h2>
+      <p class="lead reveal">Each one is a written playbook the agent loads at that moment. Names are the real
+        file names in the repo.</p>
+      <div class="tl reveal">
+        <div class="tlg">Design</div>
+        <div class="tli"><span class="tn">designing-a-zipix-game</span><span class="td">The nine-section questionnaire that turns the idea into a design doc and playable mockup.</span></div>
+        <div class="tli"><span class="tn">designing-game-difficulty</span><span class="td">Prices every lever in human seconds and steps it on tier boundaries.</span></div>
+        <div class="tlg">Build</div>
+        <div class="tli"><span class="tn">creating-a-zipix-microgame</span><span class="td">The thirteen-step scaffold: scene, config, tests, the traps already solved.</span></div>
+        <div class="tli"><span class="tn">test-driven-development</span><span class="td">Red, green, refactor on every generator and solver.</span></div>
+        <div class="tli"><span class="tn">aesthetic-system</span><span class="td">Colors and fonts come from semantic tokens, never hex codes.</span></div>
+        <div class="tlg">Polish</div>
+        <div class="tli"><span class="tn">zipix-art-director</span><span class="td">Thumbnails and in-game art, held to one house style.</span></div>
+        <div class="tli"><span class="tn">antislop</span><span class="td">Every word a player reads gets scanned for AI tells before it ships.</span></div>
+        <div class="tlg">Ship</div>
+        <div class="tli"><span class="tn">requesting-code-review</span><span class="td">An independent review pass before anything is allowed out.</span></div>
+        <div class="tli"><span class="tn">publish-game</span><span class="td">Version bump, prepublish gates, immutable CDN, live on the dev feed.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 design doc you play -->
+  <section class="slide statement" id="s8">
+    <div class="inner duo">
+      <div class="dtext">
+        <div class="kicker reveal">Design</div>
+        <h2 class="reveal">The design doc is something you play.</h2>
+        <p class="s2sub reveal">Every game design ships with an interactive mockup: the real difficulty
+          formulas behind a slider, the actual screen anatomy, the mechanic live on a canvas. Timing and feel
+          are not reviewable in prose, so the review is a play session. Approval means it was already fun on a
+          fake canvas.</p>
+      </div>
+      <div class="phone reveal">
+        <div class="ph-top">shape_count &middot; mockup</div>
+        <div class="ph-canvas">
+          <span class="ph-timer">0:14</span>
+          <span class="sh c1"></span><span class="sh c2"></span><span class="sh c3"></span>
+          <span class="sh sq"></span><span class="sh dm"></span>
+        </div>
+        <div class="ph-slider">
+          <div class="ph-track"><div class="ph-fill"></div><div class="ph-thumb"></div></div>
+          <div class="ph-lab">skill 0.60 &middot; Gold tier</div>
+        </div>
+        <div class="ph-btn">Play round</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 the rails -->
+  <section class="slide rails" id="s9">
+    <div class="inner">
+      <div class="kicker reveal">The rails</div>
+      <h2 class="reveal">Eight rules no game gets to reinvent.</h2>
+      <div class="chips reveal">
+        <div class="chip">One puzzle per game</div>
+        <div class="chip">Binary win or loss</div>
+        <div class="chip">Difficulty served, not chosen</div>
+        <div class="chip">An absolute timer</div>
+        <div class="chip">Six skill tiers</div>
+        <div class="chip">Portrait, thumb-first</div>
+        <div class="chip">Tokens, never hex codes</div>
+        <div class="chip">No pay-to-win</div>
+      </div>
+      <p class="railsub reveal">The questionnaire designs inside these walls. When a concept collides with one,
+        the process reframes it to keep the intent, or rejects it, and says so out loud. Constraints are what
+        make 25 games feel like one product.</p>
+    </div>
+  </section>
+
+  <!-- 10 difficulty math -->
+  <section class="slide balance" id="s10">
+    <div class="inner">
+      <div class="kicker reveal">Balance</div>
+      <h2 class="reveal">Difficulty is arithmetic before it is playtesting.</h2>
+      <p class="lead reveal">Every lever gets a cost in human seconds, and every lever steps on a tier
+        boundary. The math gets you close; a human calibration loop lands it. Shape Count took four rounds.</p>
+      <div class="eq reveal">
+        <span class="eqb">round timer</span>
+        <span class="eqo">&divide;</span>
+        <span class="eqb">units &times; seconds per unit &times; rework</span>
+        <span class="eqo">=</span>
+        <span class="eqb hot">headroom</span>
+      </div>
+      <div class="balrow reveal">
+        <div class="stair">
+          <div class="stp"><div class="sb" style="height:34px; transition-delay:0ms"></div><span class="sl">Bronze</span></div>
+          <div class="stp"><div class="sb" style="height:60px; transition-delay:80ms"></div><span class="sl">Silver</span></div>
+          <div class="stp"><div class="sb" style="height:86px; transition-delay:160ms"></div><span class="sl">Gold</span></div>
+          <div class="stp"><div class="sb" style="height:112px; transition-delay:240ms"></div><span class="sl">Platinum</span></div>
+          <div class="stp"><div class="sb" style="height:138px; transition-delay:320ms"></div><span class="sl">Diamond</span></div>
+          <div class="stp"><div class="sb" style="height:164px; transition-delay:400ms"></div><span class="sl">Legend</span></div>
+        </div>
+        <div class="wr">
+          <div class="wrl">Win-rate targets</div>
+          <div class="wrc">A tier below your skill: <b>near-certain</b></div>
+          <div class="wrc">At your ceiling: <span class="accent">about 50%</span></div>
+          <div class="wrc">A tier above: <b>brutal</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 the gates -->
+  <section class="slide stack" id="s11">
+    <div class="inner">
+      <div class="kicker reveal">The gates</div>
+      <h2 class="reveal">The AI writes the code. The gates decide if it ships.</h2>
+      <div class="gflow reveal">
+        <span class="gpill start">Code out of the build skill</span>
+        <div class="gline"></div>
+        <div class="gnode"><div class="gn">Unit tests</div><div class="gd">Generators and solvers are written test-first. The difficulty curve itself is asserted.</div></div>
+        <div class="gline"></div>
+        <div class="gnode"><div class="gn">Prepublish</div><div class="gd">Every CI check runs locally in seconds, so nothing iterates against a red build.</div></div>
+        <div class="gline"></div>
+        <div class="gnode"><div class="gn">Patch notes</div><div class="gd">No version ships without human-readable notes, enforced by the same gates.</div></div>
+        <div class="gline"></div>
+        <div class="gnode"><div class="gn">Human playtest</div><div class="gd">Three runs, at beginner, median, and ceiling skill, before anything goes live.</div></div>
+        <div class="gline"></div>
+        <span class="gpill end">Live on the dev feed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 the payoff -->
+  <section class="slide numbers" id="s12">
+    <div class="inner">
+      <div class="kicker reveal">What it changed</div>
+      <h2 class="reveal">Design moved ahead of code.</h2>
+      <p class="lead reveal">Approved designs now queue up waiting to be built, and building one is the cheap
+        part. The record so far: three games shipped in a single day.</p>
+      <div class="grid reveal">
+        <div class="cell"><div class="n" data-to="25">0</div><div class="c"><b>Live games</b> on one shared engine contract</div></div>
+        <div class="cell"><div class="n" data-to="3">0</div><div class="c"><b>Commits to ship a game</b> at the current best, down from 43</div></div>
+        <div class="cell"><div class="n" data-to="3">0</div><div class="c"><b>Games in one day</b>, each from its own queued design doc</div></div>
+      </div>
+      <div class="band reveal">
+        <div>
+          <div class="mchart">
+            <div class="mcol"><span class="bv">3</span><div class="mb" style="height:28px; transition-delay:0ms"></div><span class="ml">Mar</span></div>
+            <div class="mcol"><span class="bv">4</span><div class="mb" style="height:37px; transition-delay:80ms"></div><span class="ml">Apr</span></div>
+            <div class="mcol"><span class="bv">12</span><div class="mb" style="height:110px; transition-delay:160ms"></div><span class="ml">May</span></div>
+            <div class="mcol"><span class="bv">7</span><div class="mb" style="height:64px; transition-delay:240ms"></div><span class="ml">Jun</span></div>
+          </div>
+          <div class="mcap">New games per month. The skills landed in May.</div>
+        </div>
+        <div class="bandtext">A platform fix now lands on <b>every game in one pass</b>. Under the old model,
+          that was 24 hand-edits, each one a chance to miss a game.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 close -->
+  <section class="slide close" id="s13">
+    <div class="inner">
+      <div class="kicker reveal">What it adds up to</div>
+      <h2 class="reveal">Build the studio once. Every game inherits it.</h2>
+      <p class="csub reveal">The games are small on purpose. The pipeline is the real product: every lesson
+        kept, every gate written down, and a human deciding what ships.</p>
+      <div class="contact reveal">
+        <span><b>Josh Rutz</b></span>
+        <span><a href="https://joshrutz.com">joshrutz.com</a></span>
+        <span><a href="https://playzipix.app">playzipix.app</a></span>
+        <span><a href="mailto:joshrutz989@gmail.com">joshrutz989@gmail.com</a></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  slides.forEach((s) => {
+    const a = document.createElement('a');
+    a.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+    dotsWrap.appendChild(a);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function setActive(i) {
+    current = i;
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    counter.innerHTML = `<b>${String(i+1).padStart(2,'0')}</b> / ${String(slides.length).padStart(2,'0')}`;
+    runCounts(slides[i]);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting && e.intersectionRatio > 0.55) {
+      setActive(slides.indexOf(e.target));
+    }});
+  }, { threshold: [0.55] });
+  slides.forEach(s => io.observe(s));
+
+  function runCounts(slide) {
+    slide.querySelectorAll('.n[data-to]').forEach((el, idx) => {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      const to = parseInt(el.dataset.to, 10), dur = 1100, start = performance.now();
+      function tick(now){
+        const p = Math.min((now-start)/dur, 1);
+        el.textContent = Math.floor((1-Math.pow(1-p,3))*to);
+        if (p<1) requestAnimationFrame(tick); else el.textContent = to;
+      }
+      setTimeout(() => requestAnimationFrame(tick), 220 + idx*80);
+    });
+  }
+
+  function go(d) {
+    const next = Math.max(0, Math.min(slides.length-1, current + d));
+    slides[next].scrollIntoView({behavior:'smooth'});
+  }
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
+    else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); slides[0].scrollIntoView({behavior:'smooth'}); }
+    else if (e.key === 'End') { e.preventDefault(); slides[slides.length-1].scrollIntoView({behavior:'smooth'}); }
+  });
+
+  setActive(0);
+</script>
+</body>
+</html>
