@@ -1,0 +1,82 @@
+/* House View page shell: tokens, reset, the scene layer and the UI layer.
+   Component styles for the UI overlay live in ui.css. */
+@import url("./tokens.css");
+@import url("./ui.css");
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  background: var(--bg-bottom);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--bg-bottom);
+  color: var(--text-1);
+  font-family: var(--font-ui);
+  font-weight: var(--fw-body);
+  font-size: 15px;
+  line-height: var(--lh-row);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The 3D canvas is full-bleed behind everything. The backdrop gradient is on
+   the container so a transparent canvas and the page are one surface. */
+#scene {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+}
+#scene canvas {
+  display: block;
+  touch-action: none;          /* orbit and pinch belong to the canvas only */
+}
+
+/* The 2D layer. It never takes pointer input itself; only its panels do. */
+#ui {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Words instead of a blank screen when something is broken. */
+.fatal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(42ch, calc(100vw - 48px));
+  margin: 0;
+  padding: var(--s-24);
+  border-radius: var(--r-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+  color: var(--text-1);
+  font-size: 16px;
+  font-weight: var(--fw-body);
+  line-height: var(--lh-prose);
+  text-wrap: balance;
+  pointer-events: auto;
+  user-select: text;
+  z-index: 10;
+}
+
+/* Theme change: one 1200 ms cross-fade of the whole view (brief section 6). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--t-theme);
+  animation-timing-function: var(--ease-fade);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation-duration: 200ms; }
+}

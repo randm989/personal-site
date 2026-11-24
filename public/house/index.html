@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="utf-8">
+<title>House View</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10151C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231B232E'/%3E%3Cpath d='M6 15 16 7l10 8v10H6z' fill='%2355606F'/%3E%3Crect x='13' y='17' width='6' height='8' fill='%23FFD890'/%3E%3C/svg%3E">
+<link rel="preload" href="./vendor/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./styles/app.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="scene" aria-hidden="true"></div>
+<div id="ui"></div>
+<noscript><p class="fatal">House View needs JavaScript.</p></noscript>
+<script>
+  // Old browsers (no import maps) get words, not a blank screen.
+  if (!(window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports('importmap'))) {
+    document.getElementById('ui').innerHTML = '<p class="fatal">This browser is too old for House View. It needs Chrome 94 / Safari 16.4 or newer.</p>';
+  }
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

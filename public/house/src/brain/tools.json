@@ -1,0 +1,78 @@
+[
+  {
+    "name": "describe",
+    "description": "Describe what the house view currently shows, in plain text: the headline, anything needing attention with how long it has been that way, who is home and which room each person's phone is in (with low phone batteries), what the cameras see and whether each has a live picture or is in privacy, then per floor and room what is on, open or occupied, what appliances are doing (a print's progress, what a console is playing) and the temperature, and finally what is not known (a sensor that has gone quiet) and what has no sensor at all. Values are only given for things the house is currently sure of.",
+    "input_schema": { "type": "object", "properties": {}, "additionalProperties": false }
+  },
+  {
+    "name": "state",
+    "description": "The same content as describe, as structured JSON (headline, summary, attention, people, cameras, levels with rooms, unknown, unsensed, and the current view when known). Each camera has \"picture\": \"live\", \"simulated\", \"privacy\" or \"none\"; picture addresses are never included. Thing ids, camera ids and person ids in the result can be passed to focus and highlight. Attention items with severity \"info\" are for information only and do not count toward the headline.",
+    "input_schema": { "type": "object", "properties": {}, "additionalProperties": false }
+  },
+  {
+    "name": "focus",
+    "description": "Move the view toward one thing or room and open its detail card. Pass null to return to the overview. Accepts a thing id, room id or camera id from the plan (for example \"garage_door\", \"kitchen\", \"camera_driveway\") or its exact name, or a person id or name: a person resolves to the room their phone is in, and returns an error if that room is not currently known. An unknown id returns an error listing close matches.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id": { "type": ["string", "null"], "description": "Thing, room, camera or person id, or null for the overview." }
+      },
+      "required": ["id"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "setLevel",
+    "description": "Show one storey of the house. Storeys above the chosen one are hidden. Pass \"all\" to show the whole house.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "level": { "type": "string", "description": "A level id from the plan (for example \"ground\", \"upper\") or \"all\"." }
+      },
+      "required": ["level"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "highlight",
+    "description": "Briefly pulse one or more things in the view so a person can see which ones are meant. Does not change any device.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "ids": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Thing, room, camera or person ids. A person highlights the room their phone is in." },
+        "ms": { "type": "number", "description": "How long to highlight, in milliseconds. Default 4000, at most 60000." }
+      },
+      "required": ["ids"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "setTheme",
+    "description": "Switch the view between its day and night appearance.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "theme": { "type": "string", "enum": ["day", "night"] }
+      },
+      "required": ["theme"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "setView",
+    "description": "Switch between the two ways of looking at the house. \"model\" is the plain model. \"reality\" is the same model with each camera that has a live picture projecting that picture onto the surfaces it can see; everything no camera sees right now stays the model, and a camera that is offline, stale or in privacy projects nothing. describe and state say which cameras have a picture.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "view": { "type": "string", "enum": ["model", "reality"] }
+      },
+      "required": ["view"],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "reset",
+    "description": "Return the view to the overview: clears any focus and highlight.",
+    "input_schema": { "type": "object", "properties": {}, "additionalProperties": false }
+  }
+]

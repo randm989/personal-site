@@ -1,0 +1,1337 @@
+/* House View UI overlay. Four layouts, chosen by [data-layout] on .hv:
+   desktop (default tokens), phone, tablet (wall panel), tv.
+   Values: docs/research/04-style-brief.md sections 4 to 8.
+   Only transform and opacity animate. Panels are opaque, with a shadow and no border. */
+
+.hv {
+  /* ---- desktop tokens (0.6 m, pointer) ---- */
+  --m: 24px;                 /* outer margin */
+  --fs-clock: 28px;    --w-clock: 600;  --ls-clock: -0.01em;
+  --fs-headline: 16px; --ls-headline: 0em;
+  --fs-row: 15px;      --ls-row: 0em;
+  --fs-title: 20px;    --ls-title: 0em;
+  --fs-value: 32px;    --ls-value: -0.01em;
+  --fs-body: 14px;     --ls-body: 0.01em;
+  --fs-meta: 13px;     --ls-meta: 0.01em;
+  --row-h: 44px;
+  --hit: 32px;               /* minimum target */
+  --seg: 36px;               /* floor switcher segment */
+  --glyph-row: 32px;
+  --glyph-headline: 24px;
+  --glyph-head: 32px;        /* detail-card header */
+  --marker: 32px;
+  --dot-scale: 0.3125;       /* a lit lamp's dot: 10px of a 32px disc */
+  --icon: 20px;
+  --card-pad: 16px;
+  --panel-pad: 6px;          /* radius 16 outside, 10 inside */
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--text-1);
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-body);
+  line-height: var(--lh-row);
+  letter-spacing: var(--ls-body);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hv[data-layout="phone"] {
+  --m: 16px;
+  --fs-clock: 28px;    --w-clock: 700;  --ls-clock: -0.01em;
+  --fs-headline: 17px; --ls-headline: 0em;
+  --fs-row: 16px;      --ls-row: 0em;
+  --fs-title: 20px;    --ls-title: 0em;
+  --fs-value: 34px;    --ls-value: -0.01em;
+  --fs-body: 15px;     --ls-body: 0em;
+  --fs-meta: 13px;     --ls-meta: 0.01em;
+  --row-h: 56px;
+  --hit: 48px;
+  --seg: 48px;
+  --glyph-row: 32px;
+  --glyph-headline: 24px;
+  --card-pad: 16px;
+}
+
+.hv[data-layout="tablet"],
+.hv[data-layout="phone"][data-tier="panel"] {
+  --fs-row: 20px;      --ls-row: 0em;
+  --fs-title: 24px;    --ls-title: -0.01em;
+  --fs-value: 40px;    --ls-value: -0.02em;
+  --fs-body: 18px;     --ls-body: 0em;
+  --fs-meta: 15px;     --ls-meta: 0em;
+  --row-h: 64px;
+  --hit: 56px;
+  --seg: 56px;
+  --glyph-row: 40px;
+  --glyph-head: 40px;
+  --marker: 40px;
+  --dot-scale: 0.3;
+  --icon: 24px;
+  --card-pad: 24px;
+}
+.hv[data-layout="tablet"] {
+  --m: 24px;
+  --fs-clock: 64px;    --w-clock: 700;  --ls-clock: -0.02em;
+  --fs-headline: 32px; --ls-headline: -0.01em;
+  --glyph-headline: 40px;
+}
+/* Landscape phone: the tablet layout, one size step down. */
+.hv[data-layout="tablet"][data-tier="compact"] {
+  --m: 16px;
+  --fs-clock: 40px;    --fs-headline: 20px; --ls-headline: 0em;
+  --fs-row: 16px;      --fs-title: 20px;  --ls-title: 0em;
+  --fs-value: 32px;    --ls-value: -0.01em;
+  --fs-body: 15px;     --fs-meta: 13px;   --ls-meta: 0.01em;
+  --row-h: 48px;       --hit: 48px;       --seg: 48px;
+  --glyph-row: 28px;   --glyph-headline: 28px; --glyph-head: 32px;
+  --marker: 32px;      --dot-scale: 0.3125;    --card-pad: 16px;
+}
+
+/* TV: sizes in vh so they hold at 1080p and 720p. Tracking +0.01em per step. */
+.hv[data-layout="tv"] {
+  --fs-clock: 9vh;       --w-clock: 700;  --ls-clock: -0.01em;
+  --fs-headline: 4.4vh;  --ls-headline: -0.01em;
+  --fs-row: 3.3vh;       --ls-row: 0em;
+  --fs-body: 3vh;        --ls-body: 0em;
+  --fs-meta: 2.4vh;      --ls-meta: 0em;
+  --glyph-row: 4.4vh;
+  --glyph-headline: 5vh;
+  --marker: 4.4vh;
+  --dot-scale: 0.36;
+  --icon: 3.6vh;
+  cursor: none;
+}
+
+/* ---- shared pieces ------------------------------------------------------ */
+.hv [hidden] { display: none !important; }
+
+.hv :where(button) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.hv :focus { outline: none; }
+.hv :focus-visible { box-shadow: var(--focus-ring); }
+
+.hv :where(h2, p, ul, dl, dd, dt, figure) { margin: 0; padding: 0; }
+.hv :where(ul) { list-style: none; }
+
+.hv-unit { color: var(--text-2); }
+
+.hv-icon {
+  display: inline-grid;
+  flex: none;
+  width: var(--icon);
+  height: var(--icon);
+}
+.hv-icon svg { display: block; width: 100%; height: 100%; }
+
+/* Panels: opaque, shadow, no border. Never nested. */
+.hv-attention,
+.hv-card,
+.hv-floors,
+.hv-view,
+.hv-banner {
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+  pointer-events: auto;
+}
+
+/* ---- state glyphs (shape first, colour third) --------------------------- */
+.hv-glyph {
+  --glyph-ground: var(--surface);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--glyph, 28px);
+  height: var(--glyph, 28px);
+  color: var(--text-3);
+}
+.hv-glyph-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.hv-glyph .hv-icon { position: relative; width: 78%; height: 78%; }
+
+.hv-shape-line { fill: none; stroke: currentColor; stroke-width: 2; }
+.hv-shape-fill { fill: currentColor; }
+
+.hv-glyph[data-status="on"] { color: var(--state-on-ink); }
+.hv-glyph[data-status="on"] .hv-shape-fill { fill: var(--state-on); }
+.hv-glyph[data-status="on"] .hv-shape-edge {
+  fill: none;
+  stroke: var(--state-on-ink);
+  stroke-opacity: 0.35;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+.hv-glyph[data-status="on"] .hv-icon { width: 62%; height: 62%; }
+
+.hv-glyph[data-status="attention"] { color: var(--state-attention); }
+.hv-glyph[data-status="attention"] .hv-icon { width: 56%; height: 56%; }
+
+.hv-glyph[data-status="unknown"] { color: var(--state-unknown); }
+.hv-glyph[data-status="unknown"] .hv-icon { width: 54%; height: 54%; }
+
+.hv-glyph[data-status="alert"] { color: var(--state-alert); }
+.hv-shape-tri { stroke: currentColor; stroke-width: 3; stroke-linejoin: round; }
+.hv-shape-mark { fill: none; stroke: var(--glyph-ground); stroke-width: 2.6; stroke-linecap: round; }
+.hv-shape-dot { fill: var(--glyph-ground); }
+
+.hv-glyph[data-status="secure"] { color: var(--state-secure-ink); }
+.hv-glyph[data-status="secure"] .hv-shape-fill { fill: var(--state-secure); }
+.hv-glyph[data-status="secure"] .hv-icon { width: 58%; height: 58%; }
+
+/* A glyph that is not on a panel sits on its own --surface disc. */
+.hv-glyph--plate {
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-marker);
+}
+.hv-glyph--plate[data-status="alert"] .hv-glyph-shape {
+  inset: 9% 14% 19%;
+  width: 72%;
+  height: 72%;
+}
+
+/* ---- status strip (read-only text, no panel) ---------------------------- */
+.hv-strip { pointer-events: none; }
+
+.hv-clock {
+  font-size: var(--fs-clock);
+  font-weight: var(--w-clock);
+  line-height: var(--lh-value);
+  letter-spacing: var(--ls-clock);
+  white-space: nowrap;
+}
+
+.hv-headline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 0;
+  font-size: var(--fs-headline);
+  font-weight: var(--fw-strong);
+  letter-spacing: var(--ls-headline);
+  white-space: nowrap;
+}
+.hv-headline .hv-glyph { --glyph: var(--glyph-headline); }
+.hv-headline .hv-glyph[data-status="none"] { color: var(--text-2); --glyph: calc(var(--glyph-headline) * 0.92); }
+.hv-headline .hv-glyph[data-status="none"] .hv-icon { width: 100%; height: 100%; }
+.hv-headline-text { overflow: hidden; text-overflow: ellipsis; }
+
+.hv-name { font-weight: var(--fw-strong); color: var(--text-2); white-space: nowrap; }
+.hv-lights, .hv-people, .hv-temps, .hv-date { color: var(--text-2); white-space: nowrap; }
+.hv-temps { display: inline-flex; gap: var(--s-16); }
+.hv-temp-label { color: var(--text-3); }
+.hv-temp-value { color: var(--text-1); font-weight: var(--fw-strong); }
+.hv-temp-value .hv-unit { font-weight: var(--fw-body); }
+
+.hv-theme {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  pointer-events: auto;
+}
+
+/* ---- offline banner: a strip at the top of the model box ---------------- */
+.hv-banner {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 var(--s-16);
+  border-radius: var(--r-inner);
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  white-space: nowrap;
+}
+.hv-banner .hv-icon { color: var(--state-unknown); }
+.hv-banner-lead { color: var(--text-1); font-weight: var(--fw-strong); }
+.hv-banner-rest { margin-left: -4px; }
+
+/* ---- attention list ----------------------------------------------------- */
+.hv-attention {
+  position: absolute;
+  padding: var(--panel-pad);
+  border-radius: var(--r-panel);
+}
+.hv-attention-title {
+  padding: 8px 12px 4px;
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-body);
+  letter-spacing: var(--ls-meta);
+}
+.hv-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  width: 100%;
+  min-height: var(--row-h);
+  padding: 0 var(--s-12);
+  border-radius: var(--r-inner);
+  font-size: var(--fs-row);
+  letter-spacing: var(--ls-row);
+  text-align: left;
+  transition: transform var(--t-press) var(--ease-out), opacity var(--t-press) var(--ease-out);
+}
+.hv .hv-row { display: flex; }
+.hv-row .hv-glyph { --glyph: var(--glyph-row); --glyph-ground: var(--surface); }
+.hv-row-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hv-row-age {
+  flex: none;
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+  white-space: nowrap;
+}
+.hv-row-caret { display: none; flex: none; color: var(--text-3); }
+.hv-row-caret .hv-icon { width: 16px; height: 16px; }
+.hv-row[aria-current="true"] { background: var(--surface-raised); }
+.hv-row[aria-current="true"] .hv-glyph { --glyph-ground: var(--surface-raised); }
+.hv-more {
+  padding: 6px 12px 8px calc(var(--s-12) + var(--glyph-row) + var(--s-12));
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+}
+
+.hv-sheet { display: contents; }
+.hv-grabber, .hv-summary { display: none; }
+
+/* ---- the dock: Model / Reality switch and floor switcher, placed as a pair --- */
+.hv-dock {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  pointer-events: none;
+  transition: transform var(--t-enter) var(--ease-out);
+}
+.hv-floors,
+.hv-view {
+  position: relative;
+  display: flex;
+  flex: none;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border-radius: var(--r-pill);
+}
+.hv .hv-view-seg {
+  display: grid;
+  place-items: center;
+  height: var(--seg);
+  min-width: var(--seg);
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+  letter-spacing: var(--ls-body);
+  white-space: nowrap;
+  transition: transform var(--t-press) var(--ease-out), opacity var(--t-press) var(--ease-out);
+}
+.hv .hv-view-seg[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.hv .hv-floor {
+  display: grid;
+  place-items: center;
+  width: var(--seg);
+  height: var(--seg);
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  font-size: var(--fs-row);
+  font-weight: var(--fw-strong);
+  letter-spacing: 0;
+  transition: transform var(--t-press) var(--ease-out), opacity var(--t-press) var(--ease-out);
+}
+.hv .hv-floor[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+/* ---- detail card --------------------------------------------------------- */
+.hv-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: var(--card-pad);
+  border-radius: var(--r-panel);
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  z-index: 3;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(12px, 0, 0);
+  transition: opacity var(--t-exit) var(--ease-in), transform var(--t-exit) var(--ease-in), visibility 0s linear var(--t-exit);
+}
+.hv[data-card="open"] .hv-card {
+  visibility: visible;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity var(--t-enter) var(--ease-out), transform var(--t-enter) var(--ease-out), visibility 0s;
+}
+.hv-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  min-height: var(--glyph-head);
+}
+.hv-glyph--head { --glyph: var(--glyph-head); }
+.hv-glyph--head[data-status="off"] .hv-icon,
+.hv-glyph--head[data-status="none"] .hv-icon { width: 88%; height: 88%; }
+.hv-card-titles { flex: 1 1 auto; min-width: 0; }
+.hv-card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  line-height: var(--lh-row);
+  letter-spacing: var(--ls-title);
+}
+.hv-card-where {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+}
+.hv .hv-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--hit);
+  height: var(--hit);
+  margin: -4px -6px -4px 0;
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+}
+.hv-card-body { display: flex; flex-direction: column; }
+.hv-card-value {
+  margin-top: var(--s-16);
+  font-size: var(--fs-value);
+  font-weight: var(--fw-strong);
+  line-height: var(--lh-value);
+  letter-spacing: var(--ls-value);
+}
+.hv-card-word { white-space: nowrap; }
+.hv-card-since {
+  margin-left: 0.2em;
+  color: var(--text-2);
+  font-size: var(--fs-title);
+  letter-spacing: var(--ls-title);
+  white-space: nowrap;
+}
+/* Never draw "we do not know" in the primary value style. */
+.hv-card-value--quiet {
+  color: var(--text-2);
+  font-size: var(--fs-title);
+  line-height: var(--lh-row);
+  letter-spacing: var(--ls-title);
+  text-wrap: balance;
+}
+.hv-card-value--quiet .hv-card-word { white-space: normal; }
+.hv-card-value--quiet .hv-card-since { color: var(--text-2); }
+.hv-card-note {
+  max-width: 42ch;
+  margin-top: var(--s-8);
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  line-height: var(--lh-prose);
+  user-select: text;
+  -webkit-user-select: text;
+}
+.hv-facts { margin-top: var(--s-16); }
+.hv-fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-16);
+  padding: 10px 0;
+  border-top: 1px solid var(--hairline);
+  font-size: var(--fs-body);
+}
+.hv-fact-label { flex: none; color: var(--text-2); }
+.hv-fact-value { min-width: 0; text-align: right; }
+.hv-fact-text { color: var(--text-1); font-weight: var(--fw-strong); }
+.hv-fact-text .hv-unit { font-weight: var(--fw-body); }
+.hv-fact-age {
+  display: block;
+  color: var(--text-3);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+}
+.hv-fact-age .hv-unit { color: inherit; }
+.hv-fact--last-known .hv-fact-label,
+.hv-fact--last-known .hv-fact-text,
+.hv-fact--last-known .hv-unit,
+.hv-fact--unknown .hv-fact-label,
+.hv-fact--unknown .hv-fact-text,
+.hv-fact--unknown .hv-unit { color: var(--text-3); font-weight: var(--fw-body); }
+
+.hv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-8);
+  margin-top: var(--s-16);
+}
+.hv .hv-btn {
+  flex: 1 1 0;
+  min-width: max-content;
+  min-height: max(var(--hit), 40px);
+  padding: 0 var(--s-16);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-inner);
+  color: var(--text-1);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+  transition: transform var(--t-press) var(--ease-out), opacity var(--t-press) var(--ease-out);
+}
+.hv .hv-btn--primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---- markers over the model ------------------------------------------------ */
+.hv-markers { position: absolute; inset: 0; pointer-events: none; }
+.hv .hv-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: max(var(--hit), var(--marker));
+  height: max(var(--hit), var(--marker));
+  margin: calc(max(var(--hit), var(--marker)) / -2) 0 0 calc(max(var(--hit), var(--marker)) / -2);
+  border-radius: 50%;
+  pointer-events: auto;
+  will-change: transform;
+}
+.hv-marker.is-hidden { visibility: hidden; }
+.hv-marker:focus-visible { box-shadow: none; }
+.hv-marker:focus-visible .hv-glyph { box-shadow: var(--focus-ring); border-radius: 50%; }
+.hv-marker-body {
+  position: relative;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity var(--t-leave) var(--ease-in), transform var(--t-leave) var(--ease-in);
+}
+.hv-marker.is-in .hv-marker-body {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity var(--t-row) var(--ease-out), transform var(--t-row) var(--ease-out);
+}
+.hv-marker .hv-glyph { --glyph: var(--marker); }
+.hv-marker.is-selected .hv-glyph { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); border-radius: 50%; }
+
+/* Anything merely on (a lamp, a running appliance, a charging car) is a small quiet dot;
+   it opens into the full disc when selected, focused or hovered. */
+.hv-marker[data-status="on"] { z-index: 1; }
+.hv-marker[data-status="on"] .hv-glyph {
+  transform: scale(var(--dot-scale));
+  transition: transform var(--t-row) var(--ease-out);
+}
+.hv-marker[data-status="on"] .hv-icon {
+  opacity: 0;
+  transition: opacity var(--t-leave) var(--ease-fade);
+}
+.hv-marker[data-status="on"].is-selected .hv-glyph,
+.hv-marker[data-status="on"]:focus-visible .hv-glyph { transform: scale(1); }
+.hv-marker[data-status="on"].is-selected .hv-icon,
+.hv-marker[data-status="on"]:focus-visible .hv-icon { opacity: 1; }
+
+/* Alert arrival: the one attention-seeking motion. Two rings, then still. */
+.hv-marker.is-arriving .hv-marker-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--state-alert);
+  border-radius: 50%;
+  opacity: 0;
+  animation: hv-alert-ring 900ms var(--ease-fade) 2;
+  pointer-events: none;
+}
+@keyframes hv-alert-ring {
+  from { opacity: 0.9; transform: scale(1); }
+  to   { opacity: 0;   transform: scale(2.4); }
+}
+
+/* ---- pointer-only affordances ------------------------------------------------ */
+@media (hover: hover) and (pointer: fine) {
+  .hv-row:hover { background: var(--surface-raised); }
+  .hv-row:hover .hv-glyph { --glyph-ground: var(--surface-raised); }
+  .hv .hv-floor:not([aria-pressed="true"]):hover,
+  .hv .hv-view-seg:not([aria-pressed="true"]):hover,
+  .hv .hv-close:hover,
+  .hv .hv-btn:not(.hv-btn--primary):hover { background: var(--surface-raised); }
+  .hv .hv-theme:hover { background: var(--surface); color: var(--text-1); }
+  .hv-marker[data-status="on"]:hover .hv-glyph { transform: scale(1); }
+  .hv-marker[data-status="on"]:hover .hv-icon { opacity: 1; }
+}
+
+/* Press feedback: scale(0.97), 100 ms. No hover lift. */
+.hv-row:active, .hv .hv-btn:active, .hv .hv-floor:active, .hv .hv-view-seg:active, .hv .hv-close:active { transform: scale(0.97); }
+
+/* =============================== DESKTOP ===================================== */
+.hv[data-layout="desktop"] .hv-strip {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s-24);
+  height: 48px;
+  padding: 0 var(--m);
+}
+.hv[data-layout="desktop"] .hv-aside { display: contents; }
+.hv[data-layout="desktop"] .hv-date { display: none; }
+.hv[data-layout="desktop"] .hv-clock { order: 5; margin-left: auto; }
+.hv[data-layout="desktop"] .hv-theme { order: 6; margin: 0 -6px 0 -8px; }
+.hv[data-layout="desktop"].is-offline .hv-headline { display: none; }
+
+.hv[data-layout="desktop"] { --panel-top: 56px; }
+.hv[data-layout="desktop"].is-offline { --panel-top: 104px; }
+.hv[data-layout="desktop"] .hv-banner { top: 56px; left: var(--m); right: var(--m); }
+.hv[data-layout="desktop"] .hv-attention { top: var(--panel-top); left: var(--m); width: 320px; }
+.hv[data-layout="desktop"] .hv-card {
+  top: var(--panel-top);
+  right: var(--m);
+  width: 360px;
+  max-height: calc(100% - var(--panel-top) - var(--m));
+}
+.hv[data-layout="desktop"] .hv-dock {
+  bottom: var(--m);
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+}
+/* DOM is top storey first; read G 1 2 left to right */
+.hv[data-layout="desktop"] .hv-floors { flex-direction: row-reverse; }
+
+/* ================================ TABLET ====================================== */
+.hv[data-layout="tablet"] .hv-strip {
+  position: absolute;
+  top: var(--m); left: var(--m); right: var(--m);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "clock aside" "headline aside";
+  align-items: start;
+  row-gap: var(--s-4);
+}
+.hv[data-layout="tablet"] .hv-name,
+.hv[data-layout="tablet"] .hv-lights,
+.hv[data-layout="tablet"] .hv-theme,
+.hv[data-layout="tablet"] .hv-attention-title { display: none; }
+.hv[data-layout="tablet"] .hv-clock { grid-area: clock; }
+.hv[data-layout="tablet"] .hv-headline { grid-area: headline; justify-self: start; }
+.hv[data-layout="tablet"] .hv-aside {
+  grid-area: aside;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: end;
+  justify-items: end;
+  column-gap: var(--s-24);
+  row-gap: var(--s-4);
+  padding-top: 0.5em;
+  font-size: var(--fs-row);
+}
+.hv[data-layout="tablet"] .hv-temps { gap: var(--s-24); }
+.hv[data-layout="tablet"] .hv-people { grid-column: 1 / -1; font-size: var(--fs-body); }
+.hv[data-layout="tablet"] .hv-date { grid-column: 2; }
+.hv[data-layout="tablet"] .hv-banner {
+  top: calc(var(--m) + var(--fs-clock) * 1.15 + var(--fs-headline) * 1.35 + 20px);
+  left: var(--m);
+  right: calc(var(--m) * 2 + var(--seg) + 8px);
+  min-height: 56px;
+}
+.hv[data-layout="tablet"] .hv-attention { left: var(--m); bottom: var(--m); width: 360px; }
+.hv[data-layout="tablet"] .hv-dock {
+  top: 50%;
+  right: var(--m);
+  flex-direction: column-reverse;   /* floors above, the view switch below */
+  align-items: center;              /* two pills on one axis */
+  transform: translate3d(0, -50%, 0);
+}
+.hv[data-layout="tablet"] .hv-floors,
+.hv[data-layout="tablet"] .hv-view { flex-direction: column; }
+.hv[data-layout="tablet"] .hv-view-seg { padding: 0 10px; font-size: var(--fs-meta); letter-spacing: var(--ls-meta); }
+.hv[data-layout="tablet"] .hv-card {
+  top: var(--m); right: var(--m); bottom: var(--m);
+  width: 400px;
+}
+/* The switcher slides left of an open card. */
+.hv[data-layout="tablet"][data-card="open"] .hv-dock { transform: translate3d(-416px, -50%, 0); }
+
+/* ================================= PHONE ====================================== */
+.hv[data-layout="phone"] .hv-strip {
+  position: absolute;
+  top: max(8px, env(safe-area-inset-top));
+  left: max(var(--m), env(safe-area-inset-left));
+  right: max(var(--m), env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  height: 44px;
+}
+.hv[data-layout="phone"] .hv-name,
+.hv[data-layout="phone"] .hv-lights,
+.hv[data-layout="phone"] .hv-date,
+.hv[data-layout="phone"] .hv-people,
+.hv[data-layout="phone"] .hv-theme { display: none; }
+.hv[data-layout="phone"] .hv-headline { flex: 1 1 auto; }
+.hv[data-layout="phone"].is-offline .hv-headline { visibility: hidden; }
+.hv[data-layout="phone"] .hv-aside { flex: none; }
+.hv[data-layout="phone"] .hv-temps {
+  display: grid;
+  justify-items: end;
+  gap: 0;
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+  line-height: 1.3;
+}
+.hv[data-layout="phone"] .hv-banner {
+  top: calc(max(8px, env(safe-area-inset-top)) + 48px);
+  left: max(var(--m), env(safe-area-inset-left));
+  right: max(var(--m), env(safe-area-inset-right));
+  min-height: 44px;
+}
+
+.hv[data-layout="phone"] .hv-sheet {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 40%;
+  padding: 0 8px max(8px, env(safe-area-inset-bottom));
+  border-radius: var(--r-panel) var(--r-panel) 0 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+  pointer-events: auto;
+  z-index: 2;
+  transform: translate3d(0, var(--sheet-shift, 0px), 0);
+  transition: transform var(--t-enter) var(--ease-out);
+}
+.hv[data-layout="phone"] .hv-grabber {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 100%;
+  height: 24px;
+  border-radius: var(--r-panel) var(--r-panel) 0 0;
+}
+.hv[data-layout="phone"] .hv-grabber::before {      /* 48px target reaching above the sheet */
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -24px; height: 48px;
+}
+.hv[data-layout="phone"] .hv-grabber:disabled { cursor: default; }
+.hv-grabber-bar {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--hairline-strong);
+}
+.hv[data-layout="phone"] .hv-grabber:disabled .hv-grabber-bar { background: var(--hairline); }
+.hv[data-layout="phone"] .hv-attention {
+  position: static;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.hv[data-layout="phone"] .hv-attention-title { display: none; }
+/* Collapsed: grabber and the one summary line; the list is not drawn. */
+.hv[data-layout="phone"].is-collapsed .hv-attention { display: none; }
+.hv[data-layout="phone"] .hv-row-caret { display: grid; margin-right: -4px; }
+.hv[data-layout="phone"] .hv-summary {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--s-16);
+  min-height: 48px;
+  padding: 0 var(--s-12);
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  white-space: nowrap;
+}
+.hv-summary-item { flex: none; }
+.hv-summary-item:last-child { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* Phone: the view switch bottom-left, the floors bottom-right, both riding above the sheet. */
+.hv[data-layout="phone"] .hv-dock {
+  left: max(var(--m), env(safe-area-inset-left));
+  right: max(var(--m), env(safe-area-inset-right));
+  bottom: var(--m);
+  justify-content: space-between;
+  align-items: flex-end;
+  transform: translate3d(0, calc(-1 * var(--covered-bottom, 0px)), 0);
+}
+.hv[data-layout="phone"] .hv-floors { flex-direction: column; gap: var(--s-8); margin-left: auto; }
+.hv[data-layout="phone"] .hv-view-seg { padding: 0 16px; }
+.hv[data-layout="phone"] .hv-card {
+  left: 0; right: 0; bottom: 0;
+  max-height: 55%;
+  padding-bottom: max(var(--card-pad), env(safe-area-inset-bottom));
+  border-radius: var(--r-panel) var(--r-panel) 0 0;
+  transform: translate3d(0, 12px, 0);
+}
+.hv[data-layout="phone"][data-card="open"] .hv-card { transform: translate3d(0, 0, 0); }
+.hv[data-layout="phone"][data-tier="panel"] .hv-sheet { max-height: 30%; }
+
+/* ================================== TV ========================================= */
+.hv[data-layout="tv"] .hv-strip {
+  position: absolute;
+  left: 5vw;
+  bottom: 5vh;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas: "clock clock" "headline aside";
+  justify-content: start;
+  align-items: center;
+  column-gap: 3.3vh;
+  row-gap: 0.8vh;
+}
+.hv[data-layout="tv"] .hv-name,
+.hv[data-layout="tv"] .hv-lights,
+.hv[data-layout="tv"] .hv-date,
+.hv[data-layout="tv"] .hv-people,
+.hv[data-layout="tv"] .hv-theme,
+.hv[data-layout="tv"] .hv-floors,
+.hv[data-layout="tv"] .hv-dock,
+.hv[data-layout="tv"] .hv-card,
+.hv[data-layout="tv"] .hv-temp + .hv-temp,
+.hv[data-layout="tv"] .hv-temp-label { display: none; }
+.hv[data-layout="tv"] .hv-clock { grid-area: clock; }
+.hv[data-layout="tv"] .hv-headline { grid-area: headline; }
+.hv[data-layout="tv"] .hv-aside { grid-area: aside; font-size: var(--fs-row); }
+.hv[data-layout="tv"] .hv-temp-value { color: var(--text-2); font-weight: var(--fw-body); }
+.hv[data-layout="tv"] .hv-banner {
+  top: 5vh; left: 5vw; right: 5vw;
+  gap: 1.6vh;
+  min-height: 7vh;
+  padding: 0 2.4vh;
+  border-radius: 1.4vh;
+}
+.hv[data-layout="tv"] .hv-attention {
+  right: 5vw;
+  bottom: 5vh;
+  max-width: 36vw;
+  padding: 0.8vh;
+  border-radius: 2vh;
+}
+.hv[data-layout="tv"] .hv-attention-title { display: none; }
+.hv[data-layout="tv"] .hv-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "glyph text" "glyph age";
+  align-items: center;
+  column-gap: 2vh;
+  row-gap: 0;
+  min-height: 0;
+  padding: 1.2vh 2.4vh 1.2vh 1.6vh;
+  border-radius: 1.4vh;
+}
+.hv[data-layout="tv"] .hv-row .hv-glyph { grid-area: glyph; }
+.hv[data-layout="tv"] .hv-row-text { grid-area: text; line-height: 1.25; }
+.hv[data-layout="tv"] .hv-row-age { grid-area: age; line-height: 1.25; }
+.hv[data-layout="tv"] .hv-more { padding: 0.6vh 2.4vh 1.2vh calc(1.6vh + var(--glyph-row) + 2vh); }
+.hv[data-layout="tv"] .hv-shape-line { stroke-width: 2.4; }
+.hv[data-layout="tv"] .hv-marker { pointer-events: none; }
+
+/* ============================ reduced motion ==================================== */
+/* Fewer and gentler, not zero: opacity only, 150 ms; no translation; no alert ring. */
+@media (prefers-reduced-motion: reduce) {
+  .hv .hv-card,
+  .hv[data-card="open"] .hv-card { transform: none; }
+  .hv[data-layout="phone"] .hv-sheet,
+  .hv .hv-dock { transition: none; }
+  .hv-marker-body, .hv-marker.is-in .hv-marker-body { transform: none; }
+  .hv-marker[data-status="on"] .hv-glyph { transition: none; }
+  .hv-marker.is-arriving .hv-marker-body::after { animation: none; }
+  .hv-row:active, .hv .hv-btn:active, .hv .hv-floor:active, .hv .hv-view-seg:active, .hv .hv-close:active { transform: none; opacity: 0.8; }
+}
+
+@media (prefers-contrast: more) {
+  .hv .hv-btn { border-color: var(--text-2); }
+}
+
+/* Phone strip: the temperature labels shorten to "In" / "Out" to leave room for the headline. */
+.hv[data-layout="phone"] .hv-temp-label { font-size: 0; }
+.hv[data-layout="phone"] .hv-temp-label::before { content: attr(data-short); font-size: var(--fs-meta); }
+
+/* First paint: the view appears in its current state; no panel slides in. */
+.hv.is-booting, .hv.is-booting * { transition: none !important; }
+
+/* Tablet, offline: the glance headline above already says "Not connected" with the
+   slashed-wifi glyph, so the strip beneath it carries only what it adds: the snapshot time. */
+.hv[data-layout="tablet"] .hv-banner { right: auto; min-height: 48px; padding: 0 20px; }
+.hv[data-layout="tablet"] .hv-banner .hv-icon,
+.hv[data-layout="tablet"] .hv-banner-lead {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.hv[data-layout="tablet"] .hv-banner-rest { margin-left: 0; color: var(--text-1); }
+
+/* Phone sheet: drawn only when it has something to say; scrolls rather than clips on short screens. */
+.hv[data-layout="phone"]:not(.has-attention):not(.has-summary) .hv-sheet { display: none; }
+.hv[data-layout="phone"]:not(.has-attention) .hv-grabber { display: none; }
+.hv[data-layout="phone"]:not(.has-attention) .hv-sheet { padding-top: 4px; }
+.hv[data-layout="phone"] .hv-attention { flex: 0 1 auto; min-height: 0; overflow: hidden auto; overscroll-behavior: contain; }
+
+/* Stacking: markers beneath every panel, the card above the rest. */
+.hv-markers { z-index: 0; }
+.hv-strip, .hv-banner, .hv-attention, .hv-dock { z-index: 2; }
+
+/* ===================== polish round 2 ===================== */
+
+/* Attention rows: the text carries the state word ("open", "no data"), so it is never
+   cut off. It wraps to a second line instead; only the age stays on one line. */
+.hv-row { padding-top: 8px; padding-bottom: 8px; }
+.hv-row-text {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: var(--lh-row);
+  text-wrap: pretty;
+}
+
+/* Phone sheet: no native scrollbar at the edge of the sheet. */
+.hv[data-layout="phone"] .hv-attention { scrollbar-width: none; -ms-overflow-style: none; }
+.hv[data-layout="phone"] .hv-attention::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.hv-card { scrollbar-width: thin; }
+
+/* Room labels: annotation on the drawing. Name in tertiary, temperature beside it in
+   secondary, tabular. No panel, no background, never interactive. */
+.hv { --fs-label: 12px; }
+.hv[data-layout="tablet"] { --fs-label: 15px; }
+.hv[data-layout="tablet"][data-tier="compact"] { --fs-label: 12px; }
+.hv[data-layout="tv"] { --fs-label: 2.4vh; }
+.hv-labels { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hv-room-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+  width: 0;
+  height: 0;
+  white-space: nowrap;
+  color: var(--text-3);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-strong);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  will-change: transform;
+}
+.hv-room-label.is-hidden { visibility: hidden; }
+.hv-room-name, .hv-room-temp { flex: none; }
+.hv-room-temp { color: var(--text-1); font-variant-numeric: tabular-nums; }
+:root[data-theme="night"] .hv-room-name, :root:not([data-theme]) .hv-room-name { color: var(--text-2); }
+.hv-room-temp .hv-unit { color: inherit; font-weight: var(--fw-body); }
+
+/* A label has no plate, so it carries a thin halo in the backdrop colour (the map-maker's
+   convention) to stay legible on both an unlit floor and a pool of lamplight. Not a glow:
+   it is the ground colour, and it stops at the letterforms. */
+:root, :root[data-theme="night"] { --label-halo: rgba(16, 21, 28, 0.9); }
+:root[data-theme="day"] { --label-halo: rgba(251, 252, 253, 0.95); }
+.hv-room-label {
+  text-shadow: 0 0 1px var(--label-halo), 0 0 2px var(--label-halo), 0 0 4px var(--label-halo);
+}
+
+/* ===================== polish round 3 ===================== */
+
+/* Phone, card open: the card is the sheet. One surface, one grabber bar, sized to its content. */
+.hv[data-layout="phone"] .hv-card { max-height: 55%; padding-top: 0; }
+.hv[data-layout="phone"] .hv-card::before {
+  content: "";
+  flex: none;
+  align-self: center;
+  width: 36px;
+  height: 4px;
+  margin: 10px 0;
+  border-radius: var(--r-pill);
+  background: var(--hairline-strong);
+}
+
+/* Headline: what the sensors cannot see, said quietly beside it. */
+.hv-headline-words { display: inline-flex; align-items: baseline; gap: 0.75em; min-width: 0; }
+.hv-headline-note {
+  flex: none;
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-body);
+  letter-spacing: var(--ls-meta);
+  white-space: nowrap;
+}
+.hv[data-layout="tablet"] .hv-headline-words,
+.hv[data-layout="phone"] .hv-headline-words { flex-direction: column; align-items: flex-start; gap: 0; line-height: 1.2; }
+.hv[data-layout="tablet"] .hv-headline-note { font-size: var(--fs-body); }
+.hv[data-layout="tv"] .hv-headline-note { font-size: var(--fs-row); }
+
+/* A security thing we cannot vouch for: the dashed circle, in the attention colour. */
+.hv-glyph[data-status="unknown"][data-tone="attention"] { color: var(--state-attention); }
+
+/* Card facts: "checked 2 min ago" sits under the age, one level quieter. */
+.hv-fact-checked { color: var(--text-3); }
+
+/* Tablet card: as tall as its content, hung below the glance block on the right. */
+.hv[data-layout="tablet"] .hv-card {
+  top: var(--card-top, var(--m));
+  bottom: auto;
+  max-height: calc(100% - var(--card-top, var(--m)) - var(--m));
+}
+
+/* Phone: the switcher takes its place above the sheet or card at once; a slide here could be
+   caught mid-way, sitting on the card's top edge. */
+.hv[data-layout="phone"] .hv-dock { transition: none; }
+
+/* The headline itself is never cut; where the strip is tight the note uses its short form. */
+.hv-headline-text { flex: none; overflow: visible; }
+.hv[data-layout="tv"] .hv-headline-note,
+.hv[data-layout="phone"] .hv-headline-note { font-size: 0; }
+.hv[data-layout="tv"] .hv-headline-note::before { content: attr(data-short); font-size: var(--fs-row); }
+.hv[data-layout="phone"] .hv-headline-note::before { content: attr(data-short); font-size: var(--fs-meta); }
+@media (max-width: 1199.98px) {
+  .hv[data-layout="desktop"] .hv-headline-note { font-size: 0; }
+  .hv[data-layout="desktop"] .hv-headline-note::before { content: attr(data-short); font-size: var(--fs-meta); }
+  .hv[data-layout="desktop"] .hv-name { display: none; }
+}
+
+/* ===================== round 2: the real house ===================== */
+
+/* ---- people chips: name, then where the phone is (or Home / Away) --------- */
+.hv-people { display: inline-flex; align-items: center; gap: var(--s-8); pointer-events: none; }
+.hv-sheet-people { display: none; }
+.hv .hv-chip {
+  --chip-h: 28px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 0.5em;
+  height: var(--chip-h);
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font-size: var(--fs-body);
+  letter-spacing: var(--ls-body);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: auto;
+  transition: transform var(--t-press) var(--ease-out), opacity var(--t-press) var(--ease-out);
+}
+/* The target is the full touch size even where the pill is drawn smaller. */
+.hv .hv-chip::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: max(var(--hit), var(--chip-h));
+  transform: translateY(-50%);
+}
+.hv-chip-name { color: var(--text-1); font-weight: var(--fw-strong); }
+.hv-chip-where { color: var(--text-2); }
+.hv-chip[data-home="away"] .hv-chip-name,
+.hv-chip[data-home="unknown"] .hv-chip-name { color: var(--text-2); font-weight: var(--fw-body); }
+.hv-chip[data-home="away"] .hv-chip-where,
+.hv-chip[data-home="unknown"] .hv-chip-where { color: var(--text-3); }
+.hv-chip-battery { display: inline-grid; color: var(--text-2); margin-right: -2px; }
+.hv-chip-battery .hv-icon { width: 1.25em; height: 1.25em; }
+.hv .hv-chip[aria-pressed="true"] { box-shadow: inset 0 0 0 1.5px var(--accent); }
+.hv .hv-chip[aria-pressed="true"]:focus-visible { box-shadow: var(--focus-ring); }
+.hv-chip:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .hv .hv-chip:hover { background: var(--surface-raised); }
+  .hv .hv-chip:hover .hv-chip-where { color: var(--text-2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hv-chip:active { transform: none; opacity: 0.8; }
+}
+
+.hv[data-layout="tablet"] .hv-people { display: flex; justify-content: flex-end; flex-wrap: wrap; margin-top: var(--s-8); }
+.hv[data-layout="tablet"] .hv-chip { --chip-h: 40px; padding: 0 16px; }
+.hv[data-layout="tablet"][data-tier="compact"] .hv-chip { --chip-h: 32px; padding: 0 12px; }
+
+.hv[data-layout="phone"] .hv-sheet-people {
+  display: flex;
+  flex: none;
+  gap: var(--s-8);
+  min-height: 48px;
+  padding: 0 4px;
+  overflow: auto hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.hv[data-layout="phone"] .hv-sheet-people::-webkit-scrollbar { display: none; }
+.hv[data-layout="phone"] .hv-chip { --chip-h: 36px; background: var(--surface-raised); }
+/* text-3 is not allowed on a raised surface */
+.hv[data-layout="phone"] .hv-chip[data-home="away"] .hv-chip-where,
+.hv[data-layout="phone"] .hv-chip[data-home="unknown"] .hv-chip-where { color: var(--text-2); }
+.hv[data-layout="phone"].has-people:not(.has-attention):not(.has-summary) .hv-sheet { display: flex; }
+.hv[data-layout="phone"] .hv-summary { min-height: 40px; }
+.hv[data-layout="phone"].is-collapsed .hv-sheet-people { display: none; }
+
+/* ---- attention list: notices ('info') sit below, one level quieter ---------- */
+.hv-row[data-severity="info"] .hv-row-text { color: var(--text-2); }
+.hv-row[data-severity="info"] .hv-row-age { color: var(--text-3); }
+.hv-row .hv-glyph[data-status="none"] { color: var(--text-3); }
+.hv-row .hv-glyph[data-status="none"] .hv-icon { width: 62%; height: 62%; }
+.hv-attention-item--first-info {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--hairline);
+}
+.hv[data-layout="tv"] .hv-attention-item--first-info { margin-top: 0.4vh; padding-top: 0.4vh; border-top-width: 2px; }
+
+/* ---- card: what is playing, print progress, where the phone is --------------- */
+.hv-card-media {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  max-width: 28ch;
+  margin-top: var(--s-4);
+  overflow: hidden;
+  color: var(--text-1);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  line-height: var(--lh-row);
+  letter-spacing: var(--ls-title);
+  text-wrap: balance;
+}
+.hv-progress { margin-top: var(--s-16); }
+.hv-progress-track {
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--hairline);
+  overflow: hidden;
+}
+.hv-progress-fill { height: 100%; border-radius: var(--r-pill); background: var(--state-on); }
+:root[data-theme="day"] .hv-progress-fill { box-shadow: inset 0 0 0 1px rgba(58, 36, 0, 0.35); }
+.hv-progress[data-tone="held"] .hv-progress-fill { background: var(--state-unknown); box-shadow: none; }
+.hv-progress-left {
+  margin-top: var(--s-8);
+  color: var(--text-1);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+}
+.hv-progress-left .hv-unit { font-weight: var(--fw-body); }
+.hv[data-layout="tablet"] .hv-progress-track { height: 8px; }
+
+.hv-card-phone {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-8);
+  margin-top: var(--s-12);
+  font-size: var(--fs-body);
+}
+.hv-card-phone .hv-icon { color: var(--text-2); margin: 0.05em 0 0 -2px; }
+.hv-card-phone-lines { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.hv-card-phone-text { color: var(--text-1); font-weight: var(--fw-strong); }
+.hv-card-phone-level { color: var(--text-2); font-weight: var(--fw-body); }
+.hv-card-phone-seen {
+  color: var(--text-3);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+  white-space: nowrap;
+}
+.hv-card-phone-seen .hv-unit { color: inherit; }
+.hv-fact-mark { display: inline-grid; margin-right: 6px; color: var(--text-2); vertical-align: -0.22em; }
+.hv-fact-mark .hv-icon { width: 1.25em; height: 1.25em; }
+.hv:not([data-layout="phone"]) .hv-sheet-people { display: none; }
+
+/* Phone: the chip row scrolls sideways; its right edge fades so a cut chip reads as "more".
+   With people shown the sheet may peek a little higher, so four rows and the chips all fit. */
+.hv[data-layout="phone"] .hv-sheet-people {
+  align-items: center;
+  margin-top: var(--s-4);
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  padding-right: 24px;
+}
+.hv[data-layout="phone"].has-people .hv-sheet { max-height: 45%; }
+.hv[data-layout="phone"][data-tier="panel"].has-people .hv-sheet { max-height: 34%; }
+
+/* ===================== round 3: reality view ===================== */
+
+/* ---- the legend: one quiet line, annotation like the room labels (no panel) ---- */
+.hv-legend {
+  position: absolute;
+  z-index: 1;
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+  line-height: var(--lh-row);
+  text-wrap: balance;
+  pointer-events: none;
+  text-shadow: 0 0 1px var(--label-halo), 0 0 2px var(--label-halo), 0 0 4px var(--label-halo), 0 0 8px var(--label-halo);
+}
+.hv-legend-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--text-1);
+  font-weight: var(--fw-strong);
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.hv-legend-count .hv-icon { width: 1.2em; height: 1.2em; color: var(--text-2); }
+
+.hv[data-layout="desktop"] .hv-legend {
+  left: 50%;
+  bottom: calc(var(--m) + var(--seg) + 8px + 10px);
+  width: max-content;
+  max-width: min(100ch, calc(100% - 2 * var(--m)));
+  text-align: center;
+  transform: translate3d(-50%, 0, 0);
+}
+/* Tablet: bottom right, clear of the attention list. */
+.hv[data-layout="tablet"] .hv-legend {
+  right: var(--m);
+  bottom: var(--m);
+  max-width: 30ch;
+  text-align: right;
+}
+/* Landscape phone: too short for one tall column under the glance block. The dock hangs from
+   the bottom corner with the view switch laid flat, and the legend sits beside it. */
+.hv[data-layout="tablet"][data-tier="compact"] .hv-dock {
+  top: auto;
+  bottom: var(--m);
+  align-items: flex-end;
+  transform: none;
+}
+.hv[data-layout="tablet"][data-tier="compact"][data-card="open"] .hv-dock { transform: translate3d(-416px, 0, 0); }
+.hv[data-layout="tablet"][data-tier="compact"] .hv-view { flex-direction: row; }
+.hv[data-layout="tablet"][data-tier="compact"] .hv-view-seg { padding: 0 14px; }
+.hv[data-layout="tablet"][data-tier="compact"] .hv-legend { right: calc(var(--m) + 180px); max-width: 26ch; }
+/* The count takes its own line, so the sentence above it wraps evenly. */
+.hv[data-layout="tablet"] .hv-legend-count { display: flex; justify-content: flex-end; }
+/* Phone: under the strip, where a subtitle would be (and under the banner when offline). */
+.hv[data-layout="phone"] .hv-legend {
+  top: calc(max(8px, env(safe-area-inset-top)) + 48px);
+  left: max(var(--m), env(safe-area-inset-left));
+  right: max(var(--m), env(safe-area-inset-right));
+}
+.hv[data-layout="phone"].is-offline .hv-legend { top: calc(max(8px, env(safe-area-inset-top)) + 100px); }
+/* Phone and tablet, card open: there is no clear room left for the line, and the card's own
+   tag says what the picture is. It returns when the card closes. */
+.hv[data-layout="phone"][data-card="open"] .hv-legend,
+.hv[data-layout="tablet"][data-card="open"] .hv-legend { visibility: hidden; }
+.hv[data-layout="tv"] .hv-legend { top: 5vh; left: 5vw; max-width: 60vw; }
+.hv[data-layout="tv"].is-offline .hv-legend { top: 14.5vh; }
+
+/* ---- small tags: Indoor, Live, Simulated feed -------------------------------- */
+.hv-tag {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  height: 1.7em;
+  padding: 0 0.65em;
+  border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-body);
+  letter-spacing: var(--ls-meta);
+  line-height: 1;
+  white-space: nowrap;
+}
+/* A real picture: solid. A simulated one: dashed, like every other "not the real thing" here. */
+.hv-tag[data-tone="live"] { box-shadow: none; background: var(--surface-raised); color: var(--text-1); font-weight: var(--fw-strong); }
+:root[data-theme="day"] .hv-tag[data-tone="live"] { box-shadow: inset 0 0 0 1px var(--hairline); }
+.hv-tag[data-tone="simulated"] { box-shadow: none; border: 1px dashed var(--hairline-strong); }
+
+/* The tag drops to its own line before the place name is cut. */
+.hv-card-where { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--s-8); }
+.hv-card-where-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.hv-card-where .hv-tag { margin: 1px 0; }
+
+/* ---- camera card: the raw frame ------------------------------------------------ */
+.hv-feed { margin-top: var(--s-16); }
+.hv-feed-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-inner);
+  background: var(--hairline);
+  overflow: hidden;
+}
+.hv-feed-frame[data-ready] { aspect-ratio: auto; }
+.hv-feed-canvas { display: none; width: 100%; height: auto; }
+.hv-feed-frame[data-ready] .hv-feed-canvas { display: block; }
+.hv-feed-frame[data-ready] .hv-feed-wait { display: none; }
+.hv-feed-wait { color: var(--text-2); font-size: var(--fs-meta); letter-spacing: var(--ls-meta); }
+.hv-feed-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-12);
+  margin-top: var(--s-8);
+}
+.hv-feed-age {
+  color: var(--text-2);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-meta);
+  white-space: nowrap;
+}
+.hv-feed-age .hv-unit { color: inherit; }
+
+/* ---- markers: the live-picture mark -------------------------------------------- */
+/* Reality view: a camera with a picture and nothing else to say. Small, neutral, steady. */
+.hv-glyph[data-status="feed"] { color: var(--text-2); }
+.hv-marker[data-status="feed"] .hv-glyph { --glyph: calc(var(--marker) * 0.6875); }
+.hv-marker[data-status="feed"] .hv-glyph .hv-icon { width: 68%; height: 68%; }
+.hv-marker[data-status="feed"].is-selected .hv-glyph { color: var(--text-1); }
+/* On a full marker the state shape stays; the mark rides on its lower right corner. */
+.hv-marker-feed {
+  position: absolute;
+  right: calc(var(--marker) * -0.16);
+  bottom: calc(var(--marker) * -0.16);
+  display: grid;
+  place-items: center;
+  width: calc(var(--marker) * 0.5);
+  height: calc(var(--marker) * 0.5);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-marker);
+  color: var(--text-1);
+}
+.hv-marker-feed .hv-icon { width: 76%; height: 76%; }
+@media (hover: hover) and (pointer: fine) {
+  .hv-marker[data-status="feed"]:hover .hv-glyph { color: var(--text-1); }
+}

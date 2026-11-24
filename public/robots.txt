@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /house/
 
 Sitemap: https://joshrutz.com/sitemap-index.xml
